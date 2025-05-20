@@ -206,7 +206,7 @@ struct ContentView: View {
     }
     
     //------------------------------------------------------------------------------------------------------------------------
-    
+
     func sendLocalizationRequest(frame: ARFrame) {
         isLoading = true // Show loader when the request starts
               
@@ -290,16 +290,26 @@ struct ContentView: View {
                 if let error = error {
                     self.localizationMessage = "Localization failed: \(error.localizedDescription)"
                     print("Error: \(error.localizedDescription)")
+                    // Show error alert
+                    self.toastMessage = "Localization failed"
+                    self.showToast = true
                     return
                 }
+                
                 if let response = response as? HTTPURLResponse {
                     self.localizationMessage = "Status Code: \(response.statusCode)"
                     print("HTTP Status Code: \(response.statusCode)")
+                    
+                    // Check for non-200 status code
+                    if response.statusCode != 200 {
+                        self.toastMessage = "Localization failed"
+                        self.showToast = true
+                        return
+                    }
                 }
                 
                 if let data = data {
                     do {
-                        
                         if let responseString = String(data: data, encoding: .utf8) {
                             self.localizationMessage = "Localization successful: \(responseString)"
                             print("Response Body: \(responseString)")
@@ -308,26 +318,29 @@ struct ContentView: View {
                         let localizationResponse = try JSONDecoder().decode(LocalizationResponse.self, from: data)
                         
                         if localizationResponse.poseFound {
-                            
                             let resultPose = poseHandler(localizationResponse: localizationResponse, camPos: camPos, camRot: camRot)
                             
                             print("Resulting Pose: \(resultPose)")
                             
-                            self.toastMessage = selectedMapType == .map ? "Map Localized" : "MapSet Localized"
+                            // Show success toast
+                            self.toastMessage = "Localization Success"
                             self.showToast = true
-                            
                         } else {
+                            // Show failure toast when pose is not found
+                            self.toastMessage = "Localization failed"
+                            self.showToast = true
                             print("Pose not found.")
                         }
                     } catch {
+                        // Show error toast for decoding issues
+                        self.toastMessage = "Localization failed"
+                        self.showToast = true
                         print("Failed to decode response: \(error)")
                     }
                 }
-                
             }
         }.resume()
     }
-    
     
     func getCurrentCameraPose() -> (position: SIMD3<Float>, rotation: simd_quatf)? {
         guard let frame = viewModel.session?.currentFrame else {
