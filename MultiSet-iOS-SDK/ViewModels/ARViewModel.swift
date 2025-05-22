@@ -1,9 +1,9 @@
 /*
-Copyright (c) 2025 MultiSet AI. All rights reserved.
-Licensed under the MultiSet License. You may not use this file except in compliance with the License. and you can’t re-distribute this file without a prior notice
-For license details, visit www.multiset.ai.
-Redistribution in source or binary forms must retain this notice.
-*/
+ Copyright (c) 2025 MultiSet AI. All rights reserved.
+ Licensed under the MultiSet License. You may not use this file except in compliance with the License. and you can’t re-distribute this file without a prior notice
+ For license details, visit www.multiset.ai.
+ Redistribution in source or binary forms must retain this notice.
+ */
 
 
 import Foundation
@@ -25,13 +25,6 @@ class ARViewModel : NSObject, ARSessionDelegate, ObservableObject {
     var cancellables = Set<AnyCancellable>()
     
     //---------------------------------------------------------------------------------
-    func localizeGizmo2(position: SIMD3<Float>, rotation: simd_quatf) {
-        
-        gizmoAnchor?.transform.translation = position
-        gizmoAnchor?.transform.rotation = rotation
-        
-        print("Gizmo updated to Position: \(position), Rotation: \(rotation)")
-    }
     
     func localizeGizmo(position: SIMD3<Float>, rotation: simd_quatf) {
         

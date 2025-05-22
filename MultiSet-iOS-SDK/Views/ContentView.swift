@@ -1,9 +1,9 @@
 /*
-Copyright (c) 2025 MultiSet AI. All rights reserved.
-Licensed under the MultiSet License. You may not use this file except in compliance with the License. and you can’t re-distribute this file without a prior notice
-For license details, visit www.multiset.ai.
-Redistribution in source or binary forms must retain this notice.
-*/
+ Copyright (c) 2025 MultiSet AI. All rights reserved.
+ Licensed under the MultiSet License. You may not use this file except in compliance with the License. and you can’t re-distribute this file without a prior notice
+ For license details, visit www.multiset.ai.
+ Redistribution in source or binary forms must retain this notice.
+ */
 
 import SwiftUI
 import ARKit
@@ -31,14 +31,14 @@ struct ContentView: View {
     @State private var isAuthenticated: Bool = false
     
     @State private var isLoading: Bool = false // Loader state variable
-       
+    
     @State private var toastMessage: String? = nil
     @State private var showToast: Bool = false
     
     
     //Select Between map and mapSet
     @State private var selectedMapType: MapType = .map // Default to `.map`
-   
+    
     
     init(viewModel vm: ARViewModel) {
         _viewModel = StateObject(wrappedValue: vm)
@@ -53,7 +53,6 @@ struct ContentView: View {
                         
                     }.padding(8)
                     HStack() {
-                        //                        Spacer()
                         
                         VStack(alignment:.leading) {
                             
@@ -145,7 +144,7 @@ struct ContentView: View {
                         .buttonBorderShape(.capsule)
                         
                         Button(action: {
-                         
+                            
                             switch selectedMapType {
                             case .map:
                                 guard !SDKConfig.mapCode.isEmpty else {
@@ -160,12 +159,9 @@ struct ContentView: View {
                                     return
                                 }
                             }
-                           
+                            
                             
                             if let (position, rotation) = getCurrentCameraPose() {
-                                print("Camera Position: \(position)")
-                                print("Camera Rotation: \(rotation)")
-                                
                                 camPos = position
                                 camRot = rotation
                             }
@@ -206,10 +202,66 @@ struct ContentView: View {
     }
     
     //------------------------------------------------------------------------------------------------------------------------
-
+    
+    
+    func getCurrentCameraPose() -> (position: SIMD3<Float>, rotation: simd_quatf)? {
+        guard let frame = viewModel.session?.currentFrame
+        else {
+            print("No current ARFrame available")
+            return nil
+        }
+        
+        // Check if tracking is ready
+        guard case .normal = frame.camera.trackingState else {
+            print("AR tracking is not in normal state: \(frame.camera.trackingState)")
+            return nil
+        }
+        
+        // Get the current device orientation
+        let interfaceOrientation = UIApplication
+            .shared
+            .windows
+            .first?
+            .windowScene?
+            .interfaceOrientation ?? .portrait
+        
+        // Extract position from the camera's transform (this remains the same)
+        let position = SIMD3<Float>(
+            frame.camera.transform.columns.3.x,
+            frame.camera.transform.columns.3.y,
+            frame.camera.transform.columns.3.z
+        )
+        
+        // Extract rotation as a quaternion
+        var rotation = simd_quatf(frame.camera.transform)
+        
+        // Apply orientation correction to match Unity ARFoundation behavior
+        // Unity ARFoundation always reports camera rotation relative to landscape orientation
+        if interfaceOrientation.isPortrait {
+            // In portrait mode, we need to remove the extra 90-degree rotation
+            // Create a quaternion for -90 degrees around Z axis (counter-clockwise)
+            let orientationCorrection = simd_quatf(angle: .pi / 2, axis: SIMD3<Float>(0, 0, 1))
+            
+            // Apply the correction to make portrait rotation match landscape
+            rotation = rotation * orientationCorrection
+        }
+        
+        // Validate that we have reasonable values (not near zero)
+        let positionMagnitude = length(position)
+        if positionMagnitude < 1e-6 {
+            print("Camera position is too close to origin, AR might not be initialized yet")
+            return nil
+        }
+        
+        return (position, rotation)
+    }
+    
+    
+    //------------------------------------------------------------------------------------------------------------------------
+    
     func sendLocalizationRequest(frame: ARFrame) {
         isLoading = true // Show loader when the request starts
-              
+        
         
         // Ensure the authentication token exists
         guard let token = authManager.token else {
@@ -223,6 +275,7 @@ struct ContentView: View {
         var imageData: Data? = nil
         
         if let resizedData = createResizedImageDataAndAdjustIntrinsics(from: frame) {
+            
             let width = resizedData.newWidth
             let height = resizedData.newHeight
             let fx = resizedData.newFx
@@ -230,10 +283,6 @@ struct ContentView: View {
             let px = resizedData.newPx
             let py = resizedData.newPy
             
-            print("width: \(width), height: \(height), fx: \(fx), fy: \(fy), px: \(px), py: \(py)")
-            print("Image Data Size: \(resizedData.imageData.count) bytes")
-            print("Resized Image Dimensions: \(width)x\(height)")
-      
             // Dynamically create the parameters dictionary
             parameters = [
                 "isRightHanded": "true",
@@ -253,12 +302,7 @@ struct ContentView: View {
             }
             
             imageData = resizedData.imageData
-            
-            print("Image Data Size: \(imageData?.count ?? 0) bytes")
         }
-        
-        // Use the parameters dictionary in your request
-        print("Parameters: \(parameters)")
         
         // Create the URLRequest
         var request = URLRequest(url: URL(string: SDKConfig.queryURL)!)
@@ -318,9 +362,8 @@ struct ContentView: View {
                         let localizationResponse = try JSONDecoder().decode(LocalizationResponse.self, from: data)
                         
                         if localizationResponse.poseFound {
-                            let resultPose = poseHandler(localizationResponse: localizationResponse, camPos: camPos, camRot: camRot)
                             
-                            print("Resulting Pose: \(resultPose)")
+                            let resultPose = poseHandler(localizationResponse: localizationResponse, camPos: camPos, camRot: camRot)
                             
                             // Show success toast
                             self.toastMessage = "Localization Success"
@@ -342,28 +385,114 @@ struct ContentView: View {
         }.resume()
     }
     
-    func getCurrentCameraPose() -> (position: SIMD3<Float>, rotation: simd_quatf)? {
-        guard let frame = viewModel.session?.currentFrame else {
-            print("No current ARFrame available")
+    
+    //---------------------------------------------------------------------------------
+    
+    func createResizedImageDataAndAdjustIntrinsics(
+        from frame: ARFrame
+    ) -> (imageData: Data,
+          newWidth: Int,
+          newHeight: Int,
+          newPx: CGFloat,
+          newPy: CGFloat,
+          newFx: CGFloat,
+          newFy: CGFloat)?
+    {
+        let ciImage = CIImage(cvPixelBuffer: frame.capturedImage)
+        let context = CIContext()
+        
+        // 1) Determine UI orientation
+        let interfaceOrientation = UIApplication
+            .shared
+            .windows
+            .first?
+            .windowScene?
+            .interfaceOrientation ?? .portrait
+        
+        // 2) Rotate the image if we're in portrait
+        let orientedCI: CIImage
+        if interfaceOrientation.isPortrait {
+            // 90° CCW
+            orientedCI = ciImage.transformed(
+                by: CGAffineTransform(rotationAngle: -.pi / 2)
+            )
+        } else {
+            orientedCI = ciImage
+        }
+        
+        // 3) Pick target dims (swap for portrait)
+        let targetLandscape = CGSize(width: 960, height: 720)
+        let targetPortrait  = CGSize(width: 720, height: 960)
+        let targetSize = interfaceOrientation.isPortrait
+        ? targetPortrait
+        : targetLandscape
+        
+        // 4) Compute scale factors & print them
+        let oSize = orientedCI.extent.size
+        let scaleX = targetSize.width  / oSize.width
+        let scaleY = targetSize.height / oSize.height
+        
+        // 5) Scale the CIImage
+        let resizedCI = orientedCI.transformed(
+            by: CGAffineTransform(scaleX: scaleX, y: scaleY)
+        )
+        
+        // 6) JPEG encode
+        guard let imageData = context.jpegRepresentation(
+            of: resizedCI,
+            colorSpace: CGColorSpaceCreateDeviceRGB()
+        ) else {
             return nil
         }
         
-        // Extract position from the camera's transform
-        let position = SIMD3<Float>(
-            frame.camera.transform.columns.3.x,
-            frame.camera.transform.columns.3.y,
-            frame.camera.transform.columns.3.z
+        // 7) Pull out original intrinsics + buffer resolution
+        let intr = frame.camera.intrinsics
+        let fx = CGFloat(intr[0][0])
+        let fy = CGFloat(intr[1][1])
+        let cx = CGFloat(intr[2][0])
+        let cy = CGFloat(intr[2][1])
+        
+        let buffer = frame.capturedImage
+        let origW = CGFloat(CVPixelBufferGetWidth(buffer))
+        let origH = CGFloat(CVPixelBufferGetHeight(buffer))
+        
+        // 8) Adjust intrinsics just like your Unity code
+        let newFx: CGFloat
+        let newFy: CGFloat
+        let newPx: CGFloat
+        let newPy: CGFloat
+        
+        if interfaceOrientation.isPortrait {
+            // swap focal lengths, flip cx/ cy per rotation
+            newFx = fy * scaleX
+            newFy = fx * scaleY
+            newPx = (origH - cy) * scaleX
+            newPy = cx * scaleY
+            
+        } else {
+            // no swap in landscape
+            newFx = fx * scaleX
+            newFy = fy * scaleY
+            newPx = cx * scaleX
+            newPy = cy * scaleY
+        }
+        
+        // 9) Return with final ints
+        return (
+            imageData,
+            Int(targetSize.width),
+            Int(targetSize.height),
+            newPx,
+            newPy,
+            newFx,
+            newFy
         )
-        
-        // Extract rotation as a quaternion
-        let rotation = simd_quatf(frame.camera.transform)
-        
-        return (position, rotation)
     }
     
     //------------------------------------------------------------------------------------------------------------------------
     
     func poseHandler(localizationResponse: LocalizationResponse, camPos: SIMD3<Float>, camRot: simd_quatf) -> simd_float4x4 {
+        
         // Parse the response data for position and rotation
         let resPosition = SIMD3<Float>(
             localizationResponse.position.x,
@@ -381,7 +510,7 @@ struct ContentView: View {
         // Create rotation matrix from quaternion
         var rotationMatrix = simd_float4x4(resRotation)
         
-        // Negate specific matrix elements to align with Three.js logic
+        // Negate specific matrix elements
         rotationMatrix.columns.1 *= -1 // Negate second column
         rotationMatrix.columns.2 *= -1 // Negate third column
         
@@ -410,14 +539,15 @@ struct ContentView: View {
             resultantMatrix.columns.3.z
         )
         
-        let resultRotation = simd_quatf(resultantMatrix)
+        let resultRotationRaw = simd_quatf(resultantMatrix)
+        let correctedRotation: simd_quatf
         
-        // Log the results
-        print("Result Position: \(resultPosition)")
-        print("Result Rotation: \(resultRotation)")
+        // Landscape: Image not rotated
+        let yCorrection = simd_quatf(angle: -.pi / 2, axis: SIMD3<Float>(0, 1, 0))
+        correctedRotation = yCorrection * resultRotationRaw
         
         // Update gizmo in the AR scene
-        viewModel.localizeGizmo(position: resultPosition, rotation: resultRotation)
+        viewModel.localizeGizmo(position: resultPosition, rotation: correctedRotation)
         
         return resultantMatrix
     }
@@ -450,64 +580,6 @@ struct ContentView: View {
         body.append("--\(boundary)--\(lineBreak)".data(using: .utf8)!)
         return body
     }
-    
-    //---------------------------------------------------------------------------------
-    
-    func saveResizedImageDataAsJPG(imageData: Data, fileName: String) {
-        // Get the app's document directory
-        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            print("Failed to access document directory")
-            return
-        }
-        
-        // Append the file name to the directory
-        let fileURL = documentsDirectory.appendingPathComponent(fileName).appendingPathExtension("jpg")
-        
-        do {
-            // Write the image data to the file
-            try imageData.write(to: fileURL)
-            print("Image saved successfully at \(fileURL.path)")
-        } catch {
-            print("Failed to save image: \(error)")
-        }
-    }
-    
-    //---------------------------------------------------------------------------------
-   
-    func createResizedImageDataAndAdjustIntrinsics(from frame: ARFrame) -> (imageData: Data, newWidth: Int, newHeight: Int, newPx: CGFloat, newPy: CGFloat, newFx: CGFloat, newFy: CGFloat)? {
-        let ciImage = CIImage(cvPixelBuffer: frame.capturedImage)
-        let context = CIContext()
-
-        // Current resolution
-        let currentWidth = ciImage.extent.width
-        let currentHeight = ciImage.extent.height
-
-        // Desired resolution (960x720)
-        let targetWidth: CGFloat = 960
-        let targetHeight: CGFloat = 720
-
-        // Calculate scaling factors
-        let scaleX = targetWidth / currentWidth
-        let scaleY = targetHeight / currentHeight
-
-        // Apply scaling transform
-        let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
-        let resizedImage = ciImage.transformed(by: transform)
-  
-        guard let imageData = context.jpegRepresentation(of: resizedImage, colorSpace: CGColorSpaceCreateDeviceRGB()) else {
-            return nil
-        }
-
-        // Adjust camera intrinsic values
-        let intrinsics = frame.camera.intrinsics
-        let newFx = CGFloat(intrinsics[0][0]) * scaleX
-        let newFy = CGFloat(intrinsics[1][1]) * scaleY
-        let newPx = CGFloat(intrinsics[2][0]) * scaleX
-        let newPy = CGFloat(intrinsics[2][1]) * scaleY
-
-        return (imageData, Int(targetWidth), Int(targetHeight), newPx, newPy, newFx, newFy)
-    }
-    
     //---------------------------------------------------------------------------------
     
 }
