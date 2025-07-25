@@ -509,11 +509,7 @@ struct ContentView: View {
         
         // Create rotation matrix from quaternion
         var rotationMatrix = simd_float4x4(resRotation)
-        
-        // Negate specific matrix elements
-        rotationMatrix.columns.1 *= -1 // Negate second column
-        rotationMatrix.columns.2 *= -1 // Negate third column
-        
+
         // Create negated response matrix (translation included)
         var negatedResponseMatrix = rotationMatrix
         negatedResponseMatrix.columns.3 = SIMD4<Float>(
@@ -540,14 +536,9 @@ struct ContentView: View {
         )
         
         let resultRotationRaw = simd_quatf(resultantMatrix)
-        let correctedRotation: simd_quatf
-        
-        // Landscape: Image not rotated
-        let yCorrection = simd_quatf(angle: -.pi / 2, axis: SIMD3<Float>(0, 1, 0))
-        correctedRotation = yCorrection * resultRotationRaw
         
         // Update gizmo in the AR scene
-        viewModel.localizeGizmo(position: resultPosition, rotation: correctedRotation)
+        viewModel.localizeGizmo(position: resultPosition, rotation: resultRotationRaw)
         
         return resultantMatrix
     }
