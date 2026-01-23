@@ -1,64 +1,131 @@
-# MultiSet-iOS-SDK
+# MultiSet iOS SDK
 
-This SDK allows you to perform Visual Positioning using MultiSet's VPS (Visual Positioning System). It supports localization of either a single map or a mapSet.
+## Overview
 
-## 🚀 Getting Started
+The MultiSet iOS SDK provides Visual Positioning System (VPS) localization capabilities for iOS applications. It enables precise indoor and outdoor localization using camera-based visual recognition against pre-mapped 3D environments.
 
-### 1. Configure SDK Credentials
+**GitHub Repository:** [https://github.com/MultiSet-AI/multiset-ios-sdk.git](https://github.com/MultiSet-AI/multiset-ios-sdk.git)
 
-Open the `SDKConfig.swift` file and provide your **Client ID** and **Client Secret**:
+## Quick Start
 
-```swift
-static let clientId = "YOUR_CLIENT_ID"
-static let clientSecret = "YOUR_CLIENT_SECRET"
-```
+### 1. Add the Framework
 
-To get your credentials, visit:
-🔗 https://developer.multiset.ai/credentials
+Add the `MultiSetSDK.xcframework` to your Xcode project:
 
-These credentials are required to authenticate the user with the MultiSet platform.
+1. Drag the `MultiSetSDK.xcframework` folder into your Xcode project navigator
+2. Ensure "Copy items if needed" is checked
+3. Add to your app target
+4. In **Build Settings**, ensure the framework is listed under **Frameworks, Libraries, and Embedded Content** with "Embed & Sign"
 
-### 2. Choose Map Type & Provide Map Code
+### 2. Credentials Setup
 
-Depending on whether you want to localize a single map or a map set, provide the appropriate code in `SDKConfig.swift`:
-
-```swift
-// For localizing a single map
-static let mapCode = "YOUR_MAP_CODE"
-
-// For localizing a map set
-static let mapSetCode = "YOUR_MAPSET_CODE"
-```
-
-Only one should be active at a time — either mapCode or mapSetCode.
-
-Also update the selected map type in `ContentView.swift`:
+Open `SDKConfig.swift` and configure your credentials:
 
 ```swift
-@State private var selectedMapType: MapType = .map // or .mapSet
+struct SDKConfig {
+    // Authentication Credentials
+    static let clientId = "YOUR_CLIENT_ID"
+    static let clientSecret = "YOUR_CLIENT_SECRET"
 
-enum MapType {
-    case map
-    case mapSet
+    // Map Configuration (use either mapCode OR mapSetCode)
+    static let mapCode = "YOUR_MAP_CODE"
+    static let mapSetCode = ""
 }
 ```
 
-### 3. Start Localization
+| Property           | Description              | Required                     |
+|--------------------|--------------------------|------------------------------|
+| `clientId`         | Your client identifier   | Yes                          |
+| `clientSecret`     | Your secret key          | Yes                          |
+| `mapCode`          | Single map identifier    | One of these is required     |
+| `mapSetCode`       | Map set identifier       | One of these is required     |
 
-After configuration:
-1. Run the app.
-2. Tap the Localize button to start localization.
+To obtain credentials, visit: [https://developer.multiset.ai/credentials](https://developer.multiset.ai/credentials)
 
-Upon successful localization, a Gizmo will appear at the Map Origin indicating that the pose has been correctly estimated.
+### 3. Initialize the SDK
 
-## 📌 Notes
+```swift
+import MultiSetSDK
 
-- Ensure your device has camera permissions enabled.
-- The SDK uses the following endpoints:
-  - Auth: https://api.multiset.ai/v1/m2m/token
-  - Query: https://api.multiset.ai/v1/vps/map/query-form
-- If neither mapCode nor mapSetCode is set, localization will not proceed.
+// Build configuration
+let config = MultiSetConfig(
+    clientId: clientId,
+    clientSecret: clientSecret,
+    mapCode: mapCode,
+    localizationMode: .multiFrame,
+    meshVisualization: true,
+    backgroundLocalization: true
+)
 
-## 🧑‍💻 Support
+// Initialize SDK
+MultiSet.shared.initialize(config: config, callback: self)
+```
 
-For any questions or issues, please contact support via https://docs.multiset.ai or raise an issue on this repository.
+### 4. Implement Callbacks
+
+```swift
+class MyDelegate: MultiSetCallback {
+    func onSDKReady() { /* SDK initialized */ }
+    func onAuthenticationSuccess() { /* Ready for localization */ }
+    func onAuthenticationFailure(error: String) { /* Handle error */ }
+    func onLocalizationSuccess(result: LocalizationResult) { /* Handle success */ }
+    func onLocalizationFailure(error: String) { /* Handle failure */ }
+    func onTrackingStateChanged(state: TrackingState) { /* Handle state change */ }
+    func onMeshLoaded(mapId: String) { /* Mesh loaded */ }
+    func onMeshLoadError(error: String) { /* Mesh load failed */ }
+}
+```
+
+### 5. Display AR View
+
+Use the provided `MultiSetARView` SwiftUI component:
+
+```swift
+import SwiftUI
+import MultiSetSDK
+
+struct MyARView: View {
+    var body: some View {
+        ZStack {
+            MultiSetARView()
+                .ignoresSafeArea()
+
+            // Your UI overlays here
+        }
+    }
+}
+```
+
+### 6. Trigger Localization
+
+```swift
+// Start localization
+MultiSet.shared.localize()
+
+// Stop localization
+MultiSet.shared.stopLocalization()
+```
+
+## Requirements
+
+- iOS 16.0+
+- ARKit compatible device (iPhone 6s or later)
+- Camera permission
+- Internet connectivity
+
+## Info.plist Configuration
+
+Add the following keys to your `Info.plist`:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>Camera access is required for AR localization</string>
+
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Location access improves localization accuracy</string>
+```
+
+## License
+
+Copyright (c) 2026 MultiSet AI. All rights reserved.
+Licensed under the MultiSet License. For license details, visit [www.multiset.ai](https://www.multiset.ai).

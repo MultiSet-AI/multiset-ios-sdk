@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 MultiSet AI. All rights reserved.
+Copyright (c) 2026 MultiSet AI. All rights reserved.
 Licensed under the MultiSet License. You may not use this file except in compliance with the License. and you can’t re-distribute this file without a prior notice
 For license details, visit www.multiset.ai.
 Redistribution in source or binary forms must retain this notice.
@@ -18,13 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // Create the SwiftUI view that provides the window contents.
-//        let contentView = ContentView()
-        let viewModel = ARViewModel()
-        let contentView = ContentView(viewModel: viewModel)
+        let landingView = LandingView()
 
         // Use a UIHostingController as window root view controller.
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = UIHostingController(rootView: contentView)
+        window.rootViewController = UIHostingController(rootView: landingView)
         self.window = window
         window.makeKeyAndVisible()
         return true

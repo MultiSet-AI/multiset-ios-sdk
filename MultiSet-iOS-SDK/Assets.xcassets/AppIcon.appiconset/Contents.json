@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "multiset-sdk-ios.jpg",
+      "filename" : "multiset-sdk 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "multiset-sdk-ios 1.jpg",
+      "filename" : "multiset-sdk.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "multiset-sdk-ios 2.jpg",
+      "filename" : "multiset-sdk 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
