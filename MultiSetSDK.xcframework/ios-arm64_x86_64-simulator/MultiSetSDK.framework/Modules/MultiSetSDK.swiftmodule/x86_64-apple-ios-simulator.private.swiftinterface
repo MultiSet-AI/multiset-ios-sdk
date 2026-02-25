@@ -9,6 +9,7 @@ import Foundation
 import Metal
 import MetalKit
 @_exported import MultiSetSDK
+import QuartzCore
 import RealityKit
 import Swift
 import SwiftUI
@@ -100,15 +101,15 @@ public enum LocalizationMode : Swift.String, Swift.CaseIterable, Swift.Identifia
   public typealias UIViewType = RealityKit.ARView
 }
 public struct LocalizationResult : Swift.Sendable {
-  public let mapId: Swift.String
-  public let mapIds: [Swift.String]
+  public let mapCode: Swift.String
+  public let mapCodes: [Swift.String]
   public let position: Swift.SIMD3<Swift.Float>
   public let rotation: simd.simd_quatf
   public let confidence: Swift.Float?
   public let geoCoordinates: MultiSetSDK.GeoCoordinates?
   public let mode: MultiSetSDK.LocalizationMode
   #if compiler(>=5.3) && $NonescapableTypes
-  public init(mapId: Swift.String, mapIds: [Swift.String], position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf, confidence: Swift.Float? = nil, geoCoordinates: MultiSetSDK.GeoCoordinates? = nil, mode: MultiSetSDK.LocalizationMode)
+  public init(mapCode: Swift.String, mapCodes: [Swift.String], position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf, confidence: Swift.Float? = nil, geoCoordinates: MultiSetSDK.GeoCoordinates? = nil, mode: MultiSetSDK.LocalizationMode)
   #endif
 }
 public struct MultiSetConfig : Swift.Sendable {
@@ -187,11 +188,11 @@ public protocol MultiSetCallback : AnyObject {
   func onLocalizationSuccess(result: MultiSetSDK.LocalizationResult)
   func onLocalizationFailure(error: Swift.String)
   func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
-  func onMeshLoaded(mapId: Swift.String)
+  func onMeshLoaded(mapCode: Swift.String)
   func onMeshLoadError(error: Swift.String)
 }
 extension MultiSetSDK.MultiSetCallback {
-  public func onMeshLoaded(mapId: Swift.String)
+  public func onMeshLoaded(mapCode: Swift.String)
   public func onMeshLoadError(error: Swift.String)
 }
 public struct GeoCoordinates : Swift.Sendable {

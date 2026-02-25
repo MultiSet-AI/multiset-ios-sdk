@@ -169,8 +169,8 @@ struct ARLocalizationView: View {
             isTrackingNormal = (state == .tracking)
         }
 
-        sdkDelegate.onMeshLoaded = { mapId in
-            print("ARLocalizationView >> Mesh loaded for map: \(mapId)")
+        sdkDelegate.onMeshLoaded = { mapCode in
+            print("ARLocalizationView >> Mesh loaded for map: \(mapCode)")
         }
 
         // Start GPS if needed

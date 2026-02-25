@@ -63,7 +63,7 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
         DispatchQueue.main.async {
             self.lastLocalizationResult = result
             self.onLocalizationSuccess?(result)
-            print("MultiSetSDKDelegate >> Localization Success: mapId=\(result.mapId)")
+            print("MultiSetSDKDelegate >> Localization Success: mapCode=\(result.mapCode)")
         }
     }
 
@@ -82,10 +82,10 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
         }
     }
 
-    func onMeshLoaded(mapId: String) {
+    func onMeshLoaded(mapCode: String) {
         DispatchQueue.main.async {
-            self.onMeshLoaded?(mapId)
-            print("MultiSetSDKDelegate >> Mesh Loaded: \(mapId)")
+            self.onMeshLoaded?(mapCode)
+            print("MultiSetSDKDelegate >> Mesh Loaded: \(mapCode)")
         }
     }
 

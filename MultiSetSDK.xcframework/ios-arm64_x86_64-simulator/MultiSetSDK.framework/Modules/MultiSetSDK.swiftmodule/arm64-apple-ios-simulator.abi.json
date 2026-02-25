@@ -57,6 +57,20 @@
       },
       {
         "kind": "Import",
+        "name": "ARKit",
+        "printedName": "ARKit",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Metal",
+        "printedName": "Metal",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
         "name": "simd",
         "printedName": "simd",
         "declKind": "Import",
@@ -73,6 +87,44 @@
         "kind": "Import",
         "name": "Combine",
         "printedName": "Combine",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "RealityKit",
+        "printedName": "RealityKit",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "ARKit",
+        "printedName": "ARKit",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "QuartzCore",
+        "printedName": "QuartzCore",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
         "declKind": "Import",
         "moduleName": "MultiSetSDK"
       },
@@ -1908,8 +1960,8 @@
         "children": [
           {
             "kind": "Var",
-            "name": "mapId",
-            "printedName": "mapId",
+            "name": "mapCode",
+            "printedName": "mapCode",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -1919,8 +1971,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "s:11MultiSetSDK18LocalizationResultV5mapIdSSvp",
-            "mangledName": "$s11MultiSetSDK18LocalizationResultV5mapIdSSvp",
+            "usr": "s:11MultiSetSDK18LocalizationResultV7mapCodeSSvp",
+            "mangledName": "$s11MultiSetSDK18LocalizationResultV7mapCodeSSvp",
             "moduleName": "MultiSetSDK",
             "declAttributes": [
               "HasStorage",
@@ -1943,8 +1995,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:11MultiSetSDK18LocalizationResultV5mapIdSSvg",
-                "mangledName": "$s11MultiSetSDK18LocalizationResultV5mapIdSSvg",
+                "usr": "s:11MultiSetSDK18LocalizationResultV7mapCodeSSvg",
+                "mangledName": "$s11MultiSetSDK18LocalizationResultV7mapCodeSSvg",
                 "moduleName": "MultiSetSDK",
                 "implicit": true,
                 "accessorKind": "get"
@@ -1953,8 +2005,8 @@
           },
           {
             "kind": "Var",
-            "name": "mapIds",
-            "printedName": "mapIds",
+            "name": "mapCodes",
+            "printedName": "mapCodes",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -1972,8 +2024,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "s:11MultiSetSDK18LocalizationResultV6mapIdsSaySSGvp",
-            "mangledName": "$s11MultiSetSDK18LocalizationResultV6mapIdsSaySSGvp",
+            "usr": "s:11MultiSetSDK18LocalizationResultV8mapCodesSaySSGvp",
+            "mangledName": "$s11MultiSetSDK18LocalizationResultV8mapCodesSaySSGvp",
             "moduleName": "MultiSetSDK",
             "declAttributes": [
               "HasStorage",
@@ -2004,8 +2056,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:11MultiSetSDK18LocalizationResultV6mapIdsSaySSGvg",
-                "mangledName": "$s11MultiSetSDK18LocalizationResultV6mapIdsSaySSGvg",
+                "usr": "s:11MultiSetSDK18LocalizationResultV8mapCodesSaySSGvg",
+                "mangledName": "$s11MultiSetSDK18LocalizationResultV8mapCodesSaySSGvg",
                 "moduleName": "MultiSetSDK",
                 "implicit": true,
                 "accessorKind": "get"
@@ -2288,7 +2340,7 @@
           {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(mapId:mapIds:position:rotation:confidence:geoCoordinates:mode:)",
+            "printedName": "init(mapCode:mapCodes:position:rotation:confidence:geoCoordinates:mode:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -2374,8 +2426,8 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:11MultiSetSDK18LocalizationResultV5mapId0F3Ids8position8rotation10confidence14geoCoordinates4modeACSS_SaySSGs5SIMD3VySfGSo10simd_quatfaSfSgAA03GeoM0VSgAA0D4ModeOtcfc",
-            "mangledName": "$s11MultiSetSDK18LocalizationResultV5mapId0F3Ids8position8rotation10confidence14geoCoordinates4modeACSS_SaySSGs5SIMD3VySfGSo10simd_quatfaSfSgAA03GeoM0VSgAA0D4ModeOtcfc",
+            "usr": "s:11MultiSetSDK18LocalizationResultV7mapCode0F5Codes8position8rotation10confidence14geoCoordinates4modeACSS_SaySSGs5SIMD3VySfGSo10simd_quatfaSfSgAA03GeoM0VSgAA0D4ModeOtcfc",
+            "mangledName": "$s11MultiSetSDK18LocalizationResultV7mapCode0F5Codes8position8rotation10confidence14geoCoordinates4modeACSS_SaySSGs5SIMD3VySfGSo10simd_quatfaSfSgAA03GeoM0VSgAA0D4ModeOtcfc",
             "moduleName": "MultiSetSDK",
             "declAttributes": [
               "AccessControl"
@@ -5345,7 +5397,7 @@
           {
             "kind": "Function",
             "name": "onMeshLoaded",
-            "printedName": "onMeshLoaded(mapId:)",
+            "printedName": "onMeshLoaded(mapCode:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -5360,8 +5412,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:11MultiSetSDK0aB8CallbackP12onMeshLoaded5mapIdySS_tF",
-            "mangledName": "$s11MultiSetSDK0aB8CallbackP12onMeshLoaded5mapIdySS_tF",
+            "usr": "s:11MultiSetSDK0aB8CallbackP12onMeshLoaded7mapCodeySS_tF",
+            "mangledName": "$s11MultiSetSDK0aB8CallbackP12onMeshLoaded7mapCodeySS_tF",
             "moduleName": "MultiSetSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
             "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
@@ -5405,7 +5457,7 @@
           {
             "kind": "Function",
             "name": "onMeshLoaded",
-            "printedName": "onMeshLoaded(mapId:)",
+            "printedName": "onMeshLoaded(mapCode:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -5420,8 +5472,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:11MultiSetSDK0aB8CallbackPAAE12onMeshLoaded5mapIdySS_tF",
-            "mangledName": "$s11MultiSetSDK0aB8CallbackPAAE12onMeshLoaded5mapIdySS_tF",
+            "usr": "s:11MultiSetSDK0aB8CallbackPAAE12onMeshLoaded7mapCodeySS_tF",
+            "mangledName": "$s11MultiSetSDK0aB8CallbackPAAE12onMeshLoaded7mapCodeySS_tF",
             "moduleName": "MultiSetSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
             "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
@@ -6067,37 +6119,142 @@
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "BooleanLiteral",
-      "offset": 624,
+      "offset": 650,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
+      "kind": "BooleanLiteral",
+      "offset": 811,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 678,
+      "offset": 865,
       "length": 5,
       "value": "0.482"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 685,
+      "offset": 872,
       "length": 5,
       "value": "0.173"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 692,
+      "offset": 879,
       "length": 5,
       "value": "0.749"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 699,
+      "offset": 886,
       "length": 3,
       "value": "0.7"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "BooleanLiteral",
+      "offset": 544,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 624,
+      "length": 4,
+      "value": "20.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 714,
+      "length": 3,
+      "value": "5.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 825,
+      "length": 4,
+      "value": "20.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 875,
+      "length": 3,
+      "value": "5.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 916,
+      "length": 5,
+      "value": "200.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 967,
+      "length": 4,
+      "value": "20.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1083,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 1128,
+      "length": 3,
+      "value": "5.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 1167,
+      "length": 4,
+      "value": "10.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "Array",
+      "offset": 1314,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1347,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1380,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1433,
+      "length": 1,
+      "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
@@ -6186,98 +6343,98 @@
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 4604,
+      "offset": 4668,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 4648,
+      "offset": 4712,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 4700,
+      "offset": 4764,
       "length": 4,
       "value": "30.0"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 4736,
+      "offset": 4800,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4771,
+      "offset": 4835,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 4811,
+      "offset": 4875,
       "length": 3,
       "value": "500"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 4847,
+      "offset": 4911,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 4890,
+      "offset": 4954,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 4940,
+      "offset": 5004,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 4972,
+      "offset": 5036,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5011,
+      "offset": 5075,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5044,
+      "offset": 5108,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5091,
+      "offset": 5155,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Desktop\/Xcode_Workspace\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5125,
+      "offset": 5189,
       "length": 2,
       "value": "90"
     },
