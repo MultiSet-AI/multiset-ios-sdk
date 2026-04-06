@@ -76,6 +76,8 @@ struct LocalizationOverlay: View {
 
 /// API loading overlay shown while waiting for server response
 struct APILoadingOverlay: View {
+    var statusText: String = "Localizing..."
+
     var body: some View {
         ZStack {
             // Semi-transparent background
@@ -87,7 +89,7 @@ struct APILoadingOverlay: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: Color(hex: "#7B2CBF")))
                     .scaleEffect(1.5)
 
-                Text("Localizing...")
+                Text(statusText)
                     .font(.system(size: 16))
                     .foregroundColor(.white)
             }

@@ -24,6 +24,11 @@ struct SDKConfig {
     static let mapCode = "YOUR_MAP_CODE"
     static let mapSetCode = ""
 
+    // MARK: - Object Tracking Configuration
+    // Add object codes for object tracking mode (max 10)
+
+    static let objectCodes: [String] = []  // e.g. ["OBJ_CODE1", "OBJ_CODE2"]
+
     // MARK: - Helper Methods
 
     static func hasCredentials() -> Bool {
@@ -33,6 +38,10 @@ struct SDKConfig {
 
     static func hasMapConfiguration() -> Bool {
         return (!mapCode.isEmpty && mapCode != "YOUR_MAP_CODE") || !mapSetCode.isEmpty
+    }
+
+    static func hasObjectTrackingConfiguration() -> Bool {
+        return !objectCodes.isEmpty
     }
 
     static func getActiveMapType() -> MapType {
@@ -96,6 +105,17 @@ struct SDKConfig {
         // IMAGE QUALITY
         // ═══════════════════════════════════════════════════════════════
         config.imageQuality = 90                       // JPEG quality (50-100)
+
+        // ═══════════════════════════════════════════════════════════════
+        // OBJECT TRACKING
+        // ═══════════════════════════════════════════════════════════════
+        config.objectCodes = objectCodes                       // Object codes to track (max 10)
+        config.autoObjectTracking = true                       // Auto-start tracking
+        config.backgroundObjectTracking = true                 // Re-track at intervals
+        config.bgObjectTrackingDurationSeconds = 10.0          // Re-track interval (5-30s)
+        config.restartObjectTracking = true                    // Re-track on AR tracking loss
+        config.objectTrackingCaptureDelay = 1.0                // Delay before capture (seconds)
+        config.firstObjectTrackingUntilSuccess = true          // Retry first tracking
 
         return config
     }

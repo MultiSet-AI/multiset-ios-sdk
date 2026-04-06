@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.2.3 effective-5.10 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)
-// swift-module-flags: -target x86_64-apple-ios16.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name MultiSetSDK
-// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.3
+// swift-compiler-version: Apple Swift version 6.3 effective-5.10 (swiftlang-6.3.0.123.5 clang-2100.0.123.102)
+// swift-module-flags: -target x86_64-apple-ios16.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name MultiSetSDK
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3
 import ARKit
 import Combine
 import CoreLocation
@@ -36,15 +36,22 @@ import simd
   final public func localize()
   final public func stopLocalization()
   final public func release()
-  #if compiler(>=5.3) && $NonescapableTypes
   final public func setARSession(_ session: ARKit.ARSession?)
-  #endif
-  #if compiler(>=5.3) && $NonescapableTypes
   final public func setParentEntity(_ entity: RealityFoundation.Entity?)
-  #endif
+  final public func setObjectTrackingRootEntity(_ entity: RealityFoundation.Entity?)
   final public func setGizmoUpdateHandler(_ handler: @escaping (Swift.SIMD3<Swift.Float>, simd.simd_quatf) -> Swift.Void)
+  final public func setGizmoVisible(_ visible: Swift.Bool)
   final public func startGpsUpdates()
   final public func stopGpsUpdates()
+  final public func startObjectTracking()
+  final public func stopObjectTracking()
+  final public func clearObjectMeshes()
+  final public var hasTrackedObject: Swift.Bool {
+    get
+  }
+  final public var isObjectTrackingActive: Swift.Bool {
+    get
+  }
   final public func clearMesh()
   final public var isLocalizing: Swift.Bool {
     get
@@ -58,11 +65,9 @@ import simd
   final public var isCapturingFrames: Swift.Bool {
     get
   }
-  #if compiler(>=5.3) && $NonescapableTypes
   final public var authToken: Swift.String? {
     get
   }
-  #endif
   @objc deinit
 }
 public enum LocalizationMode : Swift.String, Swift.CaseIterable, Swift.Identifiable, Swift.Sendable {
@@ -74,9 +79,7 @@ public enum LocalizationMode : Swift.String, Swift.CaseIterable, Swift.Identifia
   public var description: Swift.String {
     get
   }
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias AllCases = [MultiSetSDK.LocalizationMode]
   public typealias ID = Swift.String
   public typealias RawValue = Swift.String
@@ -88,11 +91,9 @@ public enum LocalizationMode : Swift.String, Swift.CaseIterable, Swift.Identifia
   }
 }
 @_Concurrency.MainActor @preconcurrency public struct MultiSetARView : SwiftUI.UIViewRepresentable {
-  #if compiler(>=5.3) && $NonescapableTypes
   @_Concurrency.MainActor @preconcurrency public var parentEntity: RealityFoundation.Entity? {
     get
   }
-  #endif
   @_Concurrency.MainActor @preconcurrency public init()
   @_Concurrency.MainActor @preconcurrency public func makeUIView(context: MultiSetSDK.MultiSetARView.Context) -> RealityKit.ARView
   @_Concurrency.MainActor @preconcurrency public func updateUIView(_ uiView: RealityKit.ARView, context: MultiSetSDK.MultiSetARView.Context)
@@ -108,9 +109,7 @@ public struct LocalizationResult : Swift.Sendable {
   public let confidence: Swift.Float?
   public let geoCoordinates: MultiSetSDK.GeoCoordinates?
   public let mode: MultiSetSDK.LocalizationMode
-  #if compiler(>=5.3) && $NonescapableTypes
   public init(mapCode: Swift.String, mapCodes: [Swift.String], position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf, confidence: Swift.Float? = nil, geoCoordinates: MultiSetSDK.GeoCoordinates? = nil, mode: MultiSetSDK.LocalizationMode)
-  #endif
 }
 public struct MultiSetConfig : Swift.Sendable {
   public let clientId: Swift.String
@@ -131,8 +130,15 @@ public struct MultiSetConfig : Swift.Sendable {
   public var meshVisualization: Swift.Bool
   public var passGeoPose: Swift.Bool
   public var geoCoordinatesInResponse: Swift.Bool
+  public var objectCodes: [Swift.String]
+  public var autoObjectTracking: Swift.Bool
+  public var backgroundObjectTracking: Swift.Bool
+  public var bgObjectTrackingDurationSeconds: Swift.Float
+  public var restartObjectTracking: Swift.Bool
+  public var objectTrackingCaptureDelay: Swift.Float
+  public var firstObjectTrackingUntilSuccess: Swift.Bool
   public var imageQuality: Swift.Int
-  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, imageQuality: Swift.Int = 90)
+  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true)
   public static func `default`(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func singleFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func multiFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
@@ -147,6 +153,9 @@ public struct MultiSetConfig : Swift.Sendable {
     get
   }
   public var hasMapConfiguration: Swift.Bool {
+    get
+  }
+  public var hasObjectTrackingConfiguration: Swift.Bool {
     get
   }
   public func validated() -> MultiSetSDK.MultiSetConfig
@@ -173,9 +182,7 @@ public enum TrackingState : Swift.String, Swift.Sendable {
   public var description: Swift.String {
     get
   }
-  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
-  #endif
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
     get
@@ -190,10 +197,16 @@ public protocol MultiSetCallback : AnyObject {
   func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
   func onMeshLoaded(mapCode: Swift.String)
   func onMeshLoadError(error: Swift.String)
+  func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
+  func onObjectTrackingFailure(error: Swift.String)
+  func onObjectMeshLoaded(objectCode: Swift.String)
 }
 extension MultiSetSDK.MultiSetCallback {
   public func onMeshLoaded(mapCode: Swift.String)
   public func onMeshLoadError(error: Swift.String)
+  public func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
+  public func onObjectTrackingFailure(error: Swift.String)
+  public func onObjectMeshLoaded(objectCode: Swift.String)
 }
 public struct GeoCoordinates : Swift.Sendable {
   public var latitude: Swift.Double

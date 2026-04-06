@@ -29,6 +29,9 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
     var onLocalizationFailure: ((String) -> Void)?
     var onTrackingChanged: ((TrackingState) -> Void)?
     var onMeshLoaded: ((String) -> Void)?
+    var onObjectTrackingSuccess: ((String, Double) -> Void)?
+    var onObjectTrackingFailure: ((String) -> Void)?
+    var onObjectMeshLoaded: ((String) -> Void)?
 
     // MARK: - MultiSetCallback Implementation
 
@@ -93,6 +96,28 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
         DispatchQueue.main.async {
             self.lastError = error
             print("MultiSetSDKDelegate >> Mesh Load Error: \(error)")
+        }
+    }
+
+    func onObjectTrackingSuccess(objectCode: String, confidence: Double) {
+        DispatchQueue.main.async {
+            self.onObjectTrackingSuccess?(objectCode, confidence)
+            print("MultiSetSDKDelegate >> Object Tracking Success: \(objectCode), confidence: \(confidence)")
+        }
+    }
+
+    func onObjectTrackingFailure(error: String) {
+        DispatchQueue.main.async {
+            self.lastError = error
+            self.onObjectTrackingFailure?(error)
+            print("MultiSetSDKDelegate >> Object Tracking Failed: \(error)")
+        }
+    }
+
+    func onObjectMeshLoaded(objectCode: String) {
+        DispatchQueue.main.async {
+            self.onObjectMeshLoaded?(objectCode)
+            print("MultiSetSDKDelegate >> Object Mesh Loaded: \(objectCode)")
         }
     }
 }

@@ -11,12 +11,11 @@ import RealityKit
 import Combine
 import MultiSetSDK
 
-/// AR Localization View using MultiSetSDK framework
-struct ARLocalizationView: View {
+/// AR view for Object Tracking mode
+struct ARObjectTrackingView: View {
     // MARK: - Properties
 
     @ObservedObject var sdkDelegate: MultiSetSDKDelegate
-    let localizationMode: LocalizationMode
 
     @Environment(\.dismiss) private var dismiss
 
@@ -28,12 +27,10 @@ struct ARLocalizationView: View {
     @State private var showFailureAlert = false
     @State private var failureAlertMessage = ""
     @State private var isTrackingNormal = false
-    @State private var hasLocalized = false
-
-    // SDK State (polled)
-    @State private var isLocalizing = false
-    @State private var isShowingOverlay = false
-    @State private var isCapturingFrames = false
+    @State private var hasTrackedObject = false
+    @State private var isObjectTrackingActive = false
+    @State private var trackedObjectCode = ""
+    @State private var autoTrackingTask: Task<Void, Never>?
 
     // Timer for state polling
     let stateTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -49,9 +46,15 @@ struct ARLocalizationView: View {
             // Top controls
             VStack {
                 HStack {
-                    // GPS Indicator (left)
-                    if MultiSet.shared.config?.passGeoPose == true {
-                        GpsIndicator(isActive: false) // GPS state managed by SDK
+                    // Object code badge (left)
+                    if !trackedObjectCode.isEmpty {
+                        Text(trackedObjectCode)
+                            .font(.system(size: 12, weight: .medium, design: .monospaced))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(Color(hex: "#00BCD4").opacity(0.8))
+                            .cornerRadius(16)
                             .padding(.leading, 16)
                             .padding(.top, 16)
                     }
@@ -80,8 +83,8 @@ struct ARLocalizationView: View {
 
                 HStack {
                     // Reset Button (left)
-                    if hasLocalized {
-                        Button(action: resetWorldOrigin) {
+                    if hasTrackedObject {
+                        Button(action: resetTracking) {
                             Text("Reset")
                                 .font(.system(size: 16, weight: .medium))
                                 .foregroundColor(.white)
@@ -95,9 +98,9 @@ struct ARLocalizationView: View {
 
                     Spacer()
 
-                    // Localize Button (right)
-                    if !isShowingOverlay && !isLocalizing {
-                        Button(action: startLocalization) {
+                    // Track Button (right)
+                    if !isObjectTrackingActive {
+                        Button(action: startTracking) {
                             Image("capture_button")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -111,65 +114,57 @@ struct ARLocalizationView: View {
                 .padding(.bottom, 24)
             }
 
-            // Localization Overlay (frame capture animation)
-            if isCapturingFrames {
-                LocalizationOverlay(
-                    isCapturing: true,
-                    statusText: "Capturing frames..."
-                )
-            }
-
-            // API Loading Overlay (waiting for server response)
-            if isShowingOverlay && !isCapturingFrames {
-                APILoadingOverlay()
+            // Loading overlay when tracking API is in progress
+            if isObjectTrackingActive {
+                APILoadingOverlay(statusText: "Tracking object...")
             }
         }
         .preferredColorScheme(.dark)
         .toast(isPresented: $showToast, message: toastMessage, isSuccess: toastSuccess)
-        .alert("Close Localization", isPresented: $showCloseConfirmation) {
+        .alert("Close Object Tracking", isPresented: $showCloseConfirmation) {
             Button("Yes", role: .destructive) {
                 cleanup()
                 dismiss()
             }
             Button("No", role: .cancel) {}
         } message: {
-            Text("Would you like to close the Localization scene?")
+            Text("Would you like to close the Object Tracking scene?")
         }
-        .alert("Localization Failed", isPresented: $showFailureAlert) {
-            Button("Retry") { startLocalization() }
+        .alert("Object Tracking Failed", isPresented: $showFailureAlert) {
+            Button("Retry") { startTracking() }
             Button("OK", role: .cancel) {}
         } message: {
             Text(failureAlertMessage)
         }
         .onAppear {
+            MultiSet.shared.setGizmoVisible(false)
             setupCallbacks()
-            startAutoLocalizationIfNeeded()
+            startAutoTrackingIfNeeded()
         }
         .onDisappear {
             cleanup()
+            MultiSet.shared.setGizmoVisible(true)
         }
         .onReceive(stateTimer) { _ in
-            // Poll SDK state for UI updates
-            isLocalizing = MultiSet.shared.isLocalizing
-            isShowingOverlay = MultiSet.shared.isShowingOverlay
-            isCapturingFrames = MultiSet.shared.isCapturingFrames
+            isObjectTrackingActive = MultiSet.shared.isObjectTrackingActive
+            hasTrackedObject = MultiSet.shared.hasTrackedObject
         }
     }
 
     // MARK: - Setup
 
     private func setupCallbacks() {
-        // Setup localization result callback
-        sdkDelegate.onLocalizationSuccess = { result in
-            hasLocalized = true
+        sdkDelegate.onObjectTrackingSuccess = { objectCode, confidence in
+            trackedObjectCode = objectCode
+            hasTrackedObject = true
             if MultiSet.shared.config?.showAlerts == true {
-                showToastMessage("Localization successful", success: true)
+                showToastMessage("Object tracked: \(objectCode)", success: true)
             }
         }
 
-        sdkDelegate.onLocalizationFailure = { error in
+        sdkDelegate.onObjectTrackingFailure = { error in
             if MultiSet.shared.config?.showAlerts == true {
-                failureAlertMessage = userFriendlyMessage(for: error)
+                failureAlertMessage = userFriendlyTrackingMessage(for: error)
                 showFailureAlert = true
             }
         }
@@ -178,45 +173,63 @@ struct ARLocalizationView: View {
             isTrackingNormal = (state == .tracking)
         }
 
-        sdkDelegate.onMeshLoaded = { mapCode in
-            print("ARLocalizationView >> Mesh loaded for map: \(mapCode)")
-        }
-
-        // Start GPS if needed
-        if MultiSet.shared.config?.passGeoPose == true {
-            MultiSet.shared.startGpsUpdates()
-        }
+        sdkDelegate.onObjectMeshLoaded = { _ in }
     }
 
-    private func startAutoLocalizationIfNeeded() {
-        guard MultiSet.shared.config?.autoLocalize == true else { return }
+    private func startAutoTrackingIfNeeded() {
+        guard MultiSet.shared.config?.autoObjectTracking == true else { return }
+        guard MultiSet.shared.isAuthenticated else { return }
+        guard MultiSet.shared.config?.objectCodes.isEmpty == false else { return }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            if !MultiSet.shared.isLocalizing {
-                MultiSet.shared.localize()
+        // Poll for AR tracking readiness (matches Unity's StartAutoTracking coroutine)
+        autoTrackingTask = Task {
+            // Initial delay for AR session startup
+            try? await Task.sleep(nanoseconds: 2_000_000_000) // 2s
+
+            // Wait for AR tracking to be ready, polling every 0.5s up to 30s
+            let maxWait: Double = 30.0
+            var elapsed: Double = 0.0
+            while !isTrackingNormal {
+                guard !Task.isCancelled else { return }
+                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5s
+                elapsed += 0.5
+                if elapsed >= maxWait {
+                    return
+                }
+            }
+
+            guard !Task.isCancelled else { return }
+
+            await MainActor.run {
+                if !MultiSet.shared.isObjectTrackingActive {
+                    MultiSet.shared.startObjectTracking()
+                }
             }
         }
     }
 
     // MARK: - Actions
 
-    private func startLocalization() {
-        MultiSet.shared.localize()
+    private func startTracking() {
+        MultiSet.shared.startObjectTracking()
     }
 
-    private func resetWorldOrigin() {
-        MultiSet.shared.stopLocalization()
-        MultiSet.shared.clearMesh()
-        hasLocalized = false
-        showToastMessage("World origin reset", success: true)
+    private func resetTracking() {
+        autoTrackingTask?.cancel()
+        autoTrackingTask = nil
+        MultiSet.shared.stopObjectTracking()
+        MultiSet.shared.clearObjectMeshes()
+        hasTrackedObject = false
+        trackedObjectCode = ""
+        showToastMessage("Tracking reset", success: true)
 
-        // Restart auto-localization if enabled
-        startAutoLocalizationIfNeeded()
+        startAutoTrackingIfNeeded()
     }
 
     private func cleanup() {
-        MultiSet.shared.stopLocalization()
-        MultiSet.shared.stopGpsUpdates()
+        autoTrackingTask?.cancel()
+        autoTrackingTask = nil
+        MultiSet.shared.stopObjectTracking()
     }
 
     private func showToastMessage(_ message: String, success: Bool) {
@@ -225,30 +238,23 @@ struct ARLocalizationView: View {
         showToast = true
     }
 
-    private func userFriendlyMessage(for error: String) -> String {
+    private func userFriendlyTrackingMessage(for error: String) -> String {
         let lower = error.lowercased()
-        if lower.contains("pose not found") {
-            return "Could not determine your position. Try pointing at a well-lit, textured area and try again."
+        if lower.contains("object not found") {
+            return "No matching object was detected. Point the camera at the object and try again."
         } else if lower.contains("low confidence") {
-            return "Localization confidence is too low. Move to a different angle and try again."
-        } else if lower.contains("no frames captured") {
-            return "No camera frames were captured. Ensure the camera is not obstructed."
+            return "Object tracking confidence is too low. Try a different angle or move closer."
         } else if lower.contains("api error") || lower.contains("http") {
             return "Unable to reach the server. Please check your internet connection and try again."
-        } else if lower.contains("missing pose data") {
-            return "Received an incomplete response from the server. Please try again."
         }
         return error
     }
 }
 
 #if DEBUG
-struct ARLocalizationView_Previews: PreviewProvider {
+struct ARObjectTrackingView_Previews: PreviewProvider {
     static var previews: some View {
-        ARLocalizationView(
-            sdkDelegate: MultiSetSDKDelegate(),
-            localizationMode: .singleFrame
-        )
+        ARObjectTrackingView(sdkDelegate: MultiSetSDKDelegate())
     }
 }
 #endif

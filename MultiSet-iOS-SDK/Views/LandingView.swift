@@ -8,12 +8,14 @@ Redistribution in source or binary forms must retain this notice.
 import SwiftUI
 import MultiSetSDK
 
-/// Landing page view matching Android's MainActivity
-/// Displays app info, map code, authentication controls, and navigation to AR view
+/// Landing page — authentication, localization mode selection, and object tracking
 struct LandingView: View {
     @StateObject private var sdkDelegate = MultiSetSDKDelegate()
     @State private var navigateToAR = false
+    @State private var navigateToObjectTracking = false
     @State private var showConfigAlert = false
+    @State private var showMapMissingAlert = false
+    @State private var showObjectCodeMissingAlert = false
     @State private var showToast = false
     @State private var toastMessage = ""
     @State private var toastSuccess = true
@@ -24,96 +26,189 @@ struct LandingView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
                 Color(UIColor.systemBackground)
                     .ignoresSafeArea()
 
-                VStack(spacing: 16) {
-                    Spacer()
-                        .frame(height: 20)
+                ScrollView {
+                    VStack(spacing: 20) {
 
-                    // Logo
-                    Image("sdk_logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 80)
+                        // ── Header ──
+                        VStack(spacing: 8) {
+                            Image("sdk_logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100, height: 66)
 
-                    // Title
-                    Text("MultiSet VPS Demo")
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(Color(hex: "#7B2CBF"))
-
-                    // Map Code Display
-                    Text(mapCodeDisplayText)
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-
-                    // Status Text
-                    Text(sdkDelegate.statusText)
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(hex: "#7B2CBF"))
-                        .padding(.vertical, 12)
-
-                    // Localization Mode Picker
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Localization Mode")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.secondary)
-
-                        Picker("Mode", selection: $selectedMode) {
-                            ForEach(LocalizationMode.allCases) { mode in
-                                Text(mode.rawValue).tag(mode)
-                            }
+                            Text("MultiSet VPS Samples")
+                                .font(.system(size: 26, weight: .bold))
+                                .foregroundColor(Color(hex: "#7B2CBF"))
                         }
-                        .pickerStyle(SegmentedPickerStyle())
-                    }
-                    .padding(.horizontal, 16)
+                        .padding(.top, 24)
 
-                    Spacer()
-                        .frame(height: 20)
-
-                    // Auth Button
-                    Button(action: initializeSDK) {
-                        Text(sdkDelegate.isAuthenticated ? "Authenticated" : "Auth")
-                            .font(.system(size: 18, weight: .medium))
+                        // ── Auth Button ──
+                        Button(action: initializeSDK) {
+                            HStack(spacing: 10) {
+                                Image(systemName: sdkDelegate.isAuthenticated ? "checkmark.shield.fill" : "lock.fill")
+                                    .font(.system(size: 16))
+                                Text(sdkDelegate.isAuthenticated ? "Authenticated" : sdkDelegate.isAuthenticating ? "Authenticating..." : "Authenticate")
+                                    .font(.system(size: 17, weight: .semibold))
+                            }
                             .frame(maxWidth: .infinity)
-                            .frame(height: 56)
-                            .background(sdkDelegate.isAuthenticated ? Color.gray : Color(hex: "#7B2CBF"))
+                            .frame(height: 52)
+                            .background(sdkDelegate.isAuthenticated ? Color(hex: "#4CAF50") : Color(hex: "#7B2CBF"))
                             .foregroundColor(.white)
-                            .cornerRadius(28)
-                    }
-                    .disabled(sdkDelegate.isAuthenticated || sdkDelegate.isAuthenticating)
-                    .padding(.horizontal, 16)
+                            .cornerRadius(26)
+                        }
+                        .disabled(sdkDelegate.isAuthenticated || sdkDelegate.isAuthenticating)
+                        .padding(.horizontal, 20)
 
-                    // Localize Button
-                    Button(action: openARView) {
-                        Text("Localize")
-                            .font(.system(size: 18, weight: .medium))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 56)
-                            .background(sdkDelegate.isAuthenticated ? Color(hex: "#7B2CBF") : Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(28)
-                    }
-                    .disabled(!sdkDelegate.isAuthenticated)
-                    .padding(.horizontal, 16)
+                        // ── Localization Card ──
+                        VStack(spacing: 16) {
+                            Text("Localization")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(Color(hex: "#7B2CBF"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Spacer()
+                            // Map code display
+                            if SDKConfig.hasMapConfiguration() {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "map.fill")
+                                        .font(.system(size: 11))
+                                        .foregroundColor(Color(hex: "#7B2CBF").opacity(0.7))
+                                    Text(!SDKConfig.mapSetCode.isEmpty ? SDKConfig.mapSetCode : SDKConfig.mapCode)
+                                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                        .foregroundColor(.secondary)
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color(hex: "#7B2CBF").opacity(0.08))
+                                .cornerRadius(8)
+                            } else {
+                                Text("No map configured. Set mapCode or mapSetCode in SDKConfig.")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
 
-                    // Instructions Text
-                    Button(action: openCredentialsURL) {
-                        Text("To get credentials visit developer.multiset.ai/credentials")
-                            .font(.system(size: 14))
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .underline()
+                            // Mode picker
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Mode")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(.secondary)
+
+                                Picker("Mode", selection: $selectedMode) {
+                                    ForEach(LocalizationMode.allCases) { mode in
+                                        Text(mode.rawValue).tag(mode)
+                                    }
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                            }
+
+                            // Localize button
+                            Button(action: openARView) {
+                                Text("Start Localization")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .background(sdkDelegate.isAuthenticated ? Color(hex: "#7B2CBF") : Color.gray.opacity(0.4))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(24)
+                            }
+                            .disabled(!sdkDelegate.isAuthenticated)
+                        }
+                        .padding(20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color(UIColor.secondarySystemBackground))
+                                )
+                        )
+                        .padding(.horizontal, 20)
+
+                        // ── Object Tracking Card ──
+                        VStack(spacing: 16) {
+                            HStack {
+                                Text("Object Tracking")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundColor(Color(hex: "#00BCD4"))
+
+                                Spacer()
+
+                                if !SDKConfig.objectCodes.isEmpty {
+                                    Text("\(SDKConfig.objectCodes.count) object\(SDKConfig.objectCodes.count == 1 ? "" : "s")")
+                                        .font(.system(size: 12, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 4)
+                                        .background(Color.gray.opacity(0.15))
+                                        .cornerRadius(10)
+                                }
+                            }
+
+                            if SDKConfig.objectCodes.isEmpty {
+                                Text("No object codes configured. Add codes in SDKConfig to enable tracking.")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            } else {
+                                // Object codes list
+                                VStack(spacing: 6) {
+                                    ForEach(SDKConfig.objectCodes, id: \.self) { code in
+                                        HStack(spacing: 6) {
+                                            Image(systemName: "cube.fill")
+                                                .font(.system(size: 11))
+                                                .foregroundColor(Color(hex: "#00BCD4").opacity(0.7))
+                                            Text(code)
+                                                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                                .foregroundColor(.secondary)
+                                            Spacer()
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color(hex: "#00BCD4").opacity(0.08))
+                                .cornerRadius(8)
+                            }
+
+                            Button(action: openObjectTracking) {
+                                Text("Start Object Tracking")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .background(sdkDelegate.isAuthenticated ? Color(hex: "#00BCD4") : Color.gray.opacity(0.4))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(24)
+                            }
+                            .disabled(!sdkDelegate.isAuthenticated)
+                        }
+                        .padding(20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color(UIColor.secondarySystemBackground))
+                                )
+                        )
+                        .padding(.horizontal, 20)
+
+                        Spacer(minLength: 20)
+
+                        // ── Footer ──
+                        Button(action: openCredentialsURL) {
+                            Text("To get credentials visit developer.multiset.ai/credentials")
+                                .font(.system(size: 13))
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .underline()
+                        }
+                        .padding(.bottom, 24)
                     }
-                    .padding(.bottom, 32)
                 }
-                .padding()
             }
             .navigationDestination(isPresented: $navigateToAR) {
                 ARLocalizationView(
@@ -122,11 +217,27 @@ struct LandingView: View {
                 )
                 .navigationBarBackButtonHidden(true)
             }
+            .navigationDestination(isPresented: $navigateToObjectTracking) {
+                ARObjectTrackingView(
+                    sdkDelegate: sdkDelegate
+                )
+                .navigationBarBackButtonHidden(true)
+            }
             .toast(isPresented: $showToast, message: toastMessage, isSuccess: toastSuccess)
             .alert("Configuration Required", isPresented: $showConfigAlert) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("Both MAP_CODE and MAP_SET_CODE are empty. Please configure at least one in the SDKConfig file.")
+                Text("No map codes or object codes are configured. Please update SDKConfig.")
+            }
+            .alert("Map Code Required", isPresented: $showMapMissingAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Please configure a mapCode or mapSetCode in SDKConfig to start localization.")
+            }
+            .alert("Object Codes Required", isPresented: $showObjectCodeMissingAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Please add at least one object code in SDKConfig to start object tracking.")
             }
             .onAppear {
                 checkConfiguration()
@@ -150,7 +261,7 @@ struct LandingView: View {
     // MARK: - Actions
 
     private func checkConfiguration() {
-        if !SDKConfig.hasMapConfiguration() {
+        if !SDKConfig.hasMapConfiguration() && !SDKConfig.hasObjectTrackingConfiguration() {
             showConfigAlert = true
         }
     }
@@ -170,33 +281,33 @@ struct LandingView: View {
         sdkDelegate.isAuthenticating = true
         sdkDelegate.statusText = "Authenticating..."
 
-        // Build config from SDKConfig (contains all user-customizable settings)
         var config = SDKConfig.buildConfig()
-        config.localizationMode = selectedMode  // Override with UI selection
+        config.localizationMode = selectedMode
 
-        // Initialize SDK
         MultiSet.shared.initialize(config: config, callback: sdkDelegate)
     }
 
     private func openARView() {
-        // Validate map configuration
-        switch SDKConfig.getActiveMapType() {
-        case .map:
-            guard !SDKConfig.mapCode.isEmpty else {
-                showToast(message: "Please enter mapCode in SDKConfig file", success: false)
-                return
-            }
-        case .mapSet:
-            guard !SDKConfig.mapSetCode.isEmpty else {
-                showToast(message: "Please enter mapSetCode in SDKConfig file", success: false)
-                return
-            }
+        guard SDKConfig.hasMapConfiguration() else {
+            showMapMissingAlert = true
+            return
         }
 
-        // Update localization mode before navigating
         MultiSet.shared.setLocalizationMode(selectedMode)
-
         navigateToAR = true
+    }
+
+    private func openObjectTracking() {
+        guard SDKConfig.hasObjectTrackingConfiguration() else {
+            showObjectCodeMissingAlert = true
+            return
+        }
+
+        if !MultiSet.shared.isInitialized {
+            initializeSDK()
+        }
+
+        navigateToObjectTracking = true
     }
 
     private func openCredentialsURL() {
