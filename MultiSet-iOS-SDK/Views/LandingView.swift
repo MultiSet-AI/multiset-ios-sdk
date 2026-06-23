@@ -19,6 +19,7 @@ struct LandingView: View {
     @State private var showToast = false
     @State private var toastMessage = ""
     @State private var toastSuccess = true
+    @State private var showSettings = false
 
     // Localization mode selection
     @State private var selectedMode: LocalizationMode = .multiFrame
@@ -222,6 +223,23 @@ struct LandingView: View {
                     sdkDelegate: sdkDelegate
                 )
                 .navigationBarBackButtonHidden(true)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.primary)
+                    }
+                    .accessibilityLabel("Configuration")
+                }
+            }
+            .fullScreenCover(isPresented: $showSettings) {
+                SettingsView(isMultiFrame: selectedMode == .multiFrame) { message in
+                    showToast(message: message, success: true)
+                }
             }
             .toast(isPresented: $showToast, message: toastMessage, isSuccess: toastSuccess)
             .alert("Configuration Required", isPresented: $showConfigAlert) {

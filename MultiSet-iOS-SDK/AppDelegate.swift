@@ -17,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        // Load any saved user settings before AR views read the config, so a
+        // previous run's saved values are applied on this launch.
+        ConfigStore.shared.load()
+
         // Create the SwiftUI view that provides the window contents.
         let landingView = LandingView()
 

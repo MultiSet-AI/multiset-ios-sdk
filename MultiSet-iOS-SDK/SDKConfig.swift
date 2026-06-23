@@ -56,6 +56,13 @@ struct SDKConfig {
     /// Build the SDK configuration with your preferred settings
     /// Modify the values below to customize SDK behavior
     static func buildConfig() -> MultiSetConfig {
+        // Behavioral parameters come from the user-editable Settings screen
+        // (persisted via ConfigStore). Credentials, map codes and object codes
+        // stay sourced from this file. Editing the values here is still supported
+        // for SDK users who don't use the Settings UI — but a saved Settings value
+        // will override them on the next run.
+        let store = ConfigStore.shared
+
         var config = MultiSetConfig(
             clientId: clientId,
             clientSecret: clientSecret,
@@ -69,31 +76,36 @@ struct SDKConfig {
         config.localizationMode = .multiFrame  // .singleFrame or .multiFrame
 
         // ═══════════════════════════════════════════════════════════════
-        // AUTO LOCALIZATION
+        // AUTO LOCALIZATION (editable in Settings)
         // ═══════════════════════════════════════════════════════════════
-        config.autoLocalize = true                     // Auto-start localization when AR begins
-        config.backgroundLocalization = true           // Continue localizing at intervals
-        config.bgLocalizationDurationSeconds = 30.0    // Interval between background localizations (15-180s)
-        config.relocalization = true                   // Re-localize when tracking is lost
-        config.firstLocalizationUntilSuccess = true    // Retry first localization until success
+        config.autoLocalize = store.autoLocalize
+        config.backgroundLocalization = store.backgroundLocalization
+        config.bgLocalizationDurationSeconds = Float(store.bgLocalizationIntervalSeconds)
+        config.relocalization = store.relocalization
+        config.firstLocalizationUntilSuccess = store.firstLocalizationUntilSuccess
 
         // ═══════════════════════════════════════════════════════════════
         // MULTI-FRAME CAPTURE SETTINGS
         // ═══════════════════════════════════════════════════════════════
-        config.numberOfFrames = 4                      // Frames to capture (4-6)
+        config.numberOfFrames = store.numberOfFrames   // Frames to capture (4-6), editable in Settings
         config.frameCaptureIntervalMs = 500            // Interval between captures (300-800ms)
 
         // ═══════════════════════════════════════════════════════════════
-        // CONFIDENCE SETTINGS
+        // CONFIDENCE SETTINGS (editable in Settings)
         // ═══════════════════════════════════════════════════════════════
-        config.confidenceCheck = true                 // Enable confidence threshold check
-        config.confidenceThreshold = 0.3               // Minimum confidence (0.2-0.8)
+        config.confidenceCheck = store.confidenceCheck
+        config.confidenceThreshold = Float(store.confidenceThreshold)
 
         // ═══════════════════════════════════════════════════════════════
-        // GPS SETTINGS
+        // GPS / HINT SETTINGS (editable in Settings)
         // ═══════════════════════════════════════════════════════════════
-        config.passGeoPose = false                     // Send GPS coordinates as hint
-        config.geoCoordinatesInResponse = false        // Include geo coordinates in response
+        config.passGeoPose = store.enableGeoHint
+        config.geoCoordinatesInResponse = store.includeGeoCoordinatesInResponse
+        config.hintRadius = store.hintRadius
+        config.use2DFiltering = store.use2DFiltering
+        config.hintMapCodes = store.hintMapCodesList
+        config.hintPosition = store.hintPosition
+        config.hintFloorHeight = store.hintFloorHeight
 
         // ═══════════════════════════════════════════════════════════════
         // UI SETTINGS
@@ -107,15 +119,15 @@ struct SDKConfig {
         config.imageQuality = 90                       // JPEG quality (50-100)
 
         // ═══════════════════════════════════════════════════════════════
-        // OBJECT TRACKING
+        // OBJECT TRACKING (behavior editable in Settings; codes from this file)
         // ═══════════════════════════════════════════════════════════════
         config.objectCodes = objectCodes                       // Object codes to track (max 10)
-        config.autoObjectTracking = true                       // Auto-start tracking
-        config.backgroundObjectTracking = true                 // Re-track at intervals
-        config.bgObjectTrackingDurationSeconds = 10.0          // Re-track interval (5-30s)
-        config.restartObjectTracking = true                    // Re-track on AR tracking loss
+        config.autoObjectTracking = store.autoTracking
+        config.backgroundObjectTracking = store.backgroundTracking
+        config.bgObjectTrackingDurationSeconds = Float(store.bgTrackingDurationSeconds)
+        config.restartObjectTracking = store.restartTracking
         config.objectTrackingCaptureDelay = 1.0                // Delay before capture (seconds)
-        config.firstObjectTrackingUntilSuccess = true          // Retry first tracking
+        config.firstObjectTrackingUntilSuccess = store.firstTrackingUntilSuccess
 
         return config
     }

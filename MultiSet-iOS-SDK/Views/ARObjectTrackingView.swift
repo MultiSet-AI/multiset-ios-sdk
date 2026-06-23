@@ -181,7 +181,7 @@ struct ARObjectTrackingView: View {
         guard MultiSet.shared.isAuthenticated else { return }
         guard MultiSet.shared.config?.objectCodes.isEmpty == false else { return }
 
-        // Poll for AR tracking readiness (matches Unity's StartAutoTracking coroutine)
+        // Poll for AR tracking readiness
         autoTrackingTask = Task {
             // Initial delay for AR session startup
             try? await Task.sleep(nanoseconds: 2_000_000_000) // 2s
