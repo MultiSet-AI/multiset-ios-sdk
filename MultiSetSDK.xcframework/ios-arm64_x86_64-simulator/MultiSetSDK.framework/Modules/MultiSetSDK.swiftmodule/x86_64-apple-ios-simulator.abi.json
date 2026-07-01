@@ -7707,161 +7707,168 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "StringLiteral",
-      "offset": 1998,
+      "offset": 2064,
+      "length": 5,
+      "value": "\"_id\""
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
+      "kind": "StringLiteral",
+      "offset": 2761,
       "length": 5,
       "value": "\"_id\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2294,
+      "offset": 3583,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2308,
+      "offset": 3597,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2322,
+      "offset": 3611,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2608,
+      "offset": 3897,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2623,
+      "offset": 3912,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2638,
+      "offset": 3927,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 2653,
+      "offset": 3942,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3252,
+      "offset": 4541,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3255,
+      "offset": 4544,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3258,
+      "offset": 4547,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3313,
+      "offset": 4602,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3320,
+      "offset": 4609,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3327,
+      "offset": 4616,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3333,
+      "offset": 4622,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3807,
+      "offset": 5096,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3810,
+      "offset": 5099,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3813,
+      "offset": 5102,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3864,
+      "offset": 5153,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3871,
+      "offset": 5160,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3878,
+      "offset": 5167,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 3884,
+      "offset": 5173,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "StringLiteral",
-      "offset": 4402,
+      "offset": 5691,
       "length": 5,
       "value": "\"_id\""
     },
@@ -7874,141 +7881,155 @@
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
-      "kind": "BooleanLiteral",
-      "offset": 650,
-      "length": 5,
-      "value": "false"
+      "kind": "Dictionary",
+      "offset": 908,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
+      "kind": "Dictionary",
+      "offset": 976,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
+      "kind": "Array",
+      "offset": 1027,
+      "length": 2,
+      "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "BooleanLiteral",
-      "offset": 811,
+      "offset": 1133,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 865,
+      "offset": 1187,
       "length": 5,
       "value": "0.482"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 872,
+      "offset": 1194,
       "length": 5,
       "value": "0.173"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 879,
+      "offset": 1201,
       "length": 5,
       "value": "0.749"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRenderer.swift",
       "kind": "FloatLiteral",
-      "offset": 886,
+      "offset": 1208,
       "length": 3,
       "value": "0.7"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "BooleanLiteral",
-      "offset": 544,
+      "offset": 494,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
-      "offset": 624,
+      "offset": 574,
       "length": 4,
       "value": "20.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
-      "offset": 714,
+      "offset": 664,
       "length": 3,
       "value": "5.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
+      "kind": "FloatLiteral",
+      "offset": 775,
+      "length": 4,
+      "value": "20.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
       "offset": 825,
-      "length": 4,
-      "value": "20.0"
-    },
-    {
-      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
-      "kind": "FloatLiteral",
-      "offset": 875,
       "length": 3,
       "value": "5.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
-      "offset": 916,
+      "offset": 866,
       "length": 5,
       "value": "200.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
-      "offset": 967,
+      "offset": 917,
       "length": 4,
       "value": "20.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "IntegerLiteral",
-      "offset": 1083,
+      "offset": 1033,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
-      "offset": 1128,
+      "offset": 1078,
       "length": 3,
       "value": "5.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "FloatLiteral",
-      "offset": 1167,
+      "offset": 1117,
       "length": 4,
       "value": "10.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "Array",
-      "offset": 1314,
+      "offset": 1264,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "BooleanLiteral",
-      "offset": 1347,
+      "offset": 1297,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "BooleanLiteral",
-      "offset": 1380,
+      "offset": 1330,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshRevealAnimator.swift",
       "kind": "IntegerLiteral",
-      "offset": 1433,
+      "offset": 1383,
       "length": 1,
       "value": "0"
     },
@@ -8099,133 +8120,133 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5333,
+      "offset": 5994,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5377,
+      "offset": 6038,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 5429,
+      "offset": 6090,
       "length": 4,
       "value": "30.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5465,
+      "offset": 6126,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5500,
+      "offset": 6161,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5540,
+      "offset": 6201,
       "length": 3,
       "value": "500"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5576,
+      "offset": 6237,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 5619,
+      "offset": 6280,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5669,
+      "offset": 6330,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5701,
+      "offset": 6362,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5740,
+      "offset": 6401,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5773,
+      "offset": 6434,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5820,
+      "offset": 6481,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 5852,
+      "offset": 6513,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 5886,
+      "offset": 6547,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "Array",
-      "offset": 5925,
+      "offset": 6586,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "StringLiteral",
-      "offset": 5959,
+      "offset": 6620,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "StringLiteral",
-      "offset": 5996,
+      "offset": 6657,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 6027,
+      "offset": 6688,
       "length": 2,
       "value": "90"
     },
@@ -8380,20 +8401,20 @@
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
       "kind": "StringLiteral",
       "offset": 718,
-      "length": 7,
-      "value": "\"1.0.0\""
+      "length": 8,
+      "value": "\"1.15.0\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 844,
+      "offset": 845,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
       "kind": "BooleanLiteral",
-      "offset": 966,
+      "offset": 967,
       "length": 5,
       "value": "false"
     },
@@ -8785,70 +8806,70 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 20153,
+      "offset": 20117,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 20193,
+      "offset": 20157,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "FloatLiteral",
-      "offset": 20241,
+      "offset": 20205,
       "length": 4,
       "value": "15.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 20278,
+      "offset": 20242,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 20315,
+      "offset": 20279,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "FloatLiteral",
-      "offset": 20357,
+      "offset": 20321,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "FloatLiteral",
-      "offset": 20398,
+      "offset": 20362,
       "length": 3,
       "value": "1.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 20444,
+      "offset": 20408,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 20483,
+      "offset": 20447,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 20516,
+      "offset": 20480,
       "length": 2,
       "value": "90"
     },

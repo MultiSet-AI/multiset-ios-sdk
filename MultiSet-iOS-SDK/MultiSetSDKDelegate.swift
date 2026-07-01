@@ -66,7 +66,7 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
         DispatchQueue.main.async {
             self.lastLocalizationResult = result
             self.onLocalizationSuccess?(result)
-            print("MultiSetSDKDelegate >> Localization Success: mapCode=\(result.mapCode)")
+            print("MultiSetSDKDelegate >> Localization Success: \(result)")
         }
     }
 
