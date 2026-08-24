@@ -42,6 +42,7 @@ struct SettingsView: View {
             Form {
                 mapLocalizationSection
                 objectTrackingSection
+                environmentSection
             }
             .navigationTitle("Configuration")
             .navigationBarTitleDisplayMode(.inline)
@@ -67,6 +68,18 @@ struct SettingsView: View {
 
     private var mapLocalizationSection: some View {
         Section("Map Localization") {
+            Picker("Query Mode", selection: $draft.queryMode) {
+                ForEach(QueryMode.allCases) { mode in
+                    Text(mode.rawValue).tag(mode)
+                }
+            }
+            .pickerStyle(.menu)
+            Text(draft.queryMode == .vps2
+                 ? "\(draft.queryMode.description) Single-frame only — multi-frame localization always uses VPS-1."
+                 : draft.queryMode.description)
+                .font(.caption)
+                .foregroundColor(.secondary)
+
             Toggle("Auto Localize", isOn: $draft.autoLocalize)
             Toggle("Background Localization", isOn: $draft.backgroundLocalization)
             sliderRow(
@@ -95,6 +108,21 @@ struct SettingsView: View {
                 display: String(format: "%.2f", draft.confidenceThreshold)
             )
 
+            Toggle("Pose Consistency Check", isOn: $draft.poseConsistencyCheck)
+            if draft.poseConsistencyCheck {
+                sliderRow(
+                    "Pose Consistency Threshold",
+                    value: $draft.poseConsistencyThreshold,
+                    range: 3...30, step: 1,
+                    display: "\(Int(draft.poseConsistencyThreshold)) m"
+                )
+            }
+            Text(draft.poseConsistencyCheck
+                 ? "Discards a response whose implied anchor jumps further than the threshold from the last accepted one — the device's own motion says the map cannot have moved that far. The scene is left untouched and a \"false positive\" prompt asks you to localize again."
+                 : "Every localization response is applied, including false positives that place the map somewhere else entirely.")
+                .font(.caption)
+                .foregroundColor(.secondary)
+
             Toggle("Enable Geo Hint (GPS)", isOn: $draft.enableGeoHint)
             Toggle("Include Geo Coordinates In Response", isOn: $draft.includeGeoCoordinatesInResponse)
             sliderRow(
@@ -108,6 +136,27 @@ struct SettingsView: View {
             textRow("Hint Map Codes (comma separated)", placeholder: "MAP_A, MAP_B", text: $draft.hintMapCodes)
             textRow("Hint Position (x,y,z)", placeholder: "12.5,0.0,-3.2", text: $draft.hintPosition)
             textRow("Hint Floor Height (floor,ceiling)", placeholder: "0,5", text: $draft.hintFloorHeight)
+        }
+    }
+
+    /// Read-only: which deployment this build talks to. Not editable here because the
+    /// SDK reads it once, before authenticating — it is set in `SDKConfig.baseURL`.
+    private var environmentSection: some View {
+        Section("API Environment") {
+            HStack {
+                Text("Base URL")
+                Spacer()
+                Text(MultiSet.shared.activeBaseURL)
+                    .font(.system(size: 13, design: .monospaced))
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.trailing)
+            }
+
+            Text(MultiSet.shared.activeBaseURL == MultiSetConfig.productionBaseURL
+                 ? "Production. Change `SDKConfig.baseURL` to point this build at another deployment."
+                 : "Non-production deployment, from `SDKConfig.baseURL`. Credentials are per environment.")
+                .font(.caption)
+                .foregroundColor(.secondary)
         }
     }
 

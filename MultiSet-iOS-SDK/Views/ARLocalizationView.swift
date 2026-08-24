@@ -27,6 +27,8 @@ struct ARLocalizationView: View {
     @State private var toastSuccess = true
     @State private var showFailureAlert = false
     @State private var failureAlertMessage = ""
+    @State private var showFalsePositiveAlert = false
+    @State private var falsePositiveMessage = ""
     @State private var isTrackingNormal = false
     @State private var hasLocalized = false
 
@@ -141,6 +143,12 @@ struct ARLocalizationView: View {
         } message: {
             Text(failureAlertMessage)
         }
+        .alert("False Positive Detected", isPresented: $showFalsePositiveAlert) {
+            Button("Localize Again") { startLocalization() }
+            Button("Dismiss", role: .cancel) {}
+        } message: {
+            Text(falsePositiveMessage)
+        }
         .onAppear {
             setupCallbacks()
             startAutoLocalizationIfNeeded()
@@ -172,6 +180,16 @@ struct ARLocalizationView: View {
                 failureAlertMessage = userFriendlyMessage(for: error)
                 showFailureAlert = true
             }
+        }
+
+        // The server found a pose, so the request itself succeeded — but the SDK
+        // discarded it, and nothing in the scene moved. Two messages, in that order:
+        // the toast reports what came back, the alert reports what was done with it.
+        sdkDelegate.onLocalizationFalsePositive = { info in
+            guard MultiSet.shared.config?.showAlerts == true else { return }
+            showToastMessage("Localization response received", success: true)
+            falsePositiveMessage = falsePositiveText(for: info)
+            showFalsePositiveAlert = true
         }
 
         sdkDelegate.onTrackingChanged = { state in
@@ -207,6 +225,10 @@ struct ARLocalizationView: View {
     private func resetWorldOrigin() {
         MultiSet.shared.stopLocalization()
         MultiSet.shared.clearMesh()
+        // Starting over means the false-positive check must forget the pose it was
+        // measuring against, otherwise the first fix after a reset is judged against
+        // an anchor the user just discarded.
+        MultiSet.shared.resetPoseConsistencyReference()
         hasLocalized = false
         showToastMessage("World origin reset", success: true)
 
@@ -223,6 +245,33 @@ struct ARLocalizationView: View {
         toastMessage = message
         toastSuccess = success
         showToast = true
+    }
+
+    /// Explains the discard in the terms a tester needs: how far off the returned pose
+    /// was, that the scene was deliberately left alone, and what to do next.
+    private func falsePositiveText(for info: FalsePositiveInfo) -> String {
+        var lines = [
+            "The server matched your camera image to a different part of the space.",
+            String(
+                format: "Its pose sits %.1f m from where your device's own motion says the map should be (limit %.0f m), so the response was discarded and the map was left where it is.",
+                info.jumpMeters, info.thresholdMeters
+            )
+        ]
+
+        if info.consecutiveCount > 1 {
+            lines.append("Discarded \(info.consecutiveCount) responses in a row.")
+        }
+
+        lines.append("Move a few steps, point at a well-lit, distinctive area and localize again.")
+
+        // Nothing overrules a reference the device still vouches for on its own, so
+        // after a run of rejections the user needs to know how to start over — the
+        // reference itself may be the wrong one.
+        if info.consecutiveCount >= 3 {
+            lines.append("If the map itself looks misplaced, tap Reset — the next response will be trusted as the new reference.")
+        }
+
+        return lines.joined(separator: "\n\n")
     }
 
     private func userFriendlyMessage(for error: String) -> String {

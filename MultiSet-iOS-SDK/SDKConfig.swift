@@ -12,6 +12,9 @@ import MultiSetSDK
 /// SDK users should modify this file with their own credentials and settings
 struct SDKConfig {
 
+    // MARK: - API Environment
+    static let baseURL = MultiSetConfig.productionBaseURL  // e.g. "https://api.multiset.ai"
+
     // MARK: - Authentication Credentials
     // Get your credentials at: https://developer.multiset.ai/credentials
 
@@ -67,13 +70,22 @@ struct SDKConfig {
             clientId: clientId,
             clientSecret: clientSecret,
             mapCode: mapCode,
-            mapSetCode: mapSetCode
+            mapSetCode: mapSetCode,
+            baseURL: baseURL
         )
 
         // ═══════════════════════════════════════════════════════════════
         // LOCALIZATION MODE
         // ═══════════════════════════════════════════════════════════════
-        config.localizationMode = .multiFrame  // .singleFrame or .multiFrame
+        // Single frame is the default: one image means one upload and one match,
+        // so the response comes back noticeably faster. Switch to .multiFrame
+        // (or flip the Mode picker on the landing screen) when a scene needs the
+        // extra robustness of 4-6 frames.
+        config.localizationMode = .singleFrame  // .singleFrame or .multiFrame
+
+        // Which matching pipeline single-frame queries use. Editable in Settings.
+        // No effect in .multiFrame mode — multi-frame always runs on VPS-1.
+        config.queryMode = store.queryMode
 
         // ═══════════════════════════════════════════════════════════════
         // AUTO LOCALIZATION (editable in Settings)
@@ -95,6 +107,18 @@ struct SDKConfig {
         // ═══════════════════════════════════════════════════════════════
         config.confidenceCheck = store.confidenceCheck
         config.confidenceThreshold = Float(store.confidenceThreshold)
+
+        // ═══════════════════════════════════════════════════════════════
+        // POSE CONSISTENCY / FALSE-POSITIVE GATE (editable in Settings)
+        // ═══════════════════════════════════════════════════════════════
+        // OFF: every localization response the server returns is accepted.
+        // ON:  a response whose implied anchor jumps further than the threshold
+        //      from the last accepted one is discarded as a false positive,
+        //      because ARKit's own odometry contradicts it. The gizmo and mesh are
+        //      left alone and `onLocalizationFalsePositive` fires instead of
+        //      `onLocalizationSuccess`. On by default in this demo.
+        config.poseConsistencyCheck = store.poseConsistencyCheck
+        config.poseConsistencyThreshold = Float(store.poseConsistencyThreshold)
 
         // ═══════════════════════════════════════════════════════════════
         // GPS / HINT SETTINGS (editable in Settings)

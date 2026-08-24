@@ -31,8 +31,12 @@ import simd
   final public var config: MultiSetSDK.MultiSetConfig? {
     get
   }
+  final public var activeBaseURL: Swift.String {
+    get
+  }
   final public func initialize(config: MultiSetSDK.MultiSetConfig, callback: any MultiSetSDK.MultiSetCallback)
   final public func setLocalizationMode(_ mode: MultiSetSDK.LocalizationMode)
+  final public func setQueryMode(_ mode: MultiSetSDK.QueryMode)
   final public func updateConfig(_ config: MultiSetSDK.MultiSetConfig)
   final public func localize()
   final public func stopLocalization()
@@ -42,6 +46,7 @@ import simd
   final public func setObjectTrackingRootEntity(_ entity: RealityFoundation.Entity?)
   final public func setGizmoUpdateHandler(_ handler: @escaping (Swift.SIMD3<Swift.Float>, simd.simd_quatf) -> Swift.Void)
   final public func setGizmoVisible(_ visible: Swift.Bool)
+  final public func resetPoseConsistencyReference()
   final public func startGpsUpdates()
   final public func stopGpsUpdates()
   final public func startObjectTracking()
@@ -91,6 +96,26 @@ public enum LocalizationMode : Swift.String, Swift.CaseIterable, Swift.Identifia
     get
   }
 }
+public enum QueryMode : Swift.String, Swift.CaseIterable, Swift.Identifiable, Swift.Sendable {
+  case vps1
+  case vps2
+  public var id: Swift.String {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [MultiSetSDK.QueryMode]
+  public typealias ID = Swift.String
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [MultiSetSDK.QueryMode] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
 @_Concurrency.MainActor @preconcurrency public struct MultiSetARView : SwiftUI.UIViewRepresentable {
   @_Concurrency.MainActor @preconcurrency public var parentEntity: RealityFoundation.Entity? {
     get
@@ -109,15 +134,24 @@ public struct LocalizationResult : Swift.Sendable {
   public let rotation: simd.simd_quatf
   public let confidence: Swift.Float?
   public let geoCoordinates: MultiSetSDK.GeoCoordinates?
+  public let geoPose: MultiSetSDK.GeoPose?
+  public let estimatedPosition: Swift.SIMD3<Swift.Float>?
+  public let estimatedRotation: simd.simd_quatf?
+  public let queryCameraPosition: Swift.SIMD3<Swift.Float>?
+  public let queryCameraRotation: simd.simd_quatf?
+  public let timestamp: Foundation.Date
   public let mode: MultiSetSDK.LocalizationMode
-  public init(mapCode: Swift.String, mapCodes: [Swift.String], position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf, confidence: Swift.Float? = nil, geoCoordinates: MultiSetSDK.GeoCoordinates? = nil, mode: MultiSetSDK.LocalizationMode)
+  public init(mapCode: Swift.String, mapCodes: [Swift.String], position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf, confidence: Swift.Float? = nil, geoCoordinates: MultiSetSDK.GeoCoordinates? = nil, geoPose: MultiSetSDK.GeoPose? = nil, estimatedPosition: Swift.SIMD3<Swift.Float>? = nil, estimatedRotation: simd.simd_quatf? = nil, queryCameraPosition: Swift.SIMD3<Swift.Float>? = nil, queryCameraRotation: simd.simd_quatf? = nil, timestamp: Foundation.Date = Date(), mode: MultiSetSDK.LocalizationMode)
 }
 public struct MultiSetConfig : Swift.Sendable {
   public let clientId: Swift.String
   public let clientSecret: Swift.String
+  public static let productionBaseURL: Swift.String
+  public var baseURL: Swift.String
   public var mapCode: Swift.String
   public var mapSetCode: Swift.String
   public var localizationMode: MultiSetSDK.LocalizationMode
+  public var queryMode: MultiSetSDK.QueryMode
   public var autoLocalize: Swift.Bool
   public var backgroundLocalization: Swift.Bool
   public var bgLocalizationDurationSeconds: Swift.Float
@@ -126,6 +160,8 @@ public struct MultiSetConfig : Swift.Sendable {
   public var frameCaptureIntervalMs: Swift.Int
   public var confidenceCheck: Swift.Bool
   public var confidenceThreshold: Swift.Float
+  public var poseConsistencyCheck: Swift.Bool
+  public var poseConsistencyThreshold: Swift.Float
   public var firstLocalizationUntilSuccess: Swift.Bool
   public var showAlerts: Swift.Bool
   public var meshVisualization: Swift.Bool
@@ -144,7 +180,7 @@ public struct MultiSetConfig : Swift.Sendable {
   public var objectTrackingCaptureDelay: Swift.Float
   public var firstObjectTrackingUntilSuccess: Swift.Bool
   public var imageQuality: Swift.Int
-  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true)
+  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, queryMode: MultiSetSDK.QueryMode = .vps1, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, poseConsistencyCheck: Swift.Bool = false, poseConsistencyThreshold: Swift.Float = 10.0, firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true, baseURL: Swift.String = MultiSetConfig.productionBaseURL)
   public static func `default`(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func singleFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func multiFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
@@ -194,12 +230,25 @@ public enum TrackingState : Swift.String, Swift.Sendable {
     get
   }
 }
+public struct FalsePositiveInfo : Swift.Sendable {
+  public let jumpMeters: Swift.Float
+  public let thresholdMeters: Swift.Float
+  public let consecutiveCount: Swift.Int
+  public let mapCodes: [Swift.String]
+  public let confidence: Swift.Float?
+  public let reason: Swift.String
+  public init(jumpMeters: Swift.Float, thresholdMeters: Swift.Float, consecutiveCount: Swift.Int, mapCodes: [Swift.String], confidence: Swift.Float?, reason: Swift.String)
+  public var summary: Swift.String {
+    get
+  }
+}
 public protocol MultiSetCallback : AnyObject {
   func onSDKReady()
   func onAuthenticationSuccess()
   func onAuthenticationFailure(error: Swift.String)
   func onLocalizationSuccess(result: MultiSetSDK.LocalizationResult)
   func onLocalizationFailure(error: Swift.String)
+  func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
   func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
   func onMeshLoaded(mapCode: Swift.String)
   func onMeshLoadError(error: Swift.String)
@@ -208,6 +257,7 @@ public protocol MultiSetCallback : AnyObject {
   func onObjectMeshLoaded(objectCode: Swift.String)
 }
 extension MultiSetSDK.MultiSetCallback {
+  public func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
   public func onMeshLoaded(mapCode: Swift.String)
   public func onMeshLoadError(error: Swift.String)
   public func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
@@ -222,9 +272,35 @@ public struct GeoCoordinates : Swift.Sendable {
   public func isValid() -> Swift.Bool
   public func toGeoHintString() -> Swift.String
 }
+public struct GeoPose : Swift.Sendable {
+  public struct Position : Swift.Sendable {
+    public let latitude: Swift.Double
+    public let longitude: Swift.Double
+    public let altitude: Swift.Double
+    public init(latitude: Swift.Double, longitude: Swift.Double, altitude: Swift.Double)
+  }
+  public struct Quaternion : Swift.Sendable {
+    public let x: Swift.Float
+    public let y: Swift.Float
+    public let z: Swift.Float
+    public let w: Swift.Float
+    public init(x: Swift.Float, y: Swift.Float, z: Swift.Float, w: Swift.Float)
+  }
+  public let frameModel: Swift.String?
+  public let frameName: Swift.String?
+  public let position: MultiSetSDK.GeoPose.Position?
+  public let quaternion: MultiSetSDK.GeoPose.Quaternion?
+  public init(frameModel: Swift.String? = nil, frameName: Swift.String? = nil, position: MultiSetSDK.GeoPose.Position? = nil, quaternion: MultiSetSDK.GeoPose.Quaternion? = nil)
+  public var geoCoordinates: MultiSetSDK.GeoCoordinates? {
+    get
+  }
+}
 extension MultiSetSDK.LocalizationMode : Swift.Equatable {}
 extension MultiSetSDK.LocalizationMode : Swift.Hashable {}
 extension MultiSetSDK.LocalizationMode : Swift.RawRepresentable {}
+extension MultiSetSDK.QueryMode : Swift.Equatable {}
+extension MultiSetSDK.QueryMode : Swift.Hashable {}
+extension MultiSetSDK.QueryMode : Swift.RawRepresentable {}
 extension MultiSetSDK.MultiSetARView : Swift.Sendable {}
 extension MultiSetSDK.MapType : Swift.Equatable {}
 extension MultiSetSDK.MapType : Swift.Hashable {}

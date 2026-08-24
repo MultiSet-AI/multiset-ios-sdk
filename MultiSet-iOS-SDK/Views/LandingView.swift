@@ -22,7 +22,7 @@ struct LandingView: View {
     @State private var showSettings = false
 
     // Localization mode selection
-    @State private var selectedMode: LocalizationMode = .multiFrame
+    @State private var selectedMode: LocalizationMode = .singleFrame
 
     var body: some View {
         NavigationStack {

@@ -22,11 +22,13 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
     @Published var statusText = "Not authenticated"
     @Published var lastLocalizationResult: LocalizationResult?
     @Published var lastError: String?
+    @Published var lastFalsePositive: FalsePositiveInfo?
 
     // MARK: - Callbacks for UI updates
 
     var onLocalizationSuccess: ((LocalizationResult) -> Void)?
     var onLocalizationFailure: ((String) -> Void)?
+    var onLocalizationFalsePositive: ((FalsePositiveInfo) -> Void)?
     var onTrackingChanged: ((TrackingState) -> Void)?
     var onMeshLoaded: ((String) -> Void)?
     var onObjectTrackingSuccess: ((String, Double) -> Void)?
@@ -75,6 +77,17 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
             self.lastError = error
             self.onLocalizationFailure?(error)
             print("MultiSetSDKDelegate >> Localization Failed: \(error)")
+        }
+    }
+
+    /// The server answered with a pose, but the SDK threw it away because it
+    /// contradicts the device's own motion. Nothing in the AR scene moved — this is
+    /// the only callback fired for such a response.
+    func onLocalizationFalsePositive(info: FalsePositiveInfo) {
+        DispatchQueue.main.async {
+            self.lastFalsePositive = info
+            self.onLocalizationFalsePositive?(info)
+            print("MultiSetSDKDelegate >> Localization False Positive: \(info.summary)")
         }
     }
 

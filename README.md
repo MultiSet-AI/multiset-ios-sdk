@@ -100,6 +100,12 @@ class MyDelegate: MultiSetCallback {
     }
 
     // Optional callbacks
+    func onLocalizationFalsePositive(info: FalsePositiveInfo) {
+        // The server returned a pose, but it contradicts the device's own motion,
+        // so the SDK discarded it and left the AR scene untouched.
+        print("Discarded: \(info.summary)")
+    }
+
     func onMeshLoaded(mapCode: String) {
         print("Mesh loaded for: \(mapCode)")
     }
@@ -146,6 +152,24 @@ MultiSet.shared.localize()
 MultiSet.shared.stopLocalization()
 ```
 
+## Session Length and Token Renewal
+
+Access tokens issued by the MultiSet API are short-lived (minutes, not hours). The SDK
+renews them for you: it reads each token's own lifetime, refreshes ahead of expiry, and
+if a request is ever rejected with HTTP 401 it refreshes once and replays that request
+automatically. Concurrent requests share a single renewal rather than each triggering
+their own.
+
+Nothing is required of your app — sessions of any length work without re-initializing.
+Two consequences worth knowing:
+
+- `MultiSet.shared.authToken` changes during a session. Read it at the point of use and
+  never cache it.
+- If renewal ultimately fails (for example, credentials revoked mid-session) the error
+  surfaces through the operation that was in flight — `onLocalizationFailure` or
+  `onObjectTrackingFailure` — with the authentication error in its message.
+  `MultiSet.shared.isAuthenticated` remains `true`.
+
 ## Configuration Options
 
 ### Factory Methods
@@ -191,6 +215,15 @@ config.frameCaptureIntervalMs = 500         // Interval between captures (300-80
 config.confidenceCheck = true               // Filter low-confidence results
 config.confidenceThreshold = 0.3            // Minimum confidence (0.2-0.8)
 
+// Pose Consistency (false-positive gate)
+config.poseConsistencyCheck = true          // Discard poses that contradict ARKit odometry
+config.poseConsistencyThreshold = 10        // Max allowed jump in metres (3-30)
+// Call MultiSet.shared.resetPoseConsistencyReference() when you reset the world
+// origin, so the next pose is trusted as the new reference.
+
+// API Environment
+config.baseURL = MultiSetConfig.productionBaseURL  // Override to target another deployment
+
 // GPS
 config.passGeoPose = true                   // Include GPS in requests
 config.geoCoordinatesInResponse = true      // Get geo-coordinates in response
@@ -202,6 +235,23 @@ config.showAlerts = true                    // Show success/failure alerts
 // Image Quality
 config.imageQuality = 90                    // JPEG quality (50-100)
 ```
+
+### Query Mode (single-frame only)
+
+Single-frame localization can run against either matching pipeline:
+
+```swift
+config.queryMode = .vps1   // default — standard matching, fastest response
+config.queryMode = .vps2   // deep search — slower, better in hard or sparsely mapped areas
+```
+
+Or change it on an initialized SDK:
+
+```swift
+MultiSet.shared.setQueryMode(.vps2)
+```
+
+Multi-frame localization always uses VPS-1, so this value is not sent in `.multiFrame` mode.
 
 ### Using Map Sets
 
