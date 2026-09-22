@@ -28,12 +28,30 @@ struct ToastView: View {
     }
 }
 
+/// Where a toast sits above the bottom of the screen.
+enum ToastInset {
+
+    /// The default, for screens whose bottom edge is empty.
+    static let standalone: CGFloat = 100
+
+    /// Clears an AR screen's bottom control row, which a flat inset does not: the row carries
+    /// the watermark clearance, so with the watermark up it reaches well past 100 and the toast
+    /// lands on top of the mesh toggle and the capture button.
+    ///
+    /// Mirrors the row in `ARLocalizationView` / `ARObjectTrackingView`: its own bottom padding,
+    /// the 72pt capture button, and a gap. Keep in step with them.
+    static func aboveARControls(watermarkClearance: CGFloat) -> CGFloat {
+        return max(24, watermarkClearance + 12) + 72 + 12
+    }
+}
+
 /// Toast modifier for easy use
 struct ToastModifier: ViewModifier {
     @Binding var isPresented: Bool
     let message: String
     var isSuccess: Bool = true
     var duration: TimeInterval = 2.0
+    var bottomInset: CGFloat = ToastInset.standalone
 
     func body(content: Content) -> some View {
         ZStack {
@@ -43,7 +61,7 @@ struct ToastModifier: ViewModifier {
                 VStack {
                     Spacer()
                     ToastView(message: message, isSuccess: isSuccess)
-                        .padding(.bottom, 100)
+                        .padding(.bottom, bottomInset)
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                                 withAnimation {
@@ -59,8 +77,20 @@ struct ToastModifier: ViewModifier {
 }
 
 extension View {
-    func toast(isPresented: Binding<Bool>, message: String, isSuccess: Bool = true, duration: TimeInterval = 2.0) -> some View {
-        modifier(ToastModifier(isPresented: isPresented, message: message, isSuccess: isSuccess, duration: duration))
+    func toast(
+        isPresented: Binding<Bool>,
+        message: String,
+        isSuccess: Bool = true,
+        duration: TimeInterval = 2.0,
+        bottomInset: CGFloat = ToastInset.standalone
+    ) -> some View {
+        modifier(ToastModifier(
+            isPresented: isPresented,
+            message: message,
+            isSuccess: isSuccess,
+            duration: duration,
+            bottomInset: bottomInset
+        ))
     }
 }
 

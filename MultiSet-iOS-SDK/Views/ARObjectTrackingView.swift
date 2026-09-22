@@ -29,8 +29,12 @@ struct ARObjectTrackingView: View {
     @State private var isTrackingNormal = false
     @State private var hasTrackedObject = false
     @State private var isObjectTrackingActive = false
+    @State private var isShowingOverlay = false
     @State private var trackedObjectCode = ""
     @State private var autoTrackingTask: Task<Void, Never>?
+    @State private var isMeshVisible = true
+    @State private var hasObjectMesh = false
+    @State private var watermarkClearance: CGFloat = 0
 
     // Timer for state polling
     let stateTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -61,14 +65,11 @@ struct ARObjectTrackingView: View {
 
                     Spacer()
 
-                    // Close Button (right)
-                    Button(action: { showCloseConfirmation = true }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(width: 40, height: 40)
-                            .background(Color(hex: "#7B2CBF"))
-                            .clipShape(Circle())
+                    HStack(spacing: 12) {
+                        if hasTrackedObject {
+                            circleButton("arrow.counterclockwise", "Clear the outline and track again", action: resetTracking)
+                        }
+                        circleButton("xmark", "Close") { showCloseConfirmation = true }
                     }
                     .padding(.trailing, 16)
                     .padding(.top, 16)
@@ -82,18 +83,10 @@ struct ARObjectTrackingView: View {
                 Spacer()
 
                 HStack {
-                    // Reset Button (left)
-                    if hasTrackedObject {
-                        Button(action: resetTracking) {
-                            Text("Reset")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 12)
-                                .background(Color.orange)
-                                .cornerRadius(24)
-                        }
-                        .padding(.leading, 16)
+                    // Waits for the outline to be in the scene; offered earlier it would hide nothing.
+                    if hasObjectMesh {
+                        MeshVisibilityToggle(isOn: isMeshVisible, action: setMeshVisible)
+                            .padding(.leading, 16)
                     }
 
                     Spacer()
@@ -111,16 +104,22 @@ struct ARObjectTrackingView: View {
                         .padding(.trailing, 24)
                     }
                 }
-                .padding(.bottom, 24)
+                .padding(.bottom, max(24, watermarkClearance + 12))
             }
 
-            // Loading overlay when tracking API is in progress
-            if isObjectTrackingActive {
+            // Loading overlay for a capture the user asked for. Background re-tracking is
+            // excluded, so an idle scene is not covered on the background timer's schedule.
+            if isShowingOverlay {
                 APILoadingOverlay(statusText: "Tracking object...")
             }
         }
         .preferredColorScheme(.dark)
-        .toast(isPresented: $showToast, message: toastMessage, isSuccess: toastSuccess)
+        .toast(
+            isPresented: $showToast,
+            message: toastMessage,
+            isSuccess: toastSuccess,
+            bottomInset: ToastInset.aboveARControls(watermarkClearance: watermarkClearance)
+        )
         .alert("Close Object Tracking", isPresented: $showCloseConfirmation) {
             Button("Yes", role: .destructive) {
                 cleanup()
@@ -137,6 +136,8 @@ struct ARObjectTrackingView: View {
             Text(failureAlertMessage)
         }
         .onAppear {
+            // The renderer is shared by both AR screens, so each one opens with meshes shown.
+            setMeshVisible(true)
             MultiSet.shared.setGizmoVisible(false)
             setupCallbacks()
             startAutoTrackingIfNeeded()
@@ -147,7 +148,10 @@ struct ARObjectTrackingView: View {
         }
         .onReceive(stateTimer) { _ in
             isObjectTrackingActive = MultiSet.shared.isObjectTrackingActive
+            isShowingOverlay = MultiSet.shared.isShowingObjectTrackingOverlay
             hasTrackedObject = MultiSet.shared.hasTrackedObject
+            hasObjectMesh = MultiSet.shared.hasObjectMesh
+            watermarkClearance = MultiSet.shared.watermarkClearance
         }
     }
 
@@ -181,7 +185,7 @@ struct ARObjectTrackingView: View {
         guard MultiSet.shared.isAuthenticated else { return }
         guard MultiSet.shared.config?.objectCodes.isEmpty == false else { return }
 
-        // Poll for AR tracking readiness
+        // Poll for AR tracking readiness 
         autoTrackingTask = Task {
             // Initial delay for AR session startup
             try? await Task.sleep(nanoseconds: 2_000_000_000) // 2s
@@ -226,10 +230,27 @@ struct ARObjectTrackingView: View {
         startAutoTrackingIfNeeded()
     }
 
+    private func setMeshVisible(_ visible: Bool) {
+        isMeshVisible = visible
+        MultiSet.shared.setMeshVisible(visible)
+    }
+
     private func cleanup() {
         autoTrackingTask?.cancel()
         autoTrackingTask = nil
         MultiSet.shared.stopObjectTracking()
+    }
+
+    private func circleButton(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.white)
+                .frame(width: 40, height: 40)
+                .background(Color(hex: "#7B2CBF"))
+                .clipShape(Circle())
+        }
+        .accessibilityLabel(label)
     }
 
     private func showToastMessage(_ message: String, success: Bool) {

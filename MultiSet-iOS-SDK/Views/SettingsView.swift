@@ -82,12 +82,14 @@ struct SettingsView: View {
 
             Toggle("Auto Localize", isOn: $draft.autoLocalize)
             Toggle("Background Localization", isOn: $draft.backgroundLocalization)
-            sliderRow(
-                "Background Interval",
-                value: $draft.bgLocalizationIntervalSeconds,
-                range: 15...180, step: 1,
-                display: "\(Int(draft.bgLocalizationIntervalSeconds)) s"
-            )
+            if draft.backgroundLocalization {
+                sliderRow(
+                    "Background Interval",
+                    value: $draft.bgLocalizationIntervalSeconds,
+                    range: 15...180, step: 1,
+                    display: "\(Int(draft.bgLocalizationIntervalSeconds)) s"
+                )
+            }
             Toggle("Relocalization (on tracking loss)", isOn: $draft.relocalization)
             Toggle("First Localization Until Success", isOn: $draft.firstLocalizationUntilSuccess)
 
@@ -101,24 +103,32 @@ struct SettingsView: View {
             }
 
             Toggle("Confidence Check", isOn: $draft.confidenceCheck)
-            sliderRow(
-                "Confidence Threshold",
-                value: $draft.confidenceThreshold,
-                range: 0.2...0.8, step: 0.05,
-                display: String(format: "%.2f", draft.confidenceThreshold)
-            )
+            if draft.confidenceCheck {
+                sliderRow(
+                    "Confidence Threshold",
+                    value: $draft.confidenceThreshold,
+                    range: 0.2...0.8, step: 0.05,
+                    display: String(format: "%.2f", draft.confidenceThreshold)
+                )
+            }
 
             Toggle("Pose Consistency Check", isOn: $draft.poseConsistencyCheck)
             if draft.poseConsistencyCheck {
                 sliderRow(
-                    "Pose Consistency Threshold",
+                    "Distance Limit",
                     value: $draft.poseConsistencyThreshold,
-                    range: 3...30, step: 1,
-                    display: "\(Int(draft.poseConsistencyThreshold)) m"
+                    range: 1...15, step: 0.5,
+                    display: String(format: "%.1f m", draft.poseConsistencyThreshold)
+                )
+                sliderRow(
+                    "Heading Limit",
+                    value: $draft.poseConsistencyYawThreshold,
+                    range: 5...60, step: 5,
+                    display: "\(Int(draft.poseConsistencyYawThreshold))°"
                 )
             }
             Text(draft.poseConsistencyCheck
-                 ? "Discards a response whose implied anchor jumps further than the threshold from the last accepted one — the device's own motion says the map cannot have moved that far. The scene is left untouched and a \"false positive\" prompt asks you to localize again."
+                 ? "Discards a response whose implied anchor sits further than these limits from the last accepted one. Both are checked independently — a pose can be within the distance and still be refused on heading. The scene is left untouched and a \"false positive\" prompt asks you to localize again."
                  : "Every localization response is applied, including false positives that place the map somewhere else entirely.")
                 .font(.caption)
                 .foregroundColor(.secondary)
@@ -164,12 +174,14 @@ struct SettingsView: View {
         Section("Object Tracking") {
             Toggle("Auto Tracking", isOn: $draft.autoTracking)
             Toggle("Background Tracking", isOn: $draft.backgroundTracking)
-            sliderRow(
-                "Background Duration",
-                value: $draft.bgTrackingDurationSeconds,
-                range: 5...30, step: 1,
-                display: "\(Int(draft.bgTrackingDurationSeconds)) s"
-            )
+            if draft.backgroundTracking {
+                sliderRow(
+                    "Background Duration",
+                    value: $draft.bgTrackingDurationSeconds,
+                    range: 5...30, step: 1,
+                    display: "\(Int(draft.bgTrackingDurationSeconds)) s"
+                )
+            }
             Toggle("Restart Tracking (on tracking loss)", isOn: $draft.restartTracking)
             Toggle("First Tracking Until Success", isOn: $draft.firstTrackingUntilSuccess)
         }

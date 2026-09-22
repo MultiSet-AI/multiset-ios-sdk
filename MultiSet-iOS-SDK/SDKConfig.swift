@@ -112,13 +112,14 @@ struct SDKConfig {
         // POSE CONSISTENCY / FALSE-POSITIVE GATE (editable in Settings)
         // ═══════════════════════════════════════════════════════════════
         // OFF: every localization response the server returns is accepted.
-        // ON:  a response whose implied anchor jumps further than the threshold
-        //      from the last accepted one is discarded as a false positive,
-        //      because ARKit's own odometry contradicts it. The gizmo and mesh are
-        //      left alone and `onLocalizationFalsePositive` fires instead of
-        //      `onLocalizationSuccess`. On by default in this demo.
+        // ON:  a response has to out-vote the current anchor across separated query
+        //      viewpoints before the scene moves. One that cannot is discarded and
+        //      `onLocalizationFalsePositive` fires instead of `onLocalizationSuccess`,
+        //      with the gizmo and mesh left alone. The two limits below are applied flat
+        //      and independently: a response inside the distance can still fail heading.
         config.poseConsistencyCheck = store.poseConsistencyCheck
         config.poseConsistencyThreshold = Float(store.poseConsistencyThreshold)
+        config.poseConsistencyYawThreshold = Float(store.poseConsistencyYawThreshold)
 
         // ═══════════════════════════════════════════════════════════════
         // GPS / HINT SETTINGS (editable in Settings)

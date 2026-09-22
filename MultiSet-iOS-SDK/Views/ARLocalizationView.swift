@@ -9,6 +9,7 @@ import SwiftUI
 import ARKit
 import RealityKit
 import Combine
+import simd
 import MultiSetSDK
 
 /// AR Localization View using MultiSetSDK framework
@@ -31,11 +32,14 @@ struct ARLocalizationView: View {
     @State private var falsePositiveMessage = ""
     @State private var isTrackingNormal = false
     @State private var hasLocalized = false
+    @State private var isMeshVisible = true
 
     // SDK State (polled)
     @State private var isLocalizing = false
     @State private var isShowingOverlay = false
     @State private var isCapturingFrames = false
+    @State private var hasMapMesh = false
+    @State private var watermarkClearance: CGFloat = 0
 
     // Timer for state polling
     let stateTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -60,14 +64,11 @@ struct ARLocalizationView: View {
 
                     Spacer()
 
-                    // Close Button (right)
-                    Button(action: { showCloseConfirmation = true }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(width: 40, height: 40)
-                            .background(Color(hex: "#7B2CBF"))
-                            .clipShape(Circle())
+                    HStack(spacing: 12) {
+                        if hasLocalized {
+                            circleButton("arrow.counterclockwise", "Reset the session and start over", action: resetWorldOrigin)
+                        }
+                        circleButton("xmark", "Close") { showCloseConfirmation = true }
                     }
                     .padding(.trailing, 16)
                     .padding(.top, 16)
@@ -81,18 +82,10 @@ struct ARLocalizationView: View {
                 Spacer()
 
                 HStack {
-                    // Reset Button (left)
-                    if hasLocalized {
-                        Button(action: resetWorldOrigin) {
-                            Text("Reset")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 12)
-                                .background(Color.orange)
-                                .cornerRadius(24)
-                        }
-                        .padding(.leading, 16)
+                    // Waits for the mesh to be in the scene; offered earlier it would hide nothing.
+                    if hasMapMesh {
+                        MeshVisibilityToggle(isOn: isMeshVisible, action: setMeshVisible)
+                            .padding(.leading, 16)
                     }
 
                     Spacer()
@@ -110,7 +103,7 @@ struct ARLocalizationView: View {
                         .padding(.trailing, 24)
                     }
                 }
-                .padding(.bottom, 24)
+                .padding(.bottom, max(24, watermarkClearance + 12))
             }
 
             // Localization Overlay (frame capture animation)
@@ -127,7 +120,12 @@ struct ARLocalizationView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .toast(isPresented: $showToast, message: toastMessage, isSuccess: toastSuccess)
+        .toast(
+            isPresented: $showToast,
+            message: toastMessage,
+            isSuccess: toastSuccess,
+            bottomInset: ToastInset.aboveARControls(watermarkClearance: watermarkClearance)
+        )
         .alert("Close Localization", isPresented: $showCloseConfirmation) {
             Button("Yes", role: .destructive) {
                 cleanup()
@@ -145,11 +143,17 @@ struct ARLocalizationView: View {
         }
         .alert("False Positive Detected", isPresented: $showFalsePositiveAlert) {
             Button("Localize Again") { startLocalization() }
+            // The anchor being defended can itself be the wrong one — a first fix is
+            // bootstrapped unchecked — in which case localizing again just earns another
+            // rejection. Starting over is the only exit, so offer it from the alert.
+            Button("Reset & Start Over") { resetWorldOrigin() }
             Button("Dismiss", role: .cancel) {}
         } message: {
             Text(falsePositiveMessage)
         }
         .onAppear {
+            // The renderer is shared by both AR screens, so each one opens with meshes shown.
+            setMeshVisible(true)
             setupCallbacks()
             startAutoLocalizationIfNeeded()
         }
@@ -161,6 +165,8 @@ struct ARLocalizationView: View {
             isLocalizing = MultiSet.shared.isLocalizing
             isShowingOverlay = MultiSet.shared.isShowingOverlay
             isCapturingFrames = MultiSet.shared.isCapturingFrames
+            hasMapMesh = MultiSet.shared.hasMapMesh
+            watermarkClearance = MultiSet.shared.watermarkClearance
         }
     }
 
@@ -190,6 +196,16 @@ struct ARLocalizationView: View {
             showToastMessage("Localization response received", success: true)
             falsePositiveMessage = falsePositiveText(for: info)
             showFalsePositiveAlert = true
+        }
+
+        // The anchor moved under content already placed against the old frame. The
+        // gizmo and mesh follow it automatically; anything the host placed does not.
+        sdkDelegate.onLocalizationCorrected = { from, to, trust in
+            guard MultiSet.shared.config?.showAlerts == true else { return }
+            showToastMessage(
+                String(format: "Map re-anchored %.1f m (%@)", simd_distance(from.position, to.position), String(describing: trust)),
+                success: true
+            )
         }
 
         sdkDelegate.onTrackingChanged = { state in
@@ -223,12 +239,7 @@ struct ARLocalizationView: View {
     }
 
     private func resetWorldOrigin() {
-        MultiSet.shared.stopLocalization()
-        MultiSet.shared.clearMesh()
-        // Starting over means the false-positive check must forget the pose it was
-        // measuring against, otherwise the first fix after a reset is judged against
-        // an anchor the user just discarded.
-        MultiSet.shared.resetPoseConsistencyReference()
+        MultiSet.shared.resetSession()
         hasLocalized = false
         showToastMessage("World origin reset", success: true)
 
@@ -236,9 +247,26 @@ struct ARLocalizationView: View {
         startAutoLocalizationIfNeeded()
     }
 
+    private func setMeshVisible(_ visible: Bool) {
+        isMeshVisible = visible
+        MultiSet.shared.setMeshVisible(visible)
+    }
+
     private func cleanup() {
         MultiSet.shared.stopLocalization()
         MultiSet.shared.stopGpsUpdates()
+    }
+
+    private func circleButton(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.white)
+                .frame(width: 40, height: 40)
+                .background(Color(hex: "#7B2CBF"))
+                .clipShape(Circle())
+        }
+        .accessibilityLabel(label)
     }
 
     private func showToastMessage(_ message: String, success: Bool) {
@@ -250,13 +278,64 @@ struct ARLocalizationView: View {
     /// Explains the discard in the terms a tester needs: how far off the returned pose
     /// was, that the scene was deliberately left alone, and what to do next.
     private func falsePositiveText(for info: FalsePositiveInfo) -> String {
-        var lines = [
-            "The server matched your camera image to a different part of the space.",
-            String(
-                format: "Its pose sits %.1f m from where your device's own motion says the map should be (limit %.0f m), so the response was discarded and the map was left where it is.",
+        // Suspected aliasing is a different problem and needs a different instruction.
+        // The space genuinely looks the same from two places, so moving and asking again
+        // returns the same wrong answer with more confidence behind it. Send the user
+        // straight to the reset button instead of to another lap of the building.
+        if info.rejection == .suspectedAliasing {
+            return [
+                "This part of the space looks the same as another part of the map, and the server keeps matching the wrong one.",
+                String(
+                    format: "%d viewpoints agreed on a pose %.1f m from where your device says the map is, but not strongly enough to overrule it.",
+                    info.challengerSupport, info.jumpMeters
+                ),
+                "Localizing again will not help here. Tap the reset button at the top if the map looks misplaced, or move to a visibly different area first."
+            ].joined(separator: "\n\n")
+        }
+
+        // Name the limit that was actually missed. Distance and heading are independent
+        // checks with independent tolerances, so quoting the distance against the
+        // distance limit alone contradicts itself whenever heading was the disqualifier
+        // — "0.5 m ... (limit 3.7 m), so the response was discarded".
+        let limitLine: String
+        switch info.disagreement {
+        case .distance:
+            limitLine = String(
+                format: "Its pose sits %.1f m from where your device's own motion says the map should be, past the %.1f m allowed — so it was discarded and the map was left where it is.",
                 info.jumpMeters, info.thresholdMeters
             )
+        case .heading:
+            limitLine = String(
+                format: "Its pose is turned %.0f degrees from where your device's own motion says the map should be, past the %.0f degrees allowed — so it was discarded and the map was left where it is. The %.1f m position was within tolerance.",
+                info.yawDeltaDeg, info.thresholdDegrees, info.jumpMeters
+            )
+        case .both, .none:
+            limitLine = String(
+                format: "Its pose sits %.1f m and %.0f degrees from where your device's own motion says the map should be, past the %.1f m and %.0f degrees allowed — so it was discarded and the map was left where it is.",
+                info.jumpMeters, info.yawDeltaDeg, info.thresholdMeters, info.thresholdDegrees
+            )
+        }
+
+        var lines = [
+            "The server matched your camera image to a different part of the space.",
+            limitLine
         ]
+
+        // Only quote the viewpoint tally when it was the disqualifier. On `.anchorHeldVote`
+        // the challenger had every viewpoint it needed and still lost on a tie, so
+        // "1 of the 1 viewpoints it would need" reads as the bar being met and the pose
+        // refused anyway.
+        switch info.cause {
+        case .insufficientViewpoints:
+            lines.append(String(
+                format: "It had %d of the %d separate viewpoints it would need to move the map.",
+                info.challengerSupport, info.requiredSupport
+            ))
+        case .anchorHeldVote:
+            lines.append("Nothing else has agreed with it yet, so the anchor already in place kept the scene. One more fix from a few steps away would settle it either way.")
+        case .inlierMargin, .none:
+            break
+        }
 
         if info.consecutiveCount > 1 {
             lines.append("Discarded \(info.consecutiveCount) responses in a row.")
@@ -264,11 +343,11 @@ struct ARLocalizationView: View {
 
         lines.append("Move a few steps, point at a well-lit, distinctive area and localize again.")
 
-        // Nothing overrules a reference the device still vouches for on its own, so
-        // after a run of rejections the user needs to know how to start over — the
-        // reference itself may be the wrong one.
+        // Nothing overrules an anchor the device still vouches for on its own, so after a
+        // run of rejections the user needs to know how to start over — the anchor itself
+        // may be the wrong one.
         if info.consecutiveCount >= 3 {
-            lines.append("If the map itself looks misplaced, tap Reset — the next response will be trusted as the new reference.")
+            lines.append("If the map itself looks misplaced, tap the reset button at the top — the next response will be trusted as the new anchor.")
         }
 
         return lines.joined(separator: "\n\n")

@@ -46,12 +46,11 @@ final class ConfigStore: ObservableObject {
         static let confidenceCheck = true
         static let confidenceThreshold: Double = 0.3
         static let queryMode: QueryMode = .vps1
-
-        /// On by default: a high-confidence match against the wrong part of the space
-        /// is the failure users actually notice, and the check is what turns it into a
-        /// "false positive, localize again" prompt instead of a silently misplaced map.
-        static let poseConsistencyCheck = true
-        static let poseConsistencyThreshold: Double = 10
+        /// Tracks the SDK default rather than restating it. The two used to differ, so
+        /// the demo never exercised the path integrators actually got.
+        static let poseConsistencyCheck = MultiSetConfig.defaultPoseConsistencyCheck
+        static let poseConsistencyThreshold: Double = 4
+        static let poseConsistencyYawThreshold: Double = 25
         static let enableGeoHint = false
         static let includeGeoCoordinatesInResponse = false
         static let hintRadius = 25
@@ -81,6 +80,7 @@ final class ConfigStore: ObservableObject {
     @Published var queryMode = Defaults.queryMode
     @Published var poseConsistencyCheck = Defaults.poseConsistencyCheck
     @Published var poseConsistencyThreshold = Defaults.poseConsistencyThreshold
+    @Published var poseConsistencyYawThreshold = Defaults.poseConsistencyYawThreshold
     @Published var enableGeoHint = Defaults.enableGeoHint
     @Published var includeGeoCoordinatesInResponse = Defaults.includeGeoCoordinatesInResponse
     @Published var hintRadius = Defaults.hintRadius
@@ -126,6 +126,7 @@ final class ConfigStore: ObservableObject {
         static let queryMode = prefix + "loc.queryMode"
         static let poseConsistencyCheck = prefix + "loc.poseConsistencyCheck"
         static let poseConsistencyThreshold = prefix + "loc.poseConsistencyThreshold"
+        static let poseConsistencyYawThreshold = prefix + "loc.poseConsistencyYawThreshold"
         static let enableGeoHint = prefix + "loc.enableGeoHint"
         static let geoInResponse = prefix + "loc.includeGeoInResponse"
         static let hintRadius = prefix + "loc.hintRadius"
@@ -175,6 +176,9 @@ final class ConfigStore: ObservableObject {
         poseConsistencyThreshold = d.object(forKey: Key.poseConsistencyThreshold) != nil
             ? d.double(forKey: Key.poseConsistencyThreshold)
             : Defaults.poseConsistencyThreshold
+        poseConsistencyYawThreshold = d.object(forKey: Key.poseConsistencyYawThreshold) != nil
+            ? d.double(forKey: Key.poseConsistencyYawThreshold)
+            : Defaults.poseConsistencyYawThreshold
         enableGeoHint = d.bool(forKey: Key.enableGeoHint)
         includeGeoCoordinatesInResponse = d.bool(forKey: Key.geoInResponse)
         hintRadius = d.integer(forKey: Key.hintRadius)
@@ -208,6 +212,7 @@ final class ConfigStore: ObservableObject {
         d.set(queryMode.rawValue, forKey: Key.queryMode)
         d.set(poseConsistencyCheck, forKey: Key.poseConsistencyCheck)
         d.set(poseConsistencyThreshold, forKey: Key.poseConsistencyThreshold)
+        d.set(poseConsistencyYawThreshold, forKey: Key.poseConsistencyYawThreshold)
         d.set(enableGeoHint, forKey: Key.enableGeoHint)
         d.set(includeGeoCoordinatesInResponse, forKey: Key.geoInResponse)
         d.set(hintRadius, forKey: Key.hintRadius)
@@ -238,6 +243,7 @@ final class ConfigStore: ObservableObject {
         queryMode = Defaults.queryMode
         poseConsistencyCheck = Defaults.poseConsistencyCheck
         poseConsistencyThreshold = Defaults.poseConsistencyThreshold
+        poseConsistencyYawThreshold = Defaults.poseConsistencyYawThreshold
         enableGeoHint = Defaults.enableGeoHint
         includeGeoCoordinatesInResponse = Defaults.includeGeoCoordinatesInResponse
         hintRadius = Defaults.hintRadius
@@ -260,6 +266,7 @@ final class ConfigStore: ObservableObject {
             Key.autoLocalize, Key.backgroundLocalization, Key.bgInterval, Key.relocalization,
             Key.firstUntil, Key.numberOfFrames, Key.confidenceCheck, Key.confidenceThreshold,
             Key.queryMode, Key.poseConsistencyCheck, Key.poseConsistencyThreshold,
+            Key.poseConsistencyYawThreshold,
             Key.enableGeoHint, Key.geoInResponse, Key.hintRadius, Key.use2DFiltering,
             Key.hintMapCodes, Key.hintPosition, Key.hintFloorHeight,
             Key.autoTracking, Key.backgroundTracking, Key.bgTrackingDuration,
@@ -274,7 +281,8 @@ final class ConfigStore: ObservableObject {
         bgLocalizationIntervalSeconds = bgLocalizationIntervalSeconds.clamped(to: 15...180)
         numberOfFrames = numberOfFrames.clamped(to: 4...6)
         confidenceThreshold = confidenceThreshold.clamped(to: 0.2...0.8)
-        poseConsistencyThreshold = poseConsistencyThreshold.clamped(to: 3...30)
+        poseConsistencyThreshold = poseConsistencyThreshold.clamped(to: 1...15)
+        poseConsistencyYawThreshold = poseConsistencyYawThreshold.clamped(to: 5...60)
         hintRadius = hintRadius.clamped(to: 1...100)
         bgTrackingDurationSeconds = bgTrackingDurationSeconds.clamped(to: 5...30)
     }
@@ -299,6 +307,7 @@ final class ConfigStore: ObservableObject {
         queryMode = other.queryMode
         poseConsistencyCheck = other.poseConsistencyCheck
         poseConsistencyThreshold = other.poseConsistencyThreshold
+        poseConsistencyYawThreshold = other.poseConsistencyYawThreshold
         enableGeoHint = other.enableGeoHint
         includeGeoCoordinatesInResponse = other.includeGeoCoordinatesInResponse
         hintRadius = other.hintRadius

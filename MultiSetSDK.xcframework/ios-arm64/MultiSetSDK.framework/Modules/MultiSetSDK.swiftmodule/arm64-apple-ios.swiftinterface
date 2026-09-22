@@ -1,80 +1,157 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.3 effective-5.10 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
-// swift-module-flags: -target arm64-apple-ios16.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name MultiSetSDK
-// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
-import ARKit
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target arm64-apple-ios16.0 -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name MultiSetSDK
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
 import Combine
-import CoreLocation
+import CoreGraphics
+import CoreImage
+import CoreVideo
 import Foundation
-import Metal
-import MetalKit
+import ImageIO
 @_exported import MultiSetSDK
-import QuartzCore
-import RealityKit
 import Swift
-import SwiftUI
-import UIKit
 import _Concurrency
-import _RealityKit_SwiftUI
 import _StringProcessing
 import _SwiftConcurrencyShims
 import simd
-@_hasMissingDesignatedInitializers final public class MultiSet {
-  public static let shared: MultiSetSDK.MultiSet
-  public static let version: Swift.String
-  final public var isInitialized: Swift.Bool {
+public enum AnchorTrust : Swift.Int, Swift.Comparable, Swift.Sendable {
+  case provisional
+  case corroborated
+  case trusted
+  public static func < (lhs: MultiSetSDK.AnchorTrust, rhs: MultiSetSDK.AnchorTrust) -> Swift.Bool
+  public var viewpointsRequiredToDisplace: Swift.Int {
     get
   }
-  final public var isAuthenticated: Swift.Bool {
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
     get
   }
-  final public var config: MultiSetSDK.MultiSetConfig? {
+}
+public enum GateRejection : Swift.Sendable {
+  case falsePositive
+  case reestablishing
+  case suspectedAliasing
+  public static func == (a: MultiSetSDK.GateRejection, b: MultiSetSDK.GateRejection) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
     get
   }
-  final public var activeBaseURL: Swift.String {
+}
+public struct GateTuning : Swift.Sendable, Swift.Equatable {
+  public var agreementRadiusM: Swift.Float
+  public var agreementYawDeg: Swift.Float
+  public var rejectionDistanceM: Swift.Float
+  public var rejectionYawDeg: Swift.Float
+  public var viewpointSeparationM: Swift.Float
+  public var viewpointYawDeg: Swift.Float
+  public var multiFrameViewpointCap: Swift.Int
+  public var windowSize: Swift.Int
+  public var windowTTL: Swift.Double
+  public var aliasingInlierMargin: Swift.Float
+  public var mapAliasingRisk: [Swift.String : Swift.Float]
+  public static let windowSizeHardCap: Swift.Int
+  public init()
+  public func validated() -> MultiSetSDK.GateTuning
+  public static func == (a: MultiSetSDK.GateTuning, b: MultiSetSDK.GateTuning) -> Swift.Bool
+}
+public enum GateDisagreement : Swift.Sendable {
+  case distance
+  case heading
+  case both
+  public static func == (a: MultiSetSDK.GateDisagreement, b: MultiSetSDK.GateDisagreement) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
     get
   }
-  final public func initialize(config: MultiSetSDK.MultiSetConfig, callback: any MultiSetSDK.MultiSetCallback)
-  final public func setLocalizationMode(_ mode: MultiSetSDK.LocalizationMode)
-  final public func setQueryMode(_ mode: MultiSetSDK.QueryMode)
-  final public func updateConfig(_ config: MultiSetSDK.MultiSetConfig)
-  final public func localize()
-  final public func stopLocalization()
-  final public func release()
-  final public func setARSession(_ session: ARKit.ARSession?)
-  final public func setParentEntity(_ entity: RealityFoundation.Entity?)
-  final public func setObjectTrackingRootEntity(_ entity: RealityFoundation.Entity?)
-  final public func setGizmoUpdateHandler(_ handler: @escaping (Swift.SIMD3<Swift.Float>, simd.simd_quatf) -> Swift.Void)
-  final public func setGizmoVisible(_ visible: Swift.Bool)
-  final public func resetPoseConsistencyReference()
-  final public func startGpsUpdates()
-  final public func stopGpsUpdates()
-  final public func startObjectTracking()
-  final public func stopObjectTracking()
-  final public func clearObjectMeshes()
-  final public var hasTrackedObject: Swift.Bool {
+}
+public enum FalsePositiveCause : Swift.Sendable {
+  case insufficientViewpoints
+  case anchorHeldVote
+  case inlierMargin
+  public static func == (a: MultiSetSDK.FalsePositiveCause, b: MultiSetSDK.FalsePositiveCause) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
     get
   }
-  final public var isObjectTrackingActive: Swift.Bool {
+}
+public struct AnchorPose {
+  public let position: Swift.SIMD3<Swift.Float>
+  public let rotation: simd.simd_quatf
+  public init(position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf)
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class MultiSet {
+  nonisolated public static let shared: MultiSetSDK.MultiSet
+  nonisolated public static let version: Swift.String
+  @_Concurrency.MainActor final public var isInitialized: Swift.Bool {
     get
   }
-  final public func clearMesh()
-  final public var isLocalizing: Swift.Bool {
+  @_Concurrency.MainActor final public var isAuthenticated: Swift.Bool {
     get
   }
-  final public var hasLocalized: Swift.Bool {
+  @_Concurrency.MainActor final public var config: MultiSetSDK.MultiSetConfig? {
     get
   }
-  final public var isShowingOverlay: Swift.Bool {
+  @_Concurrency.MainActor final public var activeBaseURL: Swift.String {
     get
   }
-  final public var isCapturingFrames: Swift.Bool {
+  @_Concurrency.MainActor final public var watermarkClearance: CoreFoundation.CGFloat {
     get
   }
-  final public var authToken: Swift.String? {
+  @_Concurrency.MainActor final public func initialize(config: MultiSetSDK.MultiSetConfig, callback: any MultiSetSDK.MultiSetCallback)
+  @_Concurrency.MainActor final public func setLocalizationMode(_ mode: MultiSetSDK.LocalizationMode)
+  @_Concurrency.MainActor final public func setQueryMode(_ mode: MultiSetSDK.QueryMode)
+  @_Concurrency.MainActor final public func updateConfig(_ config: MultiSetSDK.MultiSetConfig)
+  @_Concurrency.MainActor final public func localize()
+  @_Concurrency.MainActor final public func stopLocalization()
+  @_Concurrency.MainActor final public func release()
+  @_Concurrency.MainActor final public func setFrameSource(_ source: (any MultiSetSDK.MultiSetFrameSource)?)
+  @_Concurrency.MainActor final public func setPoseSink(_ sink: (any MultiSetSDK.MultiSetPoseSink)?)
+  @_Concurrency.MainActor final public func setMeshRenderer(_ renderer: (any MultiSetSDK.MultiSetMeshRenderer)?)
+  @_Concurrency.MainActor final public func setGeoHintProvider(_ provider: (any MultiSetSDK.MultiSetGeoHintProvider)?)
+  @_Concurrency.MainActor final public func setGizmoUpdateHandler(_ handler: @escaping (Swift.SIMD3<Swift.Float>, simd.simd_quatf) -> Swift.Void)
+  @_Concurrency.MainActor final public func notifyTrackingInterrupted()
+  @_Concurrency.MainActor final public func notifyWorldOriginReset()
+  @_Concurrency.MainActor final public func reportTrackingState(_ state: MultiSetSDK.TrackingState)
+  @_Concurrency.MainActor final public func resetPoseConsistencyReference()
+  @_Concurrency.MainActor final public func resetSession()
+  @_Concurrency.MainActor final public var anchorTrust: MultiSetSDK.AnchorTrust {
+    get
+  }
+  @_Concurrency.MainActor final public func startGpsUpdates()
+  @_Concurrency.MainActor final public func stopGpsUpdates()
+  @_Concurrency.MainActor final public func startObjectTracking()
+  @_Concurrency.MainActor final public func stopObjectTracking()
+  @_Concurrency.MainActor final public func clearObjectMeshes()
+  @_Concurrency.MainActor final public var hasTrackedObject: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var isObjectTrackingActive: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public func clearMesh()
+  @_Concurrency.MainActor final public var isLocalizing: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var hasLocalized: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var isShowingOverlay: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var isShowingObjectTrackingOverlay: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var isCapturingFrames: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var authToken: Swift.String? {
     get
   }
   @objc deinit
+}
+extension Foundation.NSNotification.Name {
+  public static let multiSetWatermarkDidChange: Foundation.Notification.Name
 }
 public enum LocalizationMode : Swift.String, Swift.CaseIterable, Swift.Identifiable, Swift.Sendable {
   case singleFrame
@@ -116,17 +193,6 @@ public enum QueryMode : Swift.String, Swift.CaseIterable, Swift.Identifiable, Sw
     get
   }
 }
-@_Concurrency.MainActor @preconcurrency public struct MultiSetARView : SwiftUI.UIViewRepresentable {
-  @_Concurrency.MainActor @preconcurrency public var parentEntity: RealityFoundation.Entity? {
-    get
-  }
-  @_Concurrency.MainActor @preconcurrency public init()
-  @_Concurrency.MainActor @preconcurrency public func makeUIView(context: MultiSetSDK.MultiSetARView.Context) -> RealityKit.ARView
-  @_Concurrency.MainActor @preconcurrency public func updateUIView(_ uiView: RealityKit.ARView, context: MultiSetSDK.MultiSetARView.Context)
-  public typealias Body = Swift.Never
-  public typealias Coordinator = Swift.Void
-  public typealias UIViewType = RealityKit.ARView
-}
 public struct LocalizationResult : Swift.Sendable {
   public let mapCode: Swift.String
   public let mapCodes: [Swift.String]
@@ -160,8 +226,12 @@ public struct MultiSetConfig : Swift.Sendable {
   public var frameCaptureIntervalMs: Swift.Int
   public var confidenceCheck: Swift.Bool
   public var confidenceThreshold: Swift.Float
+  public static let defaultPoseConsistencyCheck: Swift.Bool
   public var poseConsistencyCheck: Swift.Bool
   public var poseConsistencyThreshold: Swift.Float
+  public var poseConsistencyYawThreshold: Swift.Float
+  public var poseConsistencyTuning: MultiSetSDK.GateTuning?
+  public var mapAliasingRisk: [Swift.String : Swift.Float]
   public var firstLocalizationUntilSuccess: Swift.Bool
   public var showAlerts: Swift.Bool
   public var meshVisualization: Swift.Bool
@@ -180,7 +250,7 @@ public struct MultiSetConfig : Swift.Sendable {
   public var objectTrackingCaptureDelay: Swift.Float
   public var firstObjectTrackingUntilSuccess: Swift.Bool
   public var imageQuality: Swift.Int
-  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, queryMode: MultiSetSDK.QueryMode = .vps1, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, poseConsistencyCheck: Swift.Bool = false, poseConsistencyThreshold: Swift.Float = 10.0, firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true, baseURL: Swift.String = MultiSetConfig.productionBaseURL)
+  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, queryMode: MultiSetSDK.QueryMode = .vps1, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, poseConsistencyCheck: Swift.Bool = MultiSetConfig.defaultPoseConsistencyCheck, poseConsistencyThreshold: Swift.Float = 4.0, poseConsistencyYawThreshold: Swift.Float = 25.0, poseConsistencyTuning: MultiSetSDK.GateTuning? = nil, mapAliasingRisk: [Swift.String : Swift.Float] = [:], firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true, baseURL: Swift.String = MultiSetConfig.productionBaseURL)
   public static func `default`(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func singleFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func multiFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
@@ -232,43 +302,56 @@ public enum TrackingState : Swift.String, Swift.Sendable {
 }
 public struct FalsePositiveInfo : Swift.Sendable {
   public let jumpMeters: Swift.Float
+  public let yawDeltaDeg: Swift.Float
   public let thresholdMeters: Swift.Float
+  public let thresholdDegrees: Swift.Float
+  public let disagreement: MultiSetSDK.GateDisagreement?
+  public let cause: MultiSetSDK.FalsePositiveCause?
+  public let challengerSupport: Swift.Int
+  public let requiredSupport: Swift.Int
+  public let incumbentSupport: Swift.Int
   public let consecutiveCount: Swift.Int
+  public let trust: MultiSetSDK.AnchorTrust
+  public let rejection: MultiSetSDK.GateRejection
   public let mapCodes: [Swift.String]
   public let confidence: Swift.Float?
   public let reason: Swift.String
-  public init(jumpMeters: Swift.Float, thresholdMeters: Swift.Float, consecutiveCount: Swift.Int, mapCodes: [Swift.String], confidence: Swift.Float?, reason: Swift.String)
+  public init(jumpMeters: Swift.Float, yawDeltaDeg: Swift.Float, thresholdMeters: Swift.Float, thresholdDegrees: Swift.Float = 0, disagreement: MultiSetSDK.GateDisagreement? = nil, cause: MultiSetSDK.FalsePositiveCause? = nil, challengerSupport: Swift.Int, requiredSupport: Swift.Int, incumbentSupport: Swift.Int, consecutiveCount: Swift.Int, trust: MultiSetSDK.AnchorTrust, rejection: MultiSetSDK.GateRejection, mapCodes: [Swift.String], confidence: Swift.Float?, reason: Swift.String)
   public var summary: Swift.String {
     get
   }
 }
-public protocol MultiSetCallback : AnyObject {
-  func onSDKReady()
-  func onAuthenticationSuccess()
-  func onAuthenticationFailure(error: Swift.String)
-  func onLocalizationSuccess(result: MultiSetSDK.LocalizationResult)
-  func onLocalizationFailure(error: Swift.String)
-  func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
-  func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
-  func onMeshLoaded(mapCode: Swift.String)
-  func onMeshLoadError(error: Swift.String)
-  func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
-  func onObjectTrackingFailure(error: Swift.String)
-  func onObjectMeshLoaded(objectCode: Swift.String)
+@_Concurrency.MainActor public protocol MultiSetCallback : AnyObject {
+  @_Concurrency.MainActor func onSDKReady()
+  @_Concurrency.MainActor func onAuthenticationSuccess()
+  @_Concurrency.MainActor func onAuthenticationFailure(error: Swift.String)
+  @_Concurrency.MainActor func onLocalizationSuccess(result: MultiSetSDK.LocalizationResult)
+  @_Concurrency.MainActor func onLocalizationFailure(error: Swift.String)
+  @_Concurrency.MainActor func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
+  @_Concurrency.MainActor func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
+  @_Concurrency.MainActor func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
+  @_Concurrency.MainActor func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
+  @_Concurrency.MainActor func onMeshLoaded(mapCode: Swift.String)
+  @_Concurrency.MainActor func onMeshLoadError(error: Swift.String)
+  @_Concurrency.MainActor func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
+  @_Concurrency.MainActor func onObjectTrackingFailure(error: Swift.String)
+  @_Concurrency.MainActor func onObjectMeshLoaded(objectCode: Swift.String)
 }
 extension MultiSetSDK.MultiSetCallback {
-  public func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
-  public func onMeshLoaded(mapCode: Swift.String)
-  public func onMeshLoadError(error: Swift.String)
-  public func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
-  public func onObjectTrackingFailure(error: Swift.String)
-  public func onObjectMeshLoaded(objectCode: Swift.String)
+  @_Concurrency.MainActor public func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
+  @_Concurrency.MainActor public func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
+  @_Concurrency.MainActor public func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
+  @_Concurrency.MainActor public func onMeshLoaded(mapCode: Swift.String)
+  @_Concurrency.MainActor public func onMeshLoadError(error: Swift.String)
+  @_Concurrency.MainActor public func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
+  @_Concurrency.MainActor public func onObjectTrackingFailure(error: Swift.String)
+  @_Concurrency.MainActor public func onObjectMeshLoaded(objectCode: Swift.String)
 }
 public struct GeoCoordinates : Swift.Sendable {
   public var latitude: Swift.Double
   public var longitude: Swift.Double
-  public var altitude: Swift.Double
-  public init(latitude: Swift.Double = 0.0, longitude: Swift.Double = 0.0, altitude: Swift.Double = 0.0)
+  public var altitude: Swift.Double?
+  public init(latitude: Swift.Double = 0.0, longitude: Swift.Double = 0.0, altitude: Swift.Double? = nil)
   public func isValid() -> Swift.Bool
   public func toGeoHintString() -> Swift.String
 }
@@ -295,15 +378,83 @@ public struct GeoPose : Swift.Sendable {
     get
   }
 }
+public protocol MultiSetFrameSource : AnyObject {
+  @_Concurrency.MainActor func acquireFrame() async -> MultiSetSDK.CameraFrame?
+  var isHostActive: Swift.Bool { get }
+  @_Concurrency.MainActor func resetWorldOrigin()
+}
+extension MultiSetSDK.MultiSetFrameSource {
+  public var isHostActive: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor public func resetWorldOrigin()
+}
+public protocol MultiSetPoseSink : AnyObject {
+  func mapAnchorDidUpdate(_ pose: MultiSetSDK.AnchorPose)
+  func objectPoseDidUpdate(objectCode: Swift.String, pose: MultiSetSDK.AnchorPose)
+}
+public protocol MultiSetMeshRenderer : AnyObject {
+  func renderMapMesh(_ mesh: MultiSetSDK.MapMeshAsset)
+  func removeAllMapMeshes()
+  func renderObjectMesh(_ mesh: MultiSetSDK.ObjectMeshAsset)
+  func setObjectMeshVisible(_ visible: Swift.Bool, objectCode: Swift.String)
+  func removeAllObjectMeshes()
+}
+public protocol MultiSetGeoHintProvider : AnyObject {
+  func requestAuthorization()
+  func startUpdates()
+  func stopUpdates()
+  func currentCoordinates() -> MultiSetSDK.GeoCoordinates?
+}
+public struct MapMeshAsset {
+  public let mapId: Swift.String
+  public let glbData: Foundation.Data
+  public let cacheURL: Foundation.URL
+  public let localPose: MultiSetSDK.AnchorPose
+  public init(mapId: Swift.String, glbData: Foundation.Data, cacheURL: Foundation.URL, localPose: MultiSetSDK.AnchorPose)
+}
+public struct ObjectMeshAsset {
+  public let objectCode: Swift.String
+  public let glbData: Foundation.Data
+  public let cacheURL: Foundation.URL
+  public init(objectCode: Swift.String, glbData: Foundation.Data, cacheURL: Foundation.URL)
+}
+public enum DeviceOrientation : Swift.Sendable {
+  case portrait
+  case landscape
+  public static func == (a: MultiSetSDK.DeviceOrientation, b: MultiSetSDK.DeviceOrientation) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct CameraFrame {
+  public let pixelBuffer: CoreVideo.CVPixelBuffer
+  public let cameraTransform: simd.simd_float4x4
+  public let intrinsics: simd.simd_float3x3
+  public let orientation: MultiSetSDK.DeviceOrientation
+  public let timestamp: Foundation.TimeInterval
+  public init(pixelBuffer: CoreVideo.CVPixelBuffer, cameraTransform: simd.simd_float4x4, intrinsics: simd.simd_float3x3, orientation: MultiSetSDK.DeviceOrientation, timestamp: Foundation.TimeInterval)
+}
+extension MultiSetSDK.AnchorTrust : Swift.Hashable {}
+extension MultiSetSDK.AnchorTrust : Swift.RawRepresentable {}
+extension MultiSetSDK.GateRejection : Swift.Equatable {}
+extension MultiSetSDK.GateRejection : Swift.Hashable {}
+extension MultiSetSDK.GateDisagreement : Swift.Equatable {}
+extension MultiSetSDK.GateDisagreement : Swift.Hashable {}
+extension MultiSetSDK.FalsePositiveCause : Swift.Equatable {}
+extension MultiSetSDK.FalsePositiveCause : Swift.Hashable {}
+extension MultiSetSDK.MultiSet : Swift.Sendable {}
 extension MultiSetSDK.LocalizationMode : Swift.Equatable {}
 extension MultiSetSDK.LocalizationMode : Swift.Hashable {}
 extension MultiSetSDK.LocalizationMode : Swift.RawRepresentable {}
 extension MultiSetSDK.QueryMode : Swift.Equatable {}
 extension MultiSetSDK.QueryMode : Swift.Hashable {}
 extension MultiSetSDK.QueryMode : Swift.RawRepresentable {}
-extension MultiSetSDK.MultiSetARView : Swift.Sendable {}
 extension MultiSetSDK.MapType : Swift.Equatable {}
 extension MultiSetSDK.MapType : Swift.Hashable {}
 extension MultiSetSDK.TrackingState : Swift.Equatable {}
 extension MultiSetSDK.TrackingState : Swift.Hashable {}
 extension MultiSetSDK.TrackingState : Swift.RawRepresentable {}
+extension MultiSetSDK.DeviceOrientation : Swift.Equatable {}
+extension MultiSetSDK.DeviceOrientation : Swift.Hashable {}

@@ -21,7 +21,6 @@ struct LandingView: View {
     @State private var toastSuccess = true
     @State private var showSettings = false
 
-    // Localization mode selection
     @State private var selectedMode: LocalizationMode = .singleFrame
 
     var body: some View {
