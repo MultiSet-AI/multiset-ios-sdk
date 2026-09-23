@@ -16040,16 +16040,16 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshModels.swift",
       "kind": "StringLiteral",
-      "offset": 4896,
+      "offset": 7429,
       "length": 5,
       "value": "\"_id\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Mesh\/MeshHandler.swift",
-      "kind": "BooleanLiteral",
-      "offset": 611,
-      "length": 5,
-      "value": "false"
+      "kind": "Dictionary",
+      "offset": 765,
+      "length": 3,
+      "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
@@ -16215,14 +16215,14 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/PoseConsistencyGate.swift",
       "kind": "StringLiteral",
-      "offset": 6960,
+      "offset": 7134,
       "length": 15,
       "value": "\"multiset.gate\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/PoseConsistencyGate.swift",
       "kind": "Array",
-      "offset": 7124,
+      "offset": 7298,
       "length": 2,
       "value": "[]"
     },

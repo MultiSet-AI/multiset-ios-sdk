@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.0 (build 2)
+
+A rebuild of `MultiSetSDK.xcframework` with two MapSet mesh fixes. No API change, and the
+`MultiSetAR/` folder and demo app are identical to build 1 — if you are not using a MapSet,
+replacing the framework is optional.
+
+### Fixed
+
+- **A MapSet's details were re-requested on every successful localization.**
+  `/v1/vps/map-set/{code}` is now fetched once and reused, so background localization no longer
+  costs an extra round trip per fix.
+- **A map's mesh could be placed at another map's offset.** The offset was read from state the
+  mesh handler held across its three requests — MapSet detail, signed URL, download — so when
+  `updateConfig` retargeted between a single map and a MapSet while a mesh was still
+  downloading, whichever load finished last decided where the earlier one's mesh went. The
+  offset is now resolved per load and passed down with it.
+
 ## 2.0.0
 
 Requires iOS 16.0+ and Xcode 26 or later. Device only — ARKit does not run in the simulator.
