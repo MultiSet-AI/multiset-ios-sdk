@@ -10,27 +10,27 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		cEGy35GV9s4tGvEmdhT35dbUMC8=
+		zXbQ5z66sk7qRdEXxkxG5icGznI=
 		</data>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		T6kpViY82fS5brqq1zc1upWyQTs=
+		Oqxbx/ZwTCgb6+k2HHkRsh/NeZA=
 		</data>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		IjKnyG/bHjYXESi5FXAb4CbnonQ=
+		9GaXbCequyo+JvpC/gC4zjiyhl0=
 		</data>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		py0LxLAXc70zzcIRdiSAfAQJHZc=
+		w5FY59Eph/0o7zed3Fh/REr0Dlc=
 		</data>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		IjKnyG/bHjYXESi5FXAb4CbnonQ=
+		9GaXbCequyo+JvpC/gC4zjiyhl0=
 		</data>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		r0/OGd8p9w3u95YbGOhKpqSMNl8=
+		jP6qQ3WogZdvNgWtrThhkqq4YsI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>PrivacyInfo.xcprivacy</key>
 		<data>
-		U/N7WMVU/ndhmPZybCN0TLzJpcg=
+		36C2DjawczDjV0wB+wWfSbZqGZs=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -54,35 +54,35 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			nEK1/Be049FLPHprhOjHWkncGonHhLtPJUCJZ6qyZTU=
+			qTYGt78obWKK2f93Q+wg0yD+XmOjduWY4LP+R7wU69Q=
 			</data>
 		</dict>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			xx7zY7mjw4Rh4KTtzBtut09dGs+zynmvsnrWE3XLTjk=
+			x+3XrBe0lWlNH7Xxnw2GMOmgHg6OmMEfLd1n2vbS5ec=
 			</data>
 		</dict>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			xmP0VO1/IB1XXzl8CI20r33z9WcvO4ySfKFl4KweB18=
+			DQ3bZjaFlkFoDr7cM+jdIP8kDOu/JqbL4VgQKy2Vsj8=
 			</data>
 		</dict>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			xx7zY7mjw4Rh4KTtzBtut09dGs+zynmvsnrWE3XLTjk=
+			x+3XrBe0lWlNH7Xxnw2GMOmgHg6OmMEfLd1n2vbS5ec=
 			</data>
 		</dict>
 		<key>Modules/MultiSetSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FsElj09h16r0JBhK4Pfl7yZ1+50Jg9BRtoOVwy2kTNU=
+			fvvRTn1nbquRfpjub+ted4HTuh/gvTKZnLjt74nRnI8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -96,7 +96,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FmHUwYncDX4giAk0mowSHUhf++3VrT8tPvyJank1b7I=
+			aBDWcCOCW4edhYI1TB2jIy2VdR2aUlRGzOjp7AecMMQ=
 			</data>
 		</dict>
 	</dict>

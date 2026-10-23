@@ -14,6 +14,7 @@ struct SDKConfig {
 
     // MARK: - API Environment
     static let baseURL = MultiSetConfig.productionBaseURL  // e.g. "https://api.multiset.ai"
+    static let clientSource: String? = nil  // e.g. "acme-museum-ios"; nil sends "ios-sdk-<version>"
 
     // MARK: - Authentication Credentials
     // Get your credentials at: https://developer.multiset.ai/credentials
@@ -71,7 +72,8 @@ struct SDKConfig {
             clientSecret: clientSecret,
             mapCode: mapCode,
             mapSetCode: mapSetCode,
-            baseURL: baseURL
+            baseURL: baseURL,
+            clientSource: clientSource
         )
 
         // ═══════════════════════════════════════════════════════════════
@@ -83,8 +85,7 @@ struct SDKConfig {
         // extra robustness of 4-6 frames.
         config.localizationMode = .singleFrame  // .singleFrame or .multiFrame
 
-        // Which matching pipeline single-frame queries use. Editable in Settings.
-        // No effect in .multiFrame mode — multi-frame always runs on VPS-1.
+        // Which matching pipeline localization queries use, in both modes. Editable in Settings.
         config.queryMode = store.queryMode
 
         // ═══════════════════════════════════════════════════════════════

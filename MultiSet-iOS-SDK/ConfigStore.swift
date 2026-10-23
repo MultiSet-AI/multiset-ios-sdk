@@ -278,7 +278,7 @@ final class ConfigStore: ObservableObject {
     /// Clamp every range-bound value to the limits the sliders enforce. Acts as a
     /// backstop so out-of-range values can never reach the SDK.
     func validate() {
-        bgLocalizationIntervalSeconds = bgLocalizationIntervalSeconds.clamped(to: 15...180)
+        bgLocalizationIntervalSeconds = bgLocalizationIntervalSeconds.clamped(to: 10...180)
         numberOfFrames = numberOfFrames.clamped(to: 4...6)
         confidenceThreshold = confidenceThreshold.clamped(to: 0.2...0.8)
         poseConsistencyThreshold = poseConsistencyThreshold.clamped(to: 1...15)

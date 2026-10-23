@@ -7,6 +7,7 @@ Redistribution in source or binary forms must retain this notice.
 
 import UIKit
 import SwiftUI
+import MultiSetSDK
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,5 +20,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = UIHostingController(rootView: LandingView())
         self.window = window
         window.makeKeyAndVisible()
+    }
+
+    /// Re-issues map uploads a force-quit or a lost connection interrupted.
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        Task { await MultiSet.shared.mapping.resumeUploads() }
     }
 }

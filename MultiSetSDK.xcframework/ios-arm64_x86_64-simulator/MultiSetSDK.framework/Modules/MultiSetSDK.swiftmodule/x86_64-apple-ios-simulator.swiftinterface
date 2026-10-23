@@ -98,6 +98,7 @@ public struct AnchorPose {
   @_Concurrency.MainActor final public var watermarkClearance: CoreFoundation.CGFloat {
     get
   }
+  @_Concurrency.MainActor final public let mapping: MultiSetSDK.MultiSetMapping
   @_Concurrency.MainActor final public func initialize(config: MultiSetSDK.MultiSetConfig, callback: any MultiSetSDK.MultiSetCallback)
   @_Concurrency.MainActor final public func setLocalizationMode(_ mode: MultiSetSDK.LocalizationMode)
   @_Concurrency.MainActor final public func setQueryMode(_ mode: MultiSetSDK.QueryMode)
@@ -129,11 +130,29 @@ public struct AnchorPose {
   @_Concurrency.MainActor final public var isObjectTrackingActive: Swift.Bool {
     get
   }
+  @_Concurrency.MainActor final public var objectTrackingStage: MultiSetSDK.LocalizationStage {
+    get
+  }
+  @_Concurrency.MainActor final public var isLoadingObjectMesh: Swift.Bool {
+    get
+  }
   @_Concurrency.MainActor final public func clearMesh()
   @_Concurrency.MainActor final public var isLocalizing: Swift.Bool {
     get
   }
+  @_Concurrency.MainActor final public var localizationStage: MultiSetSDK.LocalizationStage {
+    get
+  }
+  @_Concurrency.MainActor final public var isLoadingMapMesh: Swift.Bool {
+    get
+  }
   @_Concurrency.MainActor final public var hasLocalized: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var recoveryPhase: MultiSetSDK.RecoveryPhase {
+    get
+  }
+  @_Concurrency.MainActor final public var needsRealignment: Swift.Bool {
     get
   }
   @_Concurrency.MainActor final public var isShowingOverlay: Swift.Bool {
@@ -214,6 +233,7 @@ public struct MultiSetConfig : Swift.Sendable {
   public let clientSecret: Swift.String
   public static let productionBaseURL: Swift.String
   public var baseURL: Swift.String
+  public var clientSource: Swift.String?
   public var mapCode: Swift.String
   public var mapSetCode: Swift.String
   public var localizationMode: MultiSetSDK.LocalizationMode
@@ -250,7 +270,7 @@ public struct MultiSetConfig : Swift.Sendable {
   public var objectTrackingCaptureDelay: Swift.Float
   public var firstObjectTrackingUntilSuccess: Swift.Bool
   public var imageQuality: Swift.Int
-  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, queryMode: MultiSetSDK.QueryMode = .vps1, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, poseConsistencyCheck: Swift.Bool = MultiSetConfig.defaultPoseConsistencyCheck, poseConsistencyThreshold: Swift.Float = 4.0, poseConsistencyYawThreshold: Swift.Float = 25.0, poseConsistencyTuning: MultiSetSDK.GateTuning? = nil, mapAliasingRisk: [Swift.String : Swift.Float] = [:], firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true, baseURL: Swift.String = MultiSetConfig.productionBaseURL)
+  public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, queryMode: MultiSetSDK.QueryMode = .vps1, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, poseConsistencyCheck: Swift.Bool = MultiSetConfig.defaultPoseConsistencyCheck, poseConsistencyThreshold: Swift.Float = 4.0, poseConsistencyYawThreshold: Swift.Float = 25.0, poseConsistencyTuning: MultiSetSDK.GateTuning? = nil, mapAliasingRisk: [Swift.String : Swift.Float] = [:], firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true, baseURL: Swift.String = MultiSetConfig.productionBaseURL, clientSource: Swift.String? = nil)
   public static func `default`(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func singleFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func multiFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
@@ -282,6 +302,23 @@ public enum MapType : Swift.Sendable {
   case map
   case mapSet
   public static func == (a: MultiSetSDK.MapType, b: MultiSetSDK.MapType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum LocalizationStage : Swift.Equatable, Swift.Sendable {
+  case idle
+  case capturing(captured: Swift.Int, required: Swift.Int)
+  case uploading
+  case awaitingResponse
+  public static func == (a: MultiSetSDK.LocalizationStage, b: MultiSetSDK.LocalizationStage) -> Swift.Bool
+}
+public enum RecoveryPhase : Swift.Sendable, Swift.Equatable {
+  case none
+  case waitingForTracking
+  case realigning
+  public static func == (a: MultiSetSDK.RecoveryPhase, b: MultiSetSDK.RecoveryPhase) -> Swift.Bool
   public func hash(into hasher: inout Swift.Hasher)
   public var hashValue: Swift.Int {
     get
@@ -330,6 +367,9 @@ public struct FalsePositiveInfo : Swift.Sendable {
   @_Concurrency.MainActor func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
   @_Concurrency.MainActor func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
+  @_Concurrency.MainActor func onRecoveryPhaseChanged(_ phase: MultiSetSDK.RecoveryPhase, needsRealignment: Swift.Bool)
+  @_Concurrency.MainActor func onLocalizationStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
+  @_Concurrency.MainActor func onObjectTrackingStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
   @_Concurrency.MainActor func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
   @_Concurrency.MainActor func onMeshLoaded(mapCode: Swift.String)
   @_Concurrency.MainActor func onMeshLoadError(error: Swift.String)
@@ -341,6 +381,9 @@ extension MultiSetSDK.MultiSetCallback {
   @_Concurrency.MainActor public func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
   @_Concurrency.MainActor public func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor public func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
+  @_Concurrency.MainActor public func onRecoveryPhaseChanged(_ phase: MultiSetSDK.RecoveryPhase, needsRealignment: Swift.Bool)
+  @_Concurrency.MainActor public func onLocalizationStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
+  @_Concurrency.MainActor public func onObjectTrackingStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
   @_Concurrency.MainActor public func onMeshLoaded(mapCode: Swift.String)
   @_Concurrency.MainActor public func onMeshLoadError(error: Swift.String)
   @_Concurrency.MainActor public func onObjectTrackingSuccess(objectCode: Swift.String, confidence: Swift.Double)
@@ -396,9 +439,13 @@ public protocol MultiSetPoseSink : AnyObject {
 public protocol MultiSetMeshRenderer : AnyObject {
   func renderMapMesh(_ mesh: MultiSetSDK.MapMeshAsset)
   func removeAllMapMeshes()
+  func setMapMeshVisible(_ visible: Swift.Bool)
   func renderObjectMesh(_ mesh: MultiSetSDK.ObjectMeshAsset)
   func setObjectMeshVisible(_ visible: Swift.Bool, objectCode: Swift.String)
   func removeAllObjectMeshes()
+}
+extension MultiSetSDK.MultiSetMeshRenderer {
+  public func setMapMeshVisible(_ visible: Swift.Bool)
 }
 public protocol MultiSetGeoHintProvider : AnyObject {
   func requestAuthorization()
@@ -436,6 +483,306 @@ public struct CameraFrame {
   public let timestamp: Foundation.TimeInterval
   public init(pixelBuffer: CoreVideo.CVPixelBuffer, cameraTransform: simd.simd_float4x4, intrinsics: simd.simd_float3x3, orientation: MultiSetSDK.DeviceOrientation, timestamp: Foundation.TimeInterval)
 }
+public struct MappingFrame {
+  public let pixelBuffer: CoreVideo.CVPixelBuffer
+  public let depthMap: CoreVideo.CVPixelBuffer
+  public let cameraTransform: simd.simd_float4x4
+  public let intrinsics: simd.simd_float3x3
+  public init(pixelBuffer: CoreVideo.CVPixelBuffer, depthMap: CoreVideo.CVPixelBuffer, cameraTransform: simd.simd_float4x4, intrinsics: simd.simd_float3x3)
+}
+public struct MappingRGBFrame {
+  public let pixelBuffer: CoreVideo.CVPixelBuffer
+  public let cameraTransform: simd.simd_float4x4
+  public let intrinsics: simd.simd_float3x3
+  public let timestamp: Foundation.TimeInterval
+  public init(pixelBuffer: CoreVideo.CVPixelBuffer, cameraTransform: simd.simd_float4x4, intrinsics: simd.simd_float3x3, timestamp: Foundation.TimeInterval)
+}
+public struct MappingTrackingSample : Swift.Sendable {
+  public let cameraTransform: simd.simd_float4x4
+  public let intrinsics: simd.simd_float3x3
+  public let imageWidth: Swift.Int
+  public let imageHeight: Swift.Int
+  public let timestamp: Foundation.TimeInterval
+  public let isTrackingNormal: Swift.Bool
+  public let trackingState: MultiSetSDK.MappingTrackingState
+  public let featurePointCount: Swift.Int
+  public let ambientIntensity: Swift.Float?
+  public init(cameraTransform: simd.simd_float4x4, intrinsics: simd.simd_float3x3, imageWidth: Swift.Int, imageHeight: Swift.Int, timestamp: Foundation.TimeInterval, trackingState: MultiSetSDK.MappingTrackingState, featurePointCount: Swift.Int = 0, ambientIntensity: Swift.Float? = nil)
+  public init(cameraTransform: simd.simd_float4x4, intrinsics: simd.simd_float3x3, imageWidth: Swift.Int, imageHeight: Swift.Int, timestamp: Foundation.TimeInterval, isTrackingNormal: Swift.Bool)
+}
+public struct MappingMeshChunk : Swift.Sendable {
+  public let name: Swift.String
+  public let transform: simd.simd_float4x4
+  public let positions: [Swift.SIMD3<Swift.Float>]
+  public let normals: [Swift.SIMD3<Swift.Float>]
+  public let indices: [Swift.UInt32]
+  public init(name: Swift.String, transform: simd.simd_float4x4, positions: [Swift.SIMD3<Swift.Float>], normals: [Swift.SIMD3<Swift.Float>], indices: [Swift.UInt32])
+}
+public enum MappingCaptureKind : Swift.Hashable, Swift.Sendable {
+  case lidar
+  case posedRGB
+  public static func == (a: MultiSetSDK.MappingCaptureKind, b: MultiSetSDK.MappingCaptureKind) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum MappingPhase : Swift.Equatable, Swift.Sendable {
+  case idle
+  case preparing
+  case mapping
+  case exporting
+  case zipping
+  case finished
+  case failed(MultiSetSDK.MappingFailure)
+  case packagingCancelled
+  public static func == (a: MultiSetSDK.MappingPhase, b: MultiSetSDK.MappingPhase) -> Swift.Bool
+}
+public struct MappingFailure : Swift.Equatable, Swift.Sendable {
+  public enum Reason : Swift.Sendable {
+    case noSource
+    case cameraAccessDenied
+    case insufficientStorage
+    case trackingTimeout
+    case sessionError
+    case writeError
+    case meshExportError
+    case packagingError
+    public static func == (a: MultiSetSDK.MappingFailure.Reason, b: MultiSetSDK.MappingFailure.Reason) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let reason: MultiSetSDK.MappingFailure.Reason
+  public let message: Swift.String
+  public static func == (a: MultiSetSDK.MappingFailure, b: MultiSetSDK.MappingFailure) -> Swift.Bool
+}
+public struct MappingScanState : Swift.Equatable, Swift.Sendable {
+  public var phase: MultiSetSDK.MappingPhase {
+    get
+  }
+  public var elapsed: Swift.Double {
+    get
+  }
+  public var packagingProgress: Swift.Double {
+    get
+  }
+  public var showsMotionWarning: Swift.Bool {
+    get
+  }
+  public var savedFrames: Swift.Int {
+    get
+  }
+  public var blurredFrames: Swift.Int {
+    get
+  }
+  public var meshChunkCount: Swift.Int {
+    get
+  }
+  public var discardedFrames: Swift.Int {
+    get
+  }
+  public var tracking: MultiSetSDK.MappingTrackingStatus? {
+    get
+  }
+  public var trackingAdvice: MultiSetSDK.MappingTrackingAdvice? {
+    get
+  }
+  public var walkedArea: Swift.Double? {
+    get
+  }
+  public var isCapturingSlowly: Swift.Bool {
+    get
+  }
+  public var autoStopReason: MultiSetSDK.MappingAutoStopReason? {
+    get
+  }
+  public static func == (a: MultiSetSDK.MappingScanState, b: MultiSetSDK.MappingScanState) -> Swift.Bool
+}
+public enum MappingAutoStopReason : Swift.Equatable, Swift.Sendable {
+  case timeLimit
+  case interrupted
+  case lowStorage
+  public static func == (a: MultiSetSDK.MappingAutoStopReason, b: MultiSetSDK.MappingAutoStopReason) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum MappingTrackingState : Swift.Equatable, Swift.Sendable {
+  case normal
+  case initializing
+  case relocalizing
+  case excessiveMotion
+  case insufficientFeatures
+  case unavailable
+  public static func == (a: MultiSetSDK.MappingTrackingState, b: MultiSetSDK.MappingTrackingState) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct MappingTrackingStatus : Swift.Equatable, Swift.Sendable {
+  public enum Level : Swift.Equatable, Swift.Sendable {
+    case good
+    case weak
+    case lost
+    public static func == (a: MultiSetSDK.MappingTrackingStatus.Level, b: MultiSetSDK.MappingTrackingStatus.Level) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum Issue : Swift.Equatable, Swift.Sendable {
+    case initializing
+    case relocalizing
+    case excessiveMotion
+    case insufficientFeatures
+    case unavailable
+    case settling
+    case lowDetail
+    case tooDark
+    public static func == (a: MultiSetSDK.MappingTrackingStatus.Issue, b: MultiSetSDK.MappingTrackingStatus.Issue) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let level: MultiSetSDK.MappingTrackingStatus.Level
+  public let issue: MultiSetSDK.MappingTrackingStatus.Issue?
+  public static func == (a: MultiSetSDK.MappingTrackingStatus, b: MultiSetSDK.MappingTrackingStatus) -> Swift.Bool
+}
+public struct MappingTrackingAdvice : Swift.Equatable, Swift.Identifiable, Swift.Sendable {
+  public enum Kind : Swift.Equatable, Swift.Hashable, Swift.Sendable {
+    case lowDetail
+    case tooDark
+    case lost
+    case relocalizing
+    case poseCorrected
+    case recovered
+    public static func == (a: MultiSetSDK.MappingTrackingAdvice.Kind, b: MultiSetSDK.MappingTrackingAdvice.Kind) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let id: Swift.Int
+  public let kind: MultiSetSDK.MappingTrackingAdvice.Kind
+  public static func == (a: MultiSetSDK.MappingTrackingAdvice, b: MultiSetSDK.MappingTrackingAdvice) -> Swift.Bool
+  public typealias ID = Swift.Int
+}
+public enum MappingStopOutcome : Swift.Sendable {
+  case packaged
+  case discardedTooShort
+  case failed
+  case notRecording
+  case cancelled
+  public static func == (a: MultiSetSDK.MappingStopOutcome, b: MultiSetSDK.MappingStopOutcome) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct MappingDraft : Swift.Identifiable, Swift.Equatable, Swift.Sendable {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let captureKind: MultiSetSDK.MappingCaptureKind
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let altitude: Swift.Double
+  public let frameCount: Swift.Int?
+  public let packageBytes: Swift.Int64?
+  public let packagedAt: Foundation.Date?
+  public static func == (a: MultiSetSDK.MappingDraft, b: MultiSetSDK.MappingDraft) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+public enum MappingUploadState : Swift.Equatable, Swift.Sendable {
+  case preparing
+  case uploading(Swift.Double)
+  case waiting(Swift.String)
+  case failed(Swift.String)
+  public var isActive: Swift.Bool {
+    get
+  }
+  public static func == (a: MultiSetSDK.MappingUploadState, b: MultiSetSDK.MappingUploadState) -> Swift.Bool
+}
+public enum MappingLimits {
+  public static let minimumScanDuration: Foundation.TimeInterval
+  public static let maximumScanDuration: Foundation.TimeInterval
+  public static let minimumMapNameLength: Swift.Int
+}
+public enum MappingError : Foundation.LocalizedError, Swift.Equatable {
+  case noFinishedScan
+  case nameTooShort
+  case packageMissing
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public static func == (a: MultiSetSDK.MappingError, b: MultiSetSDK.MappingError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension Foundation.NSNotification.Name {
+  public static let multiSetMappingScanDidChange: Foundation.Notification.Name
+  public static let multiSetMappingUploadsDidChange: Foundation.Notification.Name
+  public static let multiSetMappingDraftsDidChange: Foundation.Notification.Name
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class MultiSetMapping {
+  @_Concurrency.MainActor final public func setSource(_ source: (any MultiSetSDK.MultiSetMappingSource)?)
+  @_Concurrency.MainActor final public var scan: MultiSetSDK.MappingScanState {
+    get
+  }
+  @_Concurrency.MainActor final public func beginPreview() async
+  @_Concurrency.MainActor final public func endPreview()
+  @_Concurrency.MainActor final public func startScan() async
+  @discardableResult
+  @_Concurrency.MainActor final public func stopScan() async -> MultiSetSDK.MappingStopOutcome
+  @_Concurrency.MainActor final public func cancelPackaging()
+  @discardableResult
+  @_Concurrency.MainActor final public func resumePackaging() async -> MultiSetSDK.MappingStopOutcome
+  @_Concurrency.MainActor final public func discardScan() async
+  @_Concurrency.MainActor final public func acknowledgeFailure()
+  @discardableResult
+  @_Concurrency.MainActor final public func saveDraft(named name: Swift.String) throws -> MultiSetSDK.MappingDraft
+  @_Concurrency.MainActor final public func reportSourceFailure(_ message: Swift.String)
+  @_Concurrency.MainActor final public func reportSourceInterrupted() async
+  @_Concurrency.MainActor final public func reportTrackingSample(_ sample: MultiSetSDK.MappingTrackingSample)
+  @_Concurrency.MainActor final public func drafts() -> [MultiSetSDK.MappingDraft]
+  @_Concurrency.MainActor final public func deleteDraft(id: Swift.String)
+  @_Concurrency.MainActor final public func upload(draftID: Swift.String) async
+  @_Concurrency.MainActor final public func uploadState(for draftID: Swift.String) -> MultiSetSDK.MappingUploadState?
+  @_Concurrency.MainActor final public func dismissUploadFailure(for draftID: Swift.String)
+  @_Concurrency.MainActor final public var hasActiveUploads: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public func resumeUploads() async
+  @_Concurrency.MainActor final public func handleEventsForBackgroundURLSession(identifier: Swift.String, completionHandler: @escaping () -> Swift.Void)
+  @objc deinit
+}
+public protocol MultiSetMappingSource : AnyObject {
+  @_Concurrency.MainActor func authorizeCamera() async -> Swift.Bool
+  @_Concurrency.MainActor func startPreview()
+  @_Concurrency.MainActor func startRecording()
+  @_Concurrency.MainActor func pause()
+  @_Concurrency.MainActor func trackingSample() -> MultiSetSDK.MappingTrackingSample?
+  func acquireMappingFrame() -> MultiSetSDK.MappingFrame?
+  @_Concurrency.MainActor func meshChunks() -> [MultiSetSDK.MappingMeshChunk]
+  @_Concurrency.MainActor var locationProvider: (any MultiSetSDK.MultiSetGeoHintProvider)? { get }
+  @_Concurrency.MainActor var captureKind: MultiSetSDK.MappingCaptureKind { get }
+  func acquireRGBFrame() -> MultiSetSDK.MappingRGBFrame?
+}
+extension MultiSetSDK.MultiSetMappingSource {
+  @_Concurrency.MainActor public var locationProvider: (any MultiSetSDK.MultiSetGeoHintProvider)? {
+    get
+  }
+  @_Concurrency.MainActor public var captureKind: MultiSetSDK.MappingCaptureKind {
+    get
+  }
+  public func acquireRGBFrame() -> MultiSetSDK.MappingRGBFrame?
+}
 extension MultiSetSDK.AnchorTrust : Swift.Hashable {}
 extension MultiSetSDK.AnchorTrust : Swift.RawRepresentable {}
 extension MultiSetSDK.GateRejection : Swift.Equatable {}
@@ -453,8 +800,19 @@ extension MultiSetSDK.QueryMode : Swift.Hashable {}
 extension MultiSetSDK.QueryMode : Swift.RawRepresentable {}
 extension MultiSetSDK.MapType : Swift.Equatable {}
 extension MultiSetSDK.MapType : Swift.Hashable {}
+extension MultiSetSDK.RecoveryPhase : Swift.Hashable {}
 extension MultiSetSDK.TrackingState : Swift.Equatable {}
 extension MultiSetSDK.TrackingState : Swift.Hashable {}
 extension MultiSetSDK.TrackingState : Swift.RawRepresentable {}
 extension MultiSetSDK.DeviceOrientation : Swift.Equatable {}
 extension MultiSetSDK.DeviceOrientation : Swift.Hashable {}
+extension MultiSetSDK.MappingFailure.Reason : Swift.Equatable {}
+extension MultiSetSDK.MappingFailure.Reason : Swift.Hashable {}
+extension MultiSetSDK.MappingAutoStopReason : Swift.Hashable {}
+extension MultiSetSDK.MappingTrackingState : Swift.Hashable {}
+extension MultiSetSDK.MappingTrackingStatus.Level : Swift.Hashable {}
+extension MultiSetSDK.MappingTrackingStatus.Issue : Swift.Hashable {}
+extension MultiSetSDK.MappingStopOutcome : Swift.Equatable {}
+extension MultiSetSDK.MappingStopOutcome : Swift.Hashable {}
+extension MultiSetSDK.MappingError : Swift.Hashable {}
+extension MultiSetSDK.MultiSetMapping : Swift.Sendable {}

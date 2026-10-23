@@ -35,6 +35,8 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
     var onLocalizationCorrected: ((AnchorPose, AnchorPose, AnchorTrust) -> Void)?
     var onAnchorTrustChanged: ((AnchorTrust) -> Void)?
     var onTrackingChanged: ((TrackingState) -> Void)?
+    var onLocalizationStageChanged: ((LocalizationStage, Bool) -> Void)?
+    var onObjectTrackingStageChanged: ((LocalizationStage, Bool) -> Void)?
     var onMeshLoaded: ((String) -> Void)?
     var onObjectTrackingSuccess: ((String, Double) -> Void)?
     var onObjectTrackingFailure: ((String) -> Void)?
@@ -100,6 +102,14 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
     func onTrackingStateChanged(state: TrackingState) {
         self.onTrackingChanged?(state)
         print("MultiSetSDKDelegate >> Tracking State: \(state)")
+    }
+
+    func onLocalizationStageChanged(_ stage: LocalizationStage, isBackground: Bool) {
+        self.onLocalizationStageChanged?(stage, isBackground)
+    }
+
+    func onObjectTrackingStageChanged(_ stage: LocalizationStage, isBackground: Bool) {
+        self.onObjectTrackingStageChanged?(stage, isBackground)
     }
 
     func onMeshLoaded(mapCode: String) {

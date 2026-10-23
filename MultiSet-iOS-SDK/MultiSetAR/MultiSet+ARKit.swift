@@ -34,9 +34,10 @@ extension MultiSet {
         setPoseSink(MultiSetARScene.shared.renderer)
     }
 
-    /// Show or hide the gizmo (RGB axes + origin sphere)
+    /// Allow or hide the gizmo (RGB axes + origin sphere). Even when allowed it shows only once a
+    /// fix has placed it, and not while a tracking break has left the scene out of place.
     public func setGizmoVisible(_ visible: Bool) {
-        MultiSetARScene.shared.renderer.gizmoVisual?.isEnabled = visible
+        MultiSetARScene.shared.renderer.setGizmoAllowed(visible)
     }
 
     /// Show or hide the map and object meshes in the scene, and any that arrive later.
@@ -61,5 +62,16 @@ extension MultiSet {
     /// Whether an object outline mesh is in the AR scene, shown or hidden
     public var hasObjectMesh: Bool {
         MultiSetARScene.shared.renderer.hasObjectMesh
+    }
+
+    /// True from the moment a localized map's mesh is fetched until it is in the AR scene: the
+    /// core's `isLoadingMapMesh`, then the parse and build here. Drive a loading indicator from this.
+    public var isMapMeshLoading: Bool {
+        isLoadingMapMesh || MultiSetARScene.shared.renderer.isBuildingMapMesh
+    }
+
+    /// The object counterpart of `isMapMeshLoading`.
+    public var isObjectMeshLoading: Bool {
+        isLoadingObjectMesh || MultiSetARScene.shared.renderer.isBuildingObjectMesh
     }
 }

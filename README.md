@@ -1,8 +1,9 @@
 # MultiSet iOS SDK
 
-The MultiSet iOS SDK provides Visual Positioning System (VPS) localization and object tracking for
-iOS apps. It localizes the device against pre-mapped 3D environments from camera images and aligns
-AR content to the real world.
+The MultiSet iOS SDK provides Visual Positioning System (VPS) localization, object tracking and map
+creation for iOS apps. It localizes the device against pre-mapped 3D environments from camera
+images and aligns AR content to the real world, and it can scan a space and upload it to be built
+into a new map.
 
 **GitHub Repository:** [https://github.com/MultiSet-AI/multiset-ios-sdk.git](https://github.com/MultiSet-AI/multiset-ios-sdk.git)
 
@@ -11,14 +12,16 @@ AR content to the real world.
 | Path | What it is |
 |---|---|
 | `MultiSetSDK.xcframework` | The SDK as a binary framework. It does not link ARKit or RealityKit |
-| `MultiSet-iOS-SDK/MultiSetAR/` | The ARKit + RealityKit adapter, as source: `MultiSetARView`, mesh rendering, the two `.metal` shaders and GPS hints. Add it to your app target |
-| `MultiSet-iOS-SDK/`, `MultiSet-iOS-SDK.xcodeproj` | Demo app showing localization, object tracking and every setting. It builds against the framework and the adapter above |
+| `MultiSet-iOS-SDK/MultiSetAR/` | The ARKit + RealityKit adapter, as source: `MultiSetARView`, mesh rendering, the three `.metal` shaders, GPS hints, and `Mapping/` for map creation. Add it to your app target |
+| `MultiSet-iOS-SDK/`, `MultiSet-iOS-SDK.xcodeproj` | Demo app showing localization, object tracking, map creation and every setting. It builds against the framework and the adapter above |
 
 ## Requirements
 
 - iOS 16.0+
 - Xcode 26 or later
 - A device with ARKit support (A12 chip or later). ARKit does not run in the simulator
+- Map creation: any device above for a Posed RGB scan; a LiDAR scan also needs the LiDAR scanner
+  (iPhone 12 Pro or a later Pro model, iPad Pro 2020 or later)
 
 ## Run the Demo App
 
@@ -43,14 +46,23 @@ AR content to the real world.
    |----------------|--------------------------|--------------------------|
    | `clientId`     | Your client identifier   | Yes                      |
    | `clientSecret` | Your secret key          | Yes                      |
-   | `mapCode`      | Single map identifier    | One of these is required |
-   | `mapSetCode`   | Map set identifier       | One of these is required |
+   | `mapCode`      | Single map identifier    | For localization, one of these |
+   | `mapSetCode`   | Map set identifier       | For localization, one of these |
    | `objectCodes`  | Objects to track         | For object tracking      |
+
+   Map creation needs only the credentials.
 
    To obtain credentials, visit [https://developer.multiset.ai/credentials](https://developer.multiset.ai/credentials).
 3. Select your development team under **Signing & Capabilities**, then run on a device.
 
 The gear icon on the landing screen edits the localization and object-tracking settings at runtime.
+The **Mapping** card scans a space into a new map — on a LiDAR device choose **LiDAR** or
+**Non-LiDAR**, on any other device it scans Non-LiDAR — and **Draft Maps** lists scans that have
+not been uploaded yet. The demo's screens call the Posed RGB scan (`.posedRGB`) "Non-LiDAR".
+
+On the AR screens, the small card at the top left shows each run's steps — capturing, uploading,
+waiting on the server, then a tick or a red mark — and a bar at the bottom left shows a map or
+object mesh while it loads. See "Showing a Run's Progress".
 
 ## Add the SDK to Your App
 
@@ -60,17 +72,21 @@ The gear icon on the landing screen edits the localization and object-tracking s
 2. Select your app target → **General → Frameworks, Libraries, and Embedded Content**, and set
    `MultiSetSDK.xcframework` to **Embed & Sign**.
 3. Drag the `MultiSet-iOS-SDK/MultiSetAR` folder into your project with **your app target
-   checked**. Check that both `.metal` files appear under **Build Phases → Compile Sources**.
+   checked**. Check that all three `.metal` files appear under **Build Phases → Compile Sources**.
+   `MultiSetAR/Mapping/` is needed only for map creation; nothing else in the folder depends on it.
 
 ### 2. Info.plist Configuration
 
 ```xml
 <key>NSCameraUsageDescription</key>
-<string>Camera access is required for AR localization</string>
+<string>Camera access is used to determine your position and to scan spaces into maps</string>
 
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>Location access improves localization accuracy</string>
+<string>Location access is used to improve localization accuracy and to record where a map was scanned</string>
 ```
+
+Location is optional: without it, localization sends no `geoHint` and a scanned map carries no
+coordinates.
 
 ### 3. Implement the Callback
 
@@ -119,6 +135,18 @@ final class MySDKDelegate: MultiSetCallback {
     func onMeshLoadError(error: String) {
         print("Mesh error: \(error)")
     }
+
+    // The scene is being re-aligned after a tracking break. See
+    // "Retries, Refreshes and Tracking Recovery".
+    func onRecoveryPhaseChanged(_ phase: RecoveryPhase, needsRealignment: Bool) {
+        print("Recovery: \(phase), hide content: \(needsRealignment)")
+    }
+
+    // A run moved between capturing, uploading and waiting on the server.
+    // See "Showing a Run's Progress".
+    func onLocalizationStageChanged(_ stage: LocalizationStage, isBackground: Bool) {
+        print("Stage: \(stage)")
+    }
 }
 ```
 
@@ -133,6 +161,10 @@ let config = MultiSetConfig.default(
 
 MultiSet.shared.initialize(config: config, callback: myDelegate)
 ```
+
+A config with credentials and no map or object codes is valid, for an app that only creates maps.
+`localize()` then reports `Missing mapCode or mapSetCode` through `onLocalizationFailure`, and
+`startObjectTracking()` reports `Missing objectCodes` through `onObjectTrackingFailure`.
 
 ### 5. Display the AR View
 
@@ -169,6 +201,38 @@ MultiSet.shared.localize()
 // Stop localization
 MultiSet.shared.stopLocalization()
 ```
+
+## Upgrading from 2.0
+
+Replace `MultiSetSDK.xcframework` and the `MultiSetAR` folder together. There are no breaking API
+changes, and if you do not create maps no code changes are needed. Two behaviours differ:
+
+- **`initialize(config:callback:)` accepts a config with credentials only.** In 2.0 it refused one
+  with no `mapCode`, `mapSetCode` or `objectCodes` through `onAuthenticationFailure`. The SDK now
+  authenticates, and `localize()` or `startObjectTracking()` reports the missing code when called.
+- **`bgLocalizationDurationSeconds` accepts 10–180 seconds** (2.0: 15–180).
+
+- **A failed first fix is retried at most 5 times**, then reported through
+  `onLocalizationFailure`. A retry follows 0.5 s after a miss, and 4, 8 or 12 s after a timeout or
+  a server error. The first tracked object follows the same rule.
+- **Recovery after a tracking break waits for normal tracking.** With `relocalization` on, the SDK
+  re-localizes once ARKit tracks normally again, hides the map mesh until that fix lands, and
+  reports neither its runs nor their misses as failures.
+- **`MultiSetARView` starts a fresh world frame when the app returns from the background**, instead
+  of resuming the old one, and re-localizes and re-tracks in it. Object outlines stay hidden until
+  their object is tracked again. If you run your own `ARView`, see "Using Your Own ARView".
+- **`queryMode` applies to multi-frame localization too**, which now supports `.vps2`.
+
+Localization and object tracking queries now also carry an `X-Client-Source` header naming the
+client, `ios-sdk-2.1.0` unless you set `clientSource` — see "Naming Your App on Query Logs".
+
+New and optional: `onRecoveryPhaseChanged(_:needsRealignment:)`,
+`onLocalizationStageChanged(_:isBackground:)`, `onObjectTrackingStageChanged(_:isBackground:)`, the
+`localizationStage`, `objectTrackingStage`, `recoveryPhase`, `needsRealignment`, `isLoadingMapMesh`
+and `isLoadingObjectMesh` properties, and `MultiSetMeshRenderer.setMapMeshVisible(_:)`, which a
+custom renderer may implement. All of them have defaults, so existing code compiles unchanged.
+
+To add map creation, follow "Map Creation" below.
 
 ## Upgrading from 1.16.0
 
@@ -250,12 +314,15 @@ var config = MultiSetConfig(
 // Localization Mode
 config.localizationMode = .multiFrame       // .singleFrame or .multiFrame
 
+// Matching pipeline, for single-frame and multi-frame queries alike
+config.queryMode = .vps1                    // .vps1 (default) or .vps2
+
 // Auto Localization
 config.autoLocalize = true                  // Auto-start when AR begins
 config.backgroundLocalization = true        // Re-localize at intervals
-config.bgLocalizationDurationSeconds = 30   // Interval in seconds (15-180)
+config.bgLocalizationDurationSeconds = 30   // Interval in seconds (10-180)
 config.relocalization = true                // Re-localize on tracking loss
-config.firstLocalizationUntilSuccess = true // Retry first localization until success
+config.firstLocalizationUntilSuccess = true // Retry a failed first fix silently, up to 5 times
 
 // Multi-Frame Capture
 config.numberOfFrames = 4                   // Frames to capture (4-6)
@@ -272,6 +339,7 @@ config.poseConsistencyYawThreshold = 25     // Heading limit in degrees (5-60)
 
 // API Environment
 config.baseURL = MultiSetConfig.productionBaseURL  // Override to target another deployment
+config.clientSource = "acme-museum-ios"     // Default nil: queries are tagged ios-sdk-<version>
 
 // GPS
 config.passGeoPose = true                   // Include GPS in requests
@@ -285,9 +353,9 @@ config.showAlerts = true                    // Show success/failure alerts
 config.imageQuality = 90                    // JPEG quality (50-100)
 ```
 
-### Query Mode (single-frame only)
+### Query Mode
 
-Single-frame localization can run against either matching pipeline:
+Localization can run against either matching pipeline, in both single-frame and multi-frame mode:
 
 ```swift
 config.queryMode = .vps1   // default — standard matching, fastest response
@@ -300,7 +368,7 @@ Or change it on an initialized SDK:
 MultiSet.shared.setQueryMode(.vps2)
 ```
 
-Multi-frame localization always uses VPS-1, so this value is not sent in `.multiFrame` mode.
+The value is sent with every localization query, single-frame and multi-frame.
 
 ### Using Map Sets
 
@@ -313,6 +381,98 @@ let config = MultiSetConfig(
     mapSetCode: "YOUR_MAP_SET_CODE"
 )
 ```
+
+## Retries, Refreshes and Tracking Recovery
+
+**First fix.** With `firstLocalizationUntilSuccess` (default on), a failed first localization is
+retried silently up to 5 times before `onLocalizationFailure` reports it. A retry follows 0.5 s
+after a miss, or 4 s, 8 s, then 12 s after a timeout or a server error, so a busy server is not
+asked twice at once. `isLocalizing` and `isShowingOverlay` stay true through each wait, and
+`localize()` is refused meanwhile. The rule covers the first fix of each session: after
+`initialize`, after `resetSession()`, and each time a new AR view attaches.
+`firstObjectTrackingUntilSuccess` follows the same rule for the first tracked object.
+
+**Background refresh.** With `backgroundLocalization` on, the next refresh is armed after every
+run, `bgLocalizationDurationSeconds` later. Switching it through `updateConfig(_:)` takes effect
+at once: on after a fix arms a refresh, off cancels the one armed. A missed refresh is reported
+through `onLocalizationFailure` and waits the full interval before the next.
+
+**Recovery after a tracking break.** With `relocalization` (default on), a break after a fix is
+recovered without a tap. The SDK waits for normal tracking, lets it settle for 1 s, then
+re-localizes, and retries every second until a fix lands. Recovery runs show no overlay and
+never call `onLocalizationFailure`; the fix that lands calls `onLocalizationSuccess` as usual.
+Nothing is recovered before the first fix. With `relocalization` off, the last fix stays applied
+and only a tap or a background refresh corrects it.
+
+| Break | Scene out of place |
+|---|---|
+| Session interrupted, app sent to the background, ARKit relocalizing | At once |
+| A new world frame (`notifyWorldOriginReset()`) | At once |
+| Any other limited tracking (fast motion, too little detail) | After 2 s |
+
+Content placed in the map frame sits where the room no longer is while the scene is out of place.
+The SDK hides the map mesh for that time through `MultiSetMeshRenderer.setMapMeshVisible(_:)`,
+which `MultiSetARView` implements apart from `setMeshVisible(_:)`, so neither undoes the other.
+Hide your own content until the recovery lands:
+
+```swift
+func onRecoveryPhaseChanged(_ phase: RecoveryPhase, needsRealignment: Bool) {
+    contentRoot.isEnabled = !needsRealignment
+    switch phase {
+    case .none: statusLabel.text = nil
+    case .waitingForTracking: statusLabel.text = "Waiting for tracking…"
+    case .realigning: statusLabel.text = "Re-aligning scene…"
+    }
+}
+```
+
+`MultiSet.shared.recoveryPhase` and `MultiSet.shared.needsRealignment` hold the same state.
+
+**Tracked objects after a break.** Object outlines are hidden while ARKit relocalizes after an
+interruption (the app sent to the background included), and shown again once it relocalizes. If
+it cannot and a new world frame starts, each outline stays hidden until that object is tracked
+again. With `restartObjectTracking` (default on), the SDK re-tracks once tracking has been normal
+for 1 s; a miss from that run is not reported.
+
+## Showing a Run's Progress
+
+Each localization and object tracking run reports where it stands, so a host can show more than
+a spinner. `onLocalizationStageChanged(_:isBackground:)` and
+`onObjectTrackingStageChanged(_:isBackground:)` (both optional) fire on every change:
+
+| Stage | Meaning |
+|---|---|
+| `.capturing(captured:required:)` | Frames are being taken. For object tracking this covers `objectTrackingCaptureDelay`. |
+| `.uploading` | The query is going out. A fixed step of up to 2 s: the request reports no progress. |
+| `.awaitingResponse` | The query is sent and the server is searching. |
+| `.idle` | The run ended. Its result arrives through the usual success, failure or false-positive callback. |
+
+`isBackground` is true for a background refresh, a recovery, a background re-track and a restart
+after a tracking loss: show those without covering the scene. A run that is retried silently goes
+back to `.idle` between attempts while `isShowingOverlay` stays true.
+
+```swift
+func onLocalizationStageChanged(_ stage: LocalizationStage, isBackground: Bool) {
+    switch stage {
+    case .capturing(let captured, let required): statusLabel.text = "Capturing \(captured) of \(required)"
+    case .uploading: statusLabel.text = "Uploading…"
+    case .awaitingResponse: statusLabel.text = "Matching against the map…"
+    case .idle: statusLabel.text = nil
+    @unknown default: statusLabel.text = nil
+    }
+}
+```
+
+`LocalizationStage` may gain cases in a later release, so a `switch` over it needs
+`@unknown default`. `MultiSet.shared.localizationStage` and `objectTrackingStage` hold the same
+state.
+
+A mesh arrives after the fix that asked for it. `MultiSet.shared.isMapMeshLoading` and
+`isObjectMeshLoading` (from the `MultiSetAR` folder) are true from the moment it is fetched until it
+is in the AR scene; the framework's own `isLoadingMapMesh` and `isLoadingObjectMesh` cover the fetch
+alone. A fix on a map whose mesh is already in the scene does not turn them on. The demo app's
+`RunStatusCard`, `FrameCaptureOverlay` and `MeshLoadingBar` (`MultiSet-iOS-SDK/Views/Components/`)
+show all of this.
 
 ## False Positive Filtering
 
@@ -485,17 +645,16 @@ relocalization stop reaching the SDK: call `MultiSet.shared.forwardARTrackingSta
 in `session(_:cameraDidChangeTrackingState:)`, and `MultiSet.shared.notifyTrackingInterrupted()` in
 `sessionWasInterrupted(_:)` and `sessionInterruptionEnded(_:)`.
 
-**You also have to handle a relocalization that never finishes.** When the app is backgrounded and
-the device is carried somewhere else, ARKit resumes into `.limited(.relocalizing)` with nothing left
-to match against, and stays there — it does not time out on its own. The SDK cannot capture a frame
-in that state, so every localization fails on "no frames captured" and your UI sits on a spinner.
-
-`ARSessionController` in `MultiSetAR/` solves this and is worth copying: it lets ARKit attempt
-relocalization, but starts a watchdog on `sessionInterruptionEnded(_:)` and, if tracking has not
-returned to `.normal` within 6 seconds, runs the configuration again with `.resetTracking` and calls
-`MultiSet.shared.notifyWorldOriginReset()`. That last call matters — a new world frame invalidates
-the anchor the pose gate is holding, and without it the gate compares offsets across two different
-coordinate systems.
+When your app moves to the background, pause the session and call
+`forwardARTrackingState(.notAvailable)`. When it returns, start a fresh world frame
+(`run(_:options: [.resetTracking, .removeExistingAnchors])`) and call `notifyWorldOriginReset()`;
+the SDK re-localizes and re-tracks in it once ARKit tracks normally. Do not resume the old frame:
+after the device was walked somewhere else it no longer matches the room, and a fix made in it is
+moved off again. Create the `ARView` with `automaticallyConfigureSession: false` so RealityKit does
+not resume it for you, do not capture `currentFrame` until a frame newer than the trip arrives, and
+return `false` from `sessionShouldAttemptRelocalization(_:)` (the default) so ARKit never fits the
+old frame back on after an interruption. `MultiSetAR/ARSessionController.swift` and
+`ARSessionFrameSource.swift` show all of this.
 
 ## Custom AR Runtimes
 
@@ -537,15 +696,188 @@ long as a frame source is attached.
   - `notifyWorldOriginReset()` when the world frame is replaced.
   - `reportTrackingState(_:)` for every tracking-quality change.
 
-  `MultiSetAR/ARTrackingSignals.swift` shows the ARKit mapping.
+  `MultiSetAR/ARTrackingSignals.swift` shows the ARKit mapping. A recovery after a break starts
+  only when `reportTrackingState(.tracking)` follows it. Report a trip to the background as an
+  interruption too, and the tracking state again once frames resume.
 - **Optional receivers.** Attach a `MultiSetPoseSink` for accepted poses, a `MultiSetMeshRenderer`
-  to draw the downloaded GLB meshes, and a `MultiSetGeoHintProvider` to supply GPS for
+  to draw the downloaded GLB meshes (implement its optional `setMapMeshVisible(_:)` to hide the map
+  mesh while the scene is out of place), and a `MultiSetGeoHintProvider` to supply GPS for
   `passGeoPose`. Meshes are not downloaded while no renderer is attached.
 - **Geo-hint altitude.** The API expects heights above the WGS84 ellipsoid, not mean sea level.
   From CoreLocation, pass `ellipsoidalAltitude` rather than `altitude`. Pass `nil` when
   `verticalAccuracy` is negative: the SDK then sends latitude and longitude only, with
   `use2DFiltering` on for that request.
 
+## Map Creation
+
+The SDK can scan a space, package the capture, keep it on the device as a draft, and upload it to
+your account, where it is built into a VPS map. The capture format and the upload are inside the
+framework; `MultiSetAR/Mapping/` supplies the ARKit side, and the demo app's
+`MultiSet-iOS-SDK/Views/Mapping/` the screens, which you can reuse.
+
+There are two kinds of scan (`MappingCaptureKind`):
+
+| Kind | Records | Needs | While scanning, the screen shows |
+|---|---|---|---|
+| `.lidar` | Camera images, depth and a reconstructed mesh | A LiDAR scanner | The reconstructed mesh |
+| `.posedRGB` | Camera images and their poses | World tracking only | ARKit's feature points, and how well tracking is going |
+
+Both upload the same package layout; a Posed RGB package has no depth or mesh. Prefer LiDAR where
+the device has it. A Posed RGB map depends on good tracking, so scan textured, well-lit spaces and
+move slowly.
+
+### Setup
+
+1. Add `MultiSetAR/` to your target, including `Mapping/` and `Mapping/ScanMeshSurface.metal`.
+2. Forward the background upload session's wake-up from your app delegate, so an upload that
+   finishes while your app is not running is recorded:
+
+   ```swift
+   func application(_ application: UIApplication,
+                    handleEventsForBackgroundURLSession identifier: String,
+                    completionHandler: @escaping () -> Void) {
+       MultiSet.shared.mapping.handleEventsForBackgroundURLSession(
+           identifier: identifier, completionHandler: completionHandler)
+   }
+   ```
+
+3. Scans are recorded in landscape. Return the adapter's lock from your app delegate, or the
+   scan screen rotates with the device. Outside the scan screen the lock answers with the
+   orientations your `Info.plist` declares, so the rest of your app is unaffected:
+
+   ```swift
+   func application(_ application: UIApplication,
+                    supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+       OrientationLock.shared.mask
+   }
+   ```
+
+4. Call `await MultiSet.shared.mapping.resumeUploads()` when your app becomes active, for example
+   from `sceneDidBecomeActive(_:)`.
+
+The demo app's `AppDelegate.swift` and `SceneDelegate.swift` do all three. No background mode is
+needed. Scanning works before `initialize(config:callback:)`; uploading waits until the SDK is
+authenticated and starts by itself once it is.
+
+### Scanning
+
+```swift
+let source = ARMappingSource(kind: .lidar)        // or .posedRGB; owns the ARView, shown with MultiSetMappingARView
+let mapping = MultiSet.shared.mapping
+
+mapping.setSource(source)
+await mapping.beginPreview()                      // camera on, nothing recorded; asks for camera access
+await mapping.startScan()                         // tracking restarts; the scan's origin is here
+// …the user walks the space…
+let outcome = await mapping.stopScan()            // packages the scan
+if outcome == .packaged {
+    let draft = try mapping.saveDraft(named: "Lobby")
+    await mapping.upload(draftID: draft.id)
+}
+mapping.endPreview()                              // when the screen goes away
+```
+
+Offer only the kinds in `MappingSupport.captureKinds`: both on a LiDAR device, `.posedRGB` alone
+without one. A `.lidar` source on a device without LiDAR previews, then fails at Start with
+`MappingFailure.Reason.sessionError` and a message saying why.
+
+Scan rules the SDK enforces:
+
+- A scan shorter than `MappingLimits.minimumScanDuration` (10 s) is discarded, and `stopScan()`
+  returns `.discardedTooShort`. The SDK stops a scan at `MappingLimits.maximumScanDuration` (600 s)
+  by itself.
+- Starting needs about 1.5 GB of free space for a LiDAR scan and 600 MB for a Posed RGB scan.
+- A map name must be at least `MappingLimits.minimumMapNameLength` (3) characters once trimmed.
+- Frames too blurred to use are dropped; `scan.showsMotionWarning` turns on when the device moves
+  too fast for a sharp capture.
+- An interruption — a call, the app leaving the foreground — ends the scan, because tracking
+  afterwards is in a different world frame. A scan past the minimum is packaged as it stood; a
+  shorter one fails. `ARMappingSource` reports interruptions for you. `scan.autoStopReason` says
+  why the SDK stopped a scan by itself.
+
+A Posed RGB scan adds:
+
+- A frame is kept only when the camera has moved 5 cm or turned 5° since the last kept frame, and
+  only once tracking has held for a second (two after a loss). Frames taken in the second before
+  tracking is lost, or before ARKit corrects its pose in a jump, are deleted; `scan.discardedFrames`
+  counts them.
+- `scan.tracking` grades tracking (good, weak, lost) with the reason, and `scan.trackingAdvice`
+  names a problem that has lasted, at most once every few seconds, for a toast.
+- `scan.walkedArea` is the floor area the kept frames cover, once they span a metre.
+- A warm device captures less often (`scan.isCapturingSlowly`). The scan stops by itself if free
+  space falls below what packaging needs.
+- Packaging can be stopped with `cancelPackaging()`; `resumePackaging()` starts it again and
+  `discardScan()` deletes the scan.
+
+### Observing
+
+Read state from `MultiSet.shared.mapping` when one of these is posted on the main thread:
+
+| Notification | Read |
+|---|---|
+| `.multiSetMappingScanDidChange` | `scan` — phase, elapsed time, packaging progress, frame counts, motion warning, and for Posed RGB the tracking status and advice |
+| `.multiSetMappingDraftsDidChange` | `drafts()` |
+| `.multiSetMappingUploadsDidChange` | `uploadState(for:)` |
+
+A failed scan reports `MappingPhase.failed(MappingFailure)`, whose `message` is written for the
+user. Call `acknowledgeFailure()` once it has been shown. `MappingPhase` and the other mapping
+enums can gain cases, so a `switch` over them needs `@unknown default`.
+
+### Drafts and uploads
+
+- **A draft stays until an upload succeeds.** Every failure keeps the scan, so a retry never
+  costs another scan.
+- **The transfer runs on a background `URLSession`.** It continues when the app is backgrounded,
+  locked or terminated.
+- **Uploads retry by themselves.** An interrupted upload waits 5, 15, 30, 60 and 120 s between
+  attempts. After that it waits for `resumeUploads()` or for the network to return.
+- **`deleteDraft(id:)` removes the scan's files** and cancels its upload.
+- **Files location.** Scans are stored in Application Support, not in your app's Documents
+  folder, so they do not appear in the Files app.
+- **The map says how it was captured.** Creating the map sends
+  `"source": {"provider": "mobile", "fileType": "zip" | "PosedRGB", "coordinateSystem": "LHS"}`;
+  `MappingDraft.captureKind` tells the two apart.
+
+### Custom runtimes
+
+To scan with something other than ARKit, implement `MultiSetMappingSource`. A `.lidar` source
+supplies raw camera frames (`MappingFrame`: a 1920 × 1440 `420f` image, a 256 × 192
+`DepthFloat32` depth map, the camera transform and intrinsics, all from one frame), tracking
+samples, and the reconstructed mesh at stop. A `.posedRGB` source returns `.posedRGB` from
+`captureKind`, supplies `MappingRGBFrame` (a `420f` image at the size tracking started with, the
+transform, the intrinsics and the frame's timestamp) from `acquireRGBFrame()`, and passes every
+camera update to `MultiSet.shared.mapping.reportTrackingSample(_:)` with its tracking state,
+feature-point count and light estimate. Pass every value raw; the SDK does every conversion. A
+frame of any other size is dropped. Call `reportSourceFailure(_:)` when your session fails, and
+`reportSourceInterrupted()` when it is interrupted. `MultiSetAR/Mapping/ARMappingSource.swift` is
+the reference implementation.
+
+### API
+
+```swift
+MultiSet.shared.mapping: MultiSetMapping
+mapping.setSource(_ source: MultiSetMappingSource?)
+mapping.scan: MappingScanState
+mapping.beginPreview() async
+mapping.endPreview()
+mapping.startScan() async
+mapping.stopScan() async -> MappingStopOutcome
+mapping.cancelPackaging()
+mapping.resumePackaging() async -> MappingStopOutcome
+mapping.discardScan() async
+mapping.acknowledgeFailure()
+mapping.saveDraft(named: String) throws -> MappingDraft
+mapping.reportSourceFailure(_ message: String)
+mapping.reportSourceInterrupted() async
+mapping.reportTrackingSample(_ sample: MappingTrackingSample)
+mapping.drafts() -> [MappingDraft]
+mapping.deleteDraft(id: String)
+mapping.upload(draftID: String) async
+mapping.uploadState(for draftID: String) -> MappingUploadState?
+mapping.dismissUploadFailure(for draftID: String)
+mapping.hasActiveUploads: Bool
+mapping.resumeUploads() async
+mapping.handleEventsForBackgroundURLSession(identifier: String, completionHandler: @escaping () -> Void)
 ```
 
 ## Best Practices

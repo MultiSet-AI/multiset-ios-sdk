@@ -34,7 +34,11 @@ struct ARObjectTrackingView: View {
     @State private var autoTrackingTask: Task<Void, Never>?
     @State private var isMeshVisible = true
     @State private var hasObjectMesh = false
+    @State private var isMeshLoading = false
     @State private var watermarkClearance: CGFloat = 0
+    @State private var stage: LocalizationStage = .idle
+    @State private var isForegroundRun = false
+    @StateObject private var runStatus = RunStatusIndicator()
 
     // Timer for state polling
     let stateTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -47,21 +51,36 @@ struct ARObjectTrackingView: View {
             MultiSetARView()
                 .ignoresSafeArea()
 
+            // For a capture the user asked for; a background re-track reports on the status card
+            // alone. Under the controls, so the close button and the card stay reachable.
+            if isForegroundRun || isShowingOverlay {
+                if let status = FrameCaptureOverlay.captureStatus(for: stage) {
+                    FrameCaptureOverlay(statusText: status, title: "Hold steady on the object", backdrop: .object)
+                } else {
+                    ServerWaitOverlay(statusText: stage == .uploading ? "Uploading…" : "Finding the object…")
+                }
+            }
+
             // Top controls
             VStack {
                 HStack {
-                    // Object code badge (left)
-                    if !trackedObjectCode.isEmpty {
-                        Text(trackedObjectCode)
-                            .font(.system(size: 12, weight: .medium, design: .monospaced))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(Color(hex: "#00BCD4").opacity(0.8))
-                            .cornerRadius(16)
-                            .padding(.leading, 16)
-                            .padding(.top, 16)
+                    // After the object code badge, so that stays put as runs come and go.
+                    HStack(spacing: 12) {
+                        if !trackedObjectCode.isEmpty {
+                            Text(trackedObjectCode)
+                                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color(hex: "#00BCD4").opacity(0.8))
+                                .cornerRadius(16)
+                        }
+                        if runStatus.state != .hidden {
+                            RunStatusCard(state: runStatus.state)
+                        }
                     }
+                    .padding(.leading, 16)
+                    .padding(.top, 16)
 
                     Spacer()
 
@@ -84,33 +103,31 @@ struct ARObjectTrackingView: View {
 
                 HStack {
                     // Waits for the outline to be in the scene; offered earlier it would hide nothing.
-                    if hasObjectMesh {
+                    if isMeshLoading {
+                        MeshLoadingBar(label: "Loading the object mesh…")
+                            .padding(.leading, 16)
+                    } else if hasObjectMesh {
                         MeshVisibilityToggle(isOn: isMeshVisible, action: setMeshVisible)
                             .padding(.leading, 16)
                     }
 
                     Spacer()
 
-                    // Track Button (right)
-                    if !isObjectTrackingActive {
+                    // Track Button (right). Under a capture's overlay it is hidden; through a
+                    // background re-track it stays in place, disabled.
+                    if !isShowingOverlay && !isForegroundRun {
                         Button(action: startTracking) {
                             Image("capture_button")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 72, height: 72)
                         }
-                        .disabled(!isTrackingNormal)
-                        .opacity(isTrackingNormal ? 1.0 : 0.5)
-                        .padding(.trailing, 24)
+                        .disabled(!canTrack)
+                        .opacity(canTrack ? 1.0 : 0.5)
+                        .padding(.trailing, 16)
                     }
                 }
                 .padding(.bottom, max(24, watermarkClearance + 12))
-            }
-
-            // Loading overlay for a capture the user asked for. Background re-tracking is
-            // excluded, so an idle scene is not covered on the background timer's schedule.
-            if isShowingOverlay {
-                APILoadingOverlay(statusText: "Tracking object...")
             }
         }
         .preferredColorScheme(.dark)
@@ -151,22 +168,39 @@ struct ARObjectTrackingView: View {
             isShowingOverlay = MultiSet.shared.isShowingObjectTrackingOverlay
             hasTrackedObject = MultiSet.shared.hasTrackedObject
             hasObjectMesh = MultiSet.shared.hasObjectMesh
+            isMeshLoading = MultiSet.shared.isObjectMeshLoading
             watermarkClearance = MultiSet.shared.watermarkClearance
+            if isShowingOverlay && stage == .idle {
+                runStatus.keepOpen()
+            }
         }
+    }
+
+    private var canTrack: Bool {
+        isTrackingNormal && !isObjectTrackingActive
     }
 
     // MARK: - Setup
 
     private func setupCallbacks() {
+        sdkDelegate.onObjectTrackingStageChanged = { newStage, isBackground in
+            stage = newStage
+            isForegroundRun = newStage != .idle && !isBackground
+            isShowingOverlay = MultiSet.shared.isShowingObjectTrackingOverlay
+            runStatus.receive(RunStatusState(newStage))
+        }
+
         sdkDelegate.onObjectTrackingSuccess = { objectCode, confidence in
+            runStatus.receive(.succeeded)
             trackedObjectCode = objectCode
             hasTrackedObject = true
             if MultiSet.shared.config?.showAlerts == true {
-                showToastMessage("Object tracked: \(objectCode)", success: true)
+                showToastMessage("Object tracked", success: true)
             }
         }
 
         sdkDelegate.onObjectTrackingFailure = { error in
+            runStatus.receive(.failed)
             if MultiSet.shared.config?.showAlerts == true {
                 failureAlertMessage = userFriendlyTrackingMessage(for: error)
                 showFailureAlert = true

@@ -39,6 +39,10 @@ internal class OutlineMeshRenderer {
     /// does not appear on its own.
     private(set) var meshesVisible = true
 
+    /// Objects the core hid because their placement is stale. The global setting must not bring
+    /// them back, or an outline would show where its object no longer is.
+    private var hiddenObjectCodes: Set<String> = []
+
     // MARK: - Initialization
 
     init() {
@@ -96,6 +100,7 @@ internal class OutlineMeshRenderer {
 
     func removeAllMeshes() {
         inFlightLoads.removeAll()
+        hiddenObjectCodes.removeAll()
         for (_, entity) in meshEntities {
             entity.removeFromParent()
         }
@@ -105,17 +110,27 @@ internal class OutlineMeshRenderer {
     /// The core calls this with `true` whenever it re-tracks an object, so the global
     /// setting must win or background re-tracking would bring hidden meshes back.
     func setMeshVisible(for objectCode: String, visible: Bool) {
+        if visible {
+            hiddenObjectCodes.remove(objectCode)
+        } else {
+            hiddenObjectCodes.insert(objectCode)
+        }
         meshEntities[objectCode]?.isEnabled = visible && meshesVisible
     }
 
     func setAllMeshesVisible(_ visible: Bool) {
         meshesVisible = visible
-        for entity in meshEntities.values {
-            entity.isEnabled = visible
+        for (objectCode, entity) in meshEntities {
+            entity.isEnabled = visible && !hiddenObjectCodes.contains(objectCode)
         }
     }
 
     /// Whether an outline is attached to the live AR scene; entries from a torn-down ARView have none.
+    /// A mesh is being parsed and built into the scene.
+    var isBuildingMesh: Bool {
+        return !inFlightLoads.isEmpty
+    }
+
     func hasMesh() -> Bool {
         return meshEntities.values.contains { $0.scene != nil }
     }
@@ -142,7 +157,7 @@ internal class OutlineMeshRenderer {
 
             containerEntity.position = .zero
             containerEntity.orientation = simd_quatf(ix: 0, iy: 0, iz: 0, r: 1)
-            containerEntity.isEnabled = meshesVisible
+            containerEntity.isEnabled = meshesVisible && !hiddenObjectCodes.contains(meshResult.objectCode)
 
             parent.addChild(containerEntity)
             meshEntities[meshResult.objectCode] = containerEntity

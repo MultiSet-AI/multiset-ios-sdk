@@ -13,13 +13,17 @@ struct LandingView: View {
     @StateObject private var sdkDelegate = MultiSetSDKDelegate()
     @State private var navigateToAR = false
     @State private var navigateToObjectTracking = false
-    @State private var showConfigAlert = false
     @State private var showMapMissingAlert = false
     @State private var showObjectCodeMissingAlert = false
     @State private var showToast = false
     @State private var toastMessage = ""
     @State private var toastSuccess = true
     @State private var showSettings = false
+    @State private var showMapping = false
+    @State private var navigateToDrafts = false
+    @State private var showMappingUnsupported = false
+    @State private var draftCount = 0
+    @State private var captureKind = MappingSupport.captureKinds.first ?? .lidar
 
     @State private var selectedMode: LocalizationMode = .singleFrame
 
@@ -196,6 +200,87 @@ struct LandingView: View {
                         )
                         .padding(.horizontal, 20)
 
+                        // ── Mapping Card ──
+                        VStack(spacing: 16) {
+                            HStack {
+                                Text("Mapping")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundColor(Color(hex: "#D97706"))
+
+                                Spacer()
+
+                                if draftCount > 0 {
+                                    Text("\(draftCount) draft\(draftCount == 1 ? "" : "s")")
+                                        .font(.system(size: 12, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 4)
+                                        .background(Color.gray.opacity(0.15))
+                                        .cornerRadius(10)
+                                }
+                            }
+
+                            Text("Scan a space to build a new VPS map. Uploading needs the SDK to be authenticated.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            // Only a device with LiDAR has a choice; without it the scan is Posed RGB.
+                            if MappingSupport.captureKinds.count > 1 {
+                                Picker("Scan with", selection: $captureKind) {
+                                    ForEach(MappingSupport.captureKinds, id: \.self) { kind in
+                                        Text(kind.title).tag(kind)
+                                    }
+                                }
+                                .pickerStyle(.segmented)
+                            }
+
+                            if !MappingSupport.captureKinds.isEmpty {
+                                Text("\(captureKind.title): \(captureKind.summary)")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+
+                            Button(action: openMapping) {
+                                Text("Create Map")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .background(MappingSupport.supports(captureKind) ? Color(hex: "#D97706") : Color.gray.opacity(0.4))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(24)
+                            }
+
+                            Button {
+                                navigateToDrafts = true
+                            } label: {
+                                Text("Draft Maps")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .foregroundColor(Color(hex: "#D97706"))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 24)
+                                            .stroke(Color(hex: "#D97706"), lineWidth: 1.5)
+                                    )
+                            }
+                        }
+                        .padding(20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color(UIColor.secondarySystemBackground))
+                                )
+                        )
+                        .padding(.horizontal, 20)
+                        // Its own cover, not chained beside Settings': two presentations on one view clash.
+                        .fullScreenCover(isPresented: $showMapping, onDismiss: refreshDraftCount) {
+                            MappingFlowView(kind: captureKind) { showMapping = false }
+                        }
+
                         Spacer(minLength: 20)
 
                         // ── Footer ──
@@ -216,6 +301,9 @@ struct LandingView: View {
                     localizationMode: selectedMode
                 )
                 .navigationBarBackButtonHidden(true)
+            }
+            .navigationDestination(isPresented: $navigateToDrafts) {
+                DraftMapsView()
             }
             .navigationDestination(isPresented: $navigateToObjectTracking) {
                 ARObjectTrackingView(
@@ -241,10 +329,10 @@ struct LandingView: View {
                 }
             }
             .toast(isPresented: $showToast, message: toastMessage, isSuccess: toastSuccess)
-            .alert("Configuration Required", isPresented: $showConfigAlert) {
+            .alert(MappingSupport.unsupportedTitle, isPresented: $showMappingUnsupported) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("No map codes or object codes are configured. Please update SDKConfig.")
+                Text(MappingSupport.unsupportedMessage)
             }
             .alert("Map Code Required", isPresented: $showMapMissingAlert) {
                 Button("OK", role: .cancel) {}
@@ -257,8 +345,11 @@ struct LandingView: View {
                 Text("Please add at least one object code in SDKConfig to start object tracking.")
             }
             .onAppear {
-                checkConfiguration()
                 checkAndAutoInitialize()
+                refreshDraftCount()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .multiSetMappingDraftsDidChange)) { _ in
+                refreshDraftCount()
             }
         }
     }
@@ -276,12 +367,6 @@ struct LandingView: View {
     }
 
     // MARK: - Actions
-
-    private func checkConfiguration() {
-        if !SDKConfig.hasMapConfiguration() && !SDKConfig.hasObjectTrackingConfiguration() {
-            showConfigAlert = true
-        }
-    }
 
     private func checkAndAutoInitialize() {
         if SDKConfig.hasCredentials() && !sdkDelegate.isAuthenticated && !MultiSet.shared.isInitialized {
@@ -327,6 +412,18 @@ struct LandingView: View {
         navigateToObjectTracking = true
     }
 
+    private func openMapping() {
+        guard MappingSupport.supports(captureKind) else {
+            showMappingUnsupported = true
+            return
+        }
+        showMapping = true
+    }
+
+    private func refreshDraftCount() {
+        draftCount = MultiSet.shared.mapping.drafts().count
+    }
+
     private func openCredentialsURL() {
         if let url = URL(string: "https://developer.multiset.ai/credentials") {
             UIApplication.shared.open(url)
@@ -337,34 +434,6 @@ struct LandingView: View {
         toastMessage = message
         toastSuccess = success
         showToast = true
-    }
-}
-
-// MARK: - Color Extension
-
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (255, 0, 0, 0)
-        }
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue: Double(b) / 255,
-            opacity: Double(a) / 255
-        )
     }
 }
 

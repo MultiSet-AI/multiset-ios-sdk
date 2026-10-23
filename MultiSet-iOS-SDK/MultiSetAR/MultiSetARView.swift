@@ -43,7 +43,9 @@ public struct MultiSetARView: UIViewRepresentable {
 
     public func makeUIView(context: Context) -> ARView {
         let sessionController = context.coordinator.sessionController
-        let arView = ARView(frame: .zero)
+        // The adapter runs, pauses and restarts the session itself (`ARSessionController`); left
+        // to RealityKit, a resume carried on in a world frame the device had been walked out of.
+        let arView = ARView(frame: .zero, cameraMode: .ar, automaticallyConfigureSession: false)
         let configuration = sessionController.createARConfiguration()
         configuration.worldAlignment = .gravity
         configuration.isAutoFocusEnabled = true
@@ -55,6 +57,7 @@ public struct MultiSetARView: UIViewRepresentable {
         arView.session.delegate = sessionController
         sessionController.session = arView.session
         sessionController.arView = arView
+        sessionController.observeAppLifecycle()
 
         MultiSetARScene.shared.sessionController = sessionController
 
@@ -75,9 +78,11 @@ public struct MultiSetARView: UIViewRepresentable {
 
     // Also takes the watermark down; skipped when a newer view already owns the SDK.
     public static func dismantleUIView(_ uiView: ARView, coordinator: Coordinator) {
-        // Ahead of the ownership guard: this controller's watchdog has to stop whether or
-        // not a newer view has taken the SDK over.
+        // Ahead of the ownership guard: this controller's lifecycle observers have to stop
+        // whether or not a newer view has taken the SDK over.
         coordinator.sessionController.teardown()
+        // RealityKit no longer stops a session it does not configure.
+        uiView.session.pause()
 
         guard MultiSetARScene.shared.isAttached(uiView.session) else { return }
 

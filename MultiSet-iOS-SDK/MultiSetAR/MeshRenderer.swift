@@ -33,6 +33,10 @@ internal class MeshRenderer {
     /// Applied to every mesh as it attaches, so one that lands while meshes are hidden stays hidden.
     private(set) var meshesVisible = true
 
+    /// The SDK hides the mesh while a tracking break has left it where the room no longer is.
+    /// Kept apart from `meshesVisible`, the user's setting, so neither can undo the other.
+    private var isOutOfPlace = false
+
     var meshColor: SIMD4<Float> = SIMD4<Float>(0.482, 0.173, 0.749, 0.7)
 
     // MARK: - Initialization
@@ -128,8 +132,17 @@ internal class MeshRenderer {
 
     func setMeshVisible(_ visible: Bool) {
         meshesVisible = visible
+        applyVisibility()
+    }
+
+    func setOutOfPlace(_ outOfPlace: Bool) {
+        isOutOfPlace = outOfPlace
+        applyVisibility()
+    }
+
+    private func applyVisibility() {
         for entity in meshEntities.values {
-            entity.isEnabled = visible
+            entity.isEnabled = meshesVisible && !isOutOfPlace
         }
     }
 
@@ -137,6 +150,11 @@ internal class MeshRenderer {
     /// entries from a torn-down ARView stay in `meshEntities` with no scene.
     func hasMesh() -> Bool {
         return meshEntities.values.contains { $0.scene != nil }
+    }
+
+    /// A mesh is being parsed and built into the scene.
+    var isBuildingMesh: Bool {
+        return !inFlightLoads.isEmpty
     }
 
     func isMeshRenderedForMap(mapId: String) -> Bool {
@@ -173,7 +191,7 @@ internal class MeshRenderer {
             containerEntity.position = meshResult.localPose.position
             containerEntity.orientation = meshResult.localPose.rotation
             containerEntity.scale = SIMD3<Float>(1, 1, 1)
-            containerEntity.isEnabled = meshesVisible
+            containerEntity.isEnabled = meshesVisible && !isOutOfPlace
 
             parent.addChild(containerEntity)
 

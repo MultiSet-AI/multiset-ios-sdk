@@ -7,6 +7,7 @@ Redistribution in source or binary forms must retain this notice.
 
 
 import UIKit
+import MultiSetSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // previous run's saved values are applied on this launch.
         ConfigStore.shared.load()
         return true
+    }
+
+    /// A map upload that finished or failed while the app was not running relaunches it here.
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        MultiSet.shared.mapping.handleEventsForBackgroundURLSession(identifier: identifier, completionHandler: completionHandler)
+    }
+
+    /// Answering this overrides the Info.plist, which is how the scan screen holds landscape.
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        OrientationLock.shared.mask
     }
 
     // The window lives in SceneDelegate: apps built with the iOS 27 SDK fail to launch

@@ -1,5 +1,46 @@
 # Changelog
 
+## 2.1.0
+
+Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework` and the `MultiSetAR/`
+folder together. No breaking API changes; all new callbacks are optional.
+
+### New
+
+- **Map creation** with `MultiSet.shared.mapping`: scan a space with LiDAR (`.lidar`) or on any
+  ARKit device (`.posedRGB`), keep it as a draft, and upload it to be built into a map. Needs
+  `MultiSetAR/Mapping/` and two app delegate hooks; see "Map Creation" in the README.
+- **Run progress:** `onLocalizationStageChanged(_:isBackground:)` and
+  `onObjectTrackingStageChanged(_:isBackground:)` report each run as capturing, uploading, waiting
+  on the server, or idle (`LocalizationStage`).
+- **Mesh loading:** `MultiSet.shared.isMapMeshLoading` and `isObjectMeshLoading`.
+- **Recovery state:** `onRecoveryPhaseChanged(_:needsRealignment:)`. Hide content placed in the map
+  frame while `needsRealignment` is true.
+- **`MultiSetConfig.clientSource`** names your app in MultiSet's query logs (default
+  `ios-sdk-2.1.0`).
+- **VPS-2 in multi-frame mode:** `queryMode` now applies to multi-frame localization too.
+- **Demo app:** map creation screens, plus the MultiSet app's capture overlays, run status card and
+  mesh loading bar.
+
+### Changed
+
+- `relocalization` now re-localizes automatically after a tracking break, hiding the map mesh until
+  it succeeds. In 2.0 the flag had no effect.
+- `firstLocalizationUntilSuccess` and `firstObjectTrackingUntilSuccess` retry at most 5 times before
+  reporting a failure. In 2.0 they retried indefinitely.
+- `MultiSetARView` starts a new world frame when the app returns from the background. If you use
+  your own `ARView`, see "Using Your Own ARView" in the README.
+- `initialize(config:callback:)` accepts credentials without a map or object code; `localize()` and
+  `startObjectTracking()` report the missing code instead.
+- `bgLocalizationDurationSeconds` accepts 10–180 s (was 15–180).
+- The framework's privacy manifest declares disk-space access (`E174.1`).
+
+### Fixed
+
+- Map mesh and object outlines were misaligned after returning from the background in a different
+  place.
+- Object tracking failed with "No frame captured" after returning from the background.
+
 ## 2.0.0 (build 2)
 
 A rebuild of `MultiSetSDK.xcframework` with two MapSet mesh fixes. No API change, and the

@@ -74,9 +74,7 @@ struct SettingsView: View {
                 }
             }
             .pickerStyle(.menu)
-            Text(draft.queryMode == .vps2
-                 ? "\(draft.queryMode.description) Single-frame only — multi-frame localization always uses VPS-1."
-                 : draft.queryMode.description)
+            Text(draft.queryMode.description)
                 .font(.caption)
                 .foregroundColor(.secondary)
 
@@ -86,7 +84,7 @@ struct SettingsView: View {
                 sliderRow(
                     "Background Interval",
                     value: $draft.bgLocalizationIntervalSeconds,
-                    range: 15...180, step: 1,
+                    range: 10...180, step: 1,
                     display: "\(Int(draft.bgLocalizationIntervalSeconds)) s"
                 )
             }

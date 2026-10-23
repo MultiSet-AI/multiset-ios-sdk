@@ -37,9 +37,14 @@ struct ARLocalizationView: View {
     // SDK State (polled)
     @State private var isLocalizing = false
     @State private var isShowingOverlay = false
-    @State private var isCapturingFrames = false
     @State private var hasMapMesh = false
+    @State private var isMeshLoading = false
     @State private var watermarkClearance: CGFloat = 0
+
+    // SDK State (from callbacks)
+    @State private var stage: LocalizationStage = .idle
+    @State private var isForegroundRun = false
+    @StateObject private var runStatus = RunStatusIndicator()
 
     // Timer for state polling
     let stateTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -52,15 +57,29 @@ struct ARLocalizationView: View {
             MultiSetARView()
                 .ignoresSafeArea()
 
+            // Under the controls, so the close button and the status card stay reachable.
+            if isForegroundRun || isShowingOverlay {
+                if let status = FrameCaptureOverlay.captureStatus(for: stage) {
+                    FrameCaptureOverlay(statusText: status)
+                } else {
+                    ServerWaitOverlay(statusText: stage == .uploading ? "Uploading…" : "Matching against the map…")
+                }
+            }
+
             // Top controls
             VStack {
                 HStack {
-                    // GPS Indicator (left)
-                    if MultiSet.shared.config?.passGeoPose == true {
-                        GpsIndicator(isActive: false) // GPS state managed by SDK
-                            .padding(.leading, 16)
-                            .padding(.top, 16)
+                    // After the GPS indicator, so that stays put as runs come and go.
+                    HStack(spacing: 12) {
+                        if MultiSet.shared.config?.passGeoPose == true {
+                            GpsIndicator(isActive: false) // GPS state managed by SDK
+                        }
+                        if runStatus.state != .hidden {
+                            RunStatusCard(state: runStatus.state)
+                        }
                     }
+                    .padding(.leading, 16)
+                    .padding(.top, 16)
 
                     Spacer()
 
@@ -83,40 +102,31 @@ struct ARLocalizationView: View {
 
                 HStack {
                     // Waits for the mesh to be in the scene; offered earlier it would hide nothing.
-                    if hasMapMesh {
+                    if isMeshLoading {
+                        MeshLoadingBar(label: "Loading the map mesh…")
+                            .padding(.leading, 16)
+                    } else if hasMapMesh {
                         MeshVisibilityToggle(isOn: isMeshVisible, action: setMeshVisible)
                             .padding(.leading, 16)
                     }
 
                     Spacer()
 
-                    // Localize Button (right)
-                    if !isShowingOverlay && !isLocalizing {
+                    // Localize Button (right). Under a run's overlay it is hidden; through a
+                    // background run it stays in place, disabled.
+                    if !isShowingOverlay && !isForegroundRun {
                         Button(action: startLocalization) {
                             Image("capture_button")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 72, height: 72)
                         }
-                        .disabled(!isTrackingNormal)
-                        .opacity(isTrackingNormal ? 1.0 : 0.5)
-                        .padding(.trailing, 24)
+                        .disabled(!canLocalize)
+                        .opacity(canLocalize ? 1.0 : 0.5)
+                        .padding(.trailing, 16)
                     }
                 }
                 .padding(.bottom, max(24, watermarkClearance + 12))
-            }
-
-            // Localization Overlay (frame capture animation)
-            if isCapturingFrames {
-                LocalizationOverlay(
-                    isCapturing: true,
-                    statusText: "Capturing frames..."
-                )
-            }
-
-            // API Loading Overlay (waiting for server response)
-            if isShowingOverlay && !isCapturingFrames {
-                APILoadingOverlay()
             }
         }
         .preferredColorScheme(.dark)
@@ -164,24 +174,40 @@ struct ARLocalizationView: View {
             // Poll SDK state for UI updates
             isLocalizing = MultiSet.shared.isLocalizing
             isShowingOverlay = MultiSet.shared.isShowingOverlay
-            isCapturingFrames = MultiSet.shared.isCapturingFrames
             hasMapMesh = MultiSet.shared.hasMapMesh
+            isMeshLoading = MultiSet.shared.isMapMeshLoading
             watermarkClearance = MultiSet.shared.watermarkClearance
+            if isShowingOverlay && stage == .idle {
+                runStatus.keepOpen()
+            }
         }
+    }
+
+    private var canLocalize: Bool {
+        isTrackingNormal && !isLocalizing
     }
 
     // MARK: - Setup
 
     private func setupCallbacks() {
         // Setup localization result callback
+        sdkDelegate.onLocalizationStageChanged = { newStage, isBackground in
+            stage = newStage
+            isForegroundRun = newStage != .idle && !isBackground
+            isShowingOverlay = MultiSet.shared.isShowingOverlay
+            runStatus.receive(RunStatusState(newStage))
+        }
+
         sdkDelegate.onLocalizationSuccess = { result in
             hasLocalized = true
+            runStatus.receive(.succeeded)
             if MultiSet.shared.config?.showAlerts == true {
                 showToastMessage("Localization successful", success: true)
             }
         }
 
         sdkDelegate.onLocalizationFailure = { error in
+            runStatus.receive(.failed)
             if MultiSet.shared.config?.showAlerts == true {
                 failureAlertMessage = userFriendlyMessage(for: error)
                 showFailureAlert = true
@@ -192,6 +218,7 @@ struct ARLocalizationView: View {
         // discarded it, and nothing in the scene moved. Two messages, in that order:
         // the toast reports what came back, the alert reports what was done with it.
         sdkDelegate.onLocalizationFalsePositive = { info in
+            runStatus.receive(.failed)
             guard MultiSet.shared.config?.showAlerts == true else { return }
             showToastMessage("Localization response received", success: true)
             falsePositiveMessage = falsePositiveText(for: info)
@@ -275,8 +302,8 @@ struct ARLocalizationView: View {
         showToast = true
     }
 
-    /// Explains the discard in the terms a tester needs: how far off the returned pose
-    /// was, that the scene was deliberately left alone, and what to do next.
+    /// What happened and what to do next. The numbers behind the discard stay in the SDK's
+    /// log (`MultiSetSDK >> Discarded …`), where a tester can read them.
     private func falsePositiveText(for info: FalsePositiveInfo) -> String {
         // Suspected aliasing is a different problem and needs a different instruction.
         // The space genuinely looks the same from two places, so moving and asking again
@@ -285,63 +312,14 @@ struct ARLocalizationView: View {
         if info.rejection == .suspectedAliasing {
             return [
                 "This part of the space looks the same as another part of the map, and the server keeps matching the wrong one.",
-                String(
-                    format: "%d viewpoints agreed on a pose %.1f m from where your device says the map is, but not strongly enough to overrule it.",
-                    info.challengerSupport, info.jumpMeters
-                ),
                 "Localizing again will not help here. Tap the reset button at the top if the map looks misplaced, or move to a visibly different area first."
             ].joined(separator: "\n\n")
         }
 
-        // Name the limit that was actually missed. Distance and heading are independent
-        // checks with independent tolerances, so quoting the distance against the
-        // distance limit alone contradicts itself whenever heading was the disqualifier
-        // — "0.5 m ... (limit 3.7 m), so the response was discarded".
-        let limitLine: String
-        switch info.disagreement {
-        case .distance:
-            limitLine = String(
-                format: "Its pose sits %.1f m from where your device's own motion says the map should be, past the %.1f m allowed — so it was discarded and the map was left where it is.",
-                info.jumpMeters, info.thresholdMeters
-            )
-        case .heading:
-            limitLine = String(
-                format: "Its pose is turned %.0f degrees from where your device's own motion says the map should be, past the %.0f degrees allowed — so it was discarded and the map was left where it is. The %.1f m position was within tolerance.",
-                info.yawDeltaDeg, info.thresholdDegrees, info.jumpMeters
-            )
-        case .both, .none:
-            limitLine = String(
-                format: "Its pose sits %.1f m and %.0f degrees from where your device's own motion says the map should be, past the %.1f m and %.0f degrees allowed — so it was discarded and the map was left where it is.",
-                info.jumpMeters, info.yawDeltaDeg, info.thresholdMeters, info.thresholdDegrees
-            )
-        }
-
         var lines = [
             "The server matched your camera image to a different part of the space.",
-            limitLine
+            "Move a few steps, point at a well-lit, distinctive area and localize again."
         ]
-
-        // Only quote the viewpoint tally when it was the disqualifier. On `.anchorHeldVote`
-        // the challenger had every viewpoint it needed and still lost on a tie, so
-        // "1 of the 1 viewpoints it would need" reads as the bar being met and the pose
-        // refused anyway.
-        switch info.cause {
-        case .insufficientViewpoints:
-            lines.append(String(
-                format: "It had %d of the %d separate viewpoints it would need to move the map.",
-                info.challengerSupport, info.requiredSupport
-            ))
-        case .anchorHeldVote:
-            lines.append("Nothing else has agreed with it yet, so the anchor already in place kept the scene. One more fix from a few steps away would settle it either way.")
-        case .inlierMargin, .none:
-            break
-        }
-
-        if info.consecutiveCount > 1 {
-            lines.append("Discarded \(info.consecutiveCount) responses in a row.")
-        }
-
-        lines.append("Move a few steps, point at a well-lit, distinctive area and localize again.")
 
         // Nothing overrules an anchor the device still vouches for on its own, so after a
         // run of rejections the user needs to know how to start over — the anchor itself

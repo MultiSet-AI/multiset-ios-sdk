@@ -16,7 +16,7 @@ final class ARSessionFrameSource: MultiSetFrameSource {
 
     let session: ARSession
 
-    /// Restarting tracking needs the configuration and the watchdog the controller owns,
+    /// Restarting tracking needs the configuration and the stale-frame mark the controller owns,
     /// so the reset is delegated rather than re-running the session from here.
     weak var sessionController: ARSessionController?
 
@@ -33,6 +33,13 @@ final class ARSessionFrameSource: MultiSetFrameSource {
 
         guard frame.camera.trackingState == .normal else {
             print("MultiSetSDK >> Frame not ready for capture - tracking state: \(frame.camera.trackingState.diagnosticLabel)")
+            return nil
+        }
+
+        // Localizing that frame would place the map where the device was before it was carried
+        // elsewhere, and the result would look like a successful fix.
+        if let staleUpTo = sessionController?.framesStaleUpTo, frame.timestamp <= staleUpTo {
+            print("MultiSetSDK >> Frame not ready for capture - waiting for the camera after the app returned")
             return nil
         }
 

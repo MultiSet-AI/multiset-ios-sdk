@@ -8,6 +8,7 @@ Redistribution in source or binary forms must retain this notice.
 import Foundation
 import ARKit
 import RealityKit
+import UIKit
 import MultiSetSDK
 
 /// Owns the ARSession delegate and forwards what ARKit reports to the SDK
@@ -17,15 +18,13 @@ final class ARSessionController: NSObject, ARSessionDelegate {
     var arView: ARView?
     var gizmoAnchor: AnchorEntity?
 
-    /// How long a resumed session may spend relocalizing before the adapter gives up and
-    /// starts a new world frame. ARKit does not time this out itself: if the device was
-    /// carried elsewhere while the app was backgrounded there is nothing left to
-    /// relocalize against, and the session stays in `.limited(.relocalizing)`
-    /// indefinitely — a state in which `ARSessionFrameSource` can never return a frame
-    /// and every localization fails on "no frames captured".
-    private static let relocalizationTimeout: TimeInterval = 6.0
-
-    private var relocalizationWatchdog: Task<Void, Never>?
+    /// The session is paused because the app is in the background.
+    private var isPausedForBackground = false
+    /// Frames up to here were taken before the app's last trip to the background. Until ARKit
+    /// delivers a new one, `currentFrame` still shows the place the device was carried away from.
+    private(set) var framesStaleUpTo: TimeInterval = 0
+    private var freshTrackingReport: Task<Void, Never>?
+    private var lifecycleObservers: [NSObjectProtocol] = []
 
     @MainActor
     func resetWorldOrigin() {
@@ -35,48 +34,83 @@ final class ARSessionController: NSObject, ARSessionDelegate {
 
     /// Starts a new world frame and tells the SDK, so the pose gate discards an anchor
     /// measured in the frame being thrown away rather than comparing across the two.
+    /// Same options as the MultiSet apps: no ARKit anchor from the old frame survives into it.
     @MainActor
     private func restartTracking() {
-        cancelRelocalizationWatchdog()
-        session?.run(createARConfiguration(), options: [.resetTracking])
+        session?.run(createARConfiguration(), options: [.resetTracking, .removeExistingAnchors])
 
         MultiSet.shared.notifyWorldOriginReset()
 
         MultiSetARScene.shared.renderer.resetMapAnchor()
     }
 
-    // MARK: - Relocalization Watchdog
-
-    @MainActor
-    private func startRelocalizationWatchdog() {
-        cancelRelocalizationWatchdog()
-
-        relocalizationWatchdog = Task { @MainActor [weak self] in
-            try? await Task.sleep(nanoseconds: UInt64(Self.relocalizationTimeout * 1_000_000_000))
-            guard !Task.isCancelled, let self = self else { return }
-
-            // A nil frame counts as not recovered: it is the same dead session seen from
-            // one step further back.
-            let state = self.session?.currentFrame?.camera.trackingState
-            guard state != .normal else { return }
-
-            print("MultiSetSDK >> Relocalization did not recover in \(Self.relocalizationTimeout)s - starting a new world frame")
-            self.restartTracking()
-        }
-    }
-
-    @MainActor
-    private func cancelRelocalizationWatchdog() {
-        relocalizationWatchdog?.cancel()
-        relocalizationWatchdog = nil
-    }
-
-    /// Called when the view that owns this controller goes away. Without it a pending
-    /// watchdog would fire against a session the SDK has already been detached from and
-    /// restart tracking underneath whatever replaced it.
+    /// Called when the view that owns this controller goes away, so nothing it scheduled reports
+    /// tracking for a session the SDK has already been detached from.
     @MainActor
     func teardown() {
-        cancelRelocalizationWatchdog()
+        freshTrackingReport?.cancel()
+        lifecycleObservers.forEach(NotificationCenter.default.removeObserver)
+        lifecycleObservers.removeAll()
+    }
+
+    // MARK: - App Lifecycle
+
+    /// The trip to the background is handled here rather than left to RealityKit and ARKit.
+    @MainActor
+    func observeAppLifecycle() {
+        guard lifecycleObservers.isEmpty else { return }
+        let center = NotificationCenter.default
+        lifecycleObservers = [
+            center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+                MainActor.assumeIsolated { self?.appDidEnterBackground() }
+            },
+            center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+                MainActor.assumeIsolated { self?.appDidBecomeActive() }
+            }
+        ]
+    }
+
+    @MainActor
+    private func appDidEnterBackground() {
+        guard let session, MultiSetARScene.shared.isAttached(session) else { return }
+        freshTrackingReport?.cancel()
+        framesStaleUpTo = max(framesStaleUpTo, session.currentFrame?.timestamp ?? 0)
+        isPausedForBackground = true
+        session.pause()
+        // An interruption plus tracking reported as not normal, so a host's localize button stays
+        // off until tracking is back.
+        MultiSet.shared.forwardARTrackingState(.notAvailable)
+    }
+
+    /// A fresh world frame, as the MultiSet Field app does. Resumed instead, the session carried
+    /// on from the pose the app left at, or relocalized into the old frame, and neither matches a
+    /// room the device was walked away from: a fix made after the trip was moved off it again.
+    @MainActor
+    private func appDidBecomeActive() {
+        guard isPausedForBackground else { return }
+        isPausedForBackground = false
+        print("MultiSetSDK >> Back from the background - starting a new world frame")
+        restartTracking()
+        reportTrackingOnceFresh()
+    }
+
+    /// Forwards the tracking state of the first frame taken from now on. A recovery the SDK arms
+    /// waits for tracking to be reported normal, and ARKit may already be there, with no change
+    /// left to report.
+    @MainActor
+    private func reportTrackingOnceFresh() {
+        let since = max(framesStaleUpTo, session?.currentFrame?.timestamp ?? 0)
+        freshTrackingReport?.cancel()
+        freshTrackingReport = Task { @MainActor [weak self] in
+            for _ in 0..<50 {
+                try? await Task.sleep(nanoseconds: 100_000_000)
+                guard let self, !Task.isCancelled else { return }
+                if let frame = self.session?.currentFrame, frame.timestamp > since {
+                    MultiSet.shared.forwardARTrackingState(frame.camera.trackingState)
+                    return
+                }
+            }
+        }
     }
 
     // MARK: - AR Configuration
@@ -96,9 +130,6 @@ final class ARSessionController: NSObject, ARSessionDelegate {
 
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         DispatchQueue.main.async {
-            if camera.trackingState == .normal {
-                self.cancelRelocalizationWatchdog()
-            }
             MultiSet.shared.forwardARTrackingState(camera.trackingState)
         }
     }
@@ -106,7 +137,6 @@ final class ARSessionController: NSObject, ARSessionDelegate {
     func sessionWasInterrupted(_ session: ARSession) {
         print("MultiSetSDK >> AR session interrupted")
         DispatchQueue.main.async {
-            self.cancelRelocalizationWatchdog()
             MultiSet.shared.notifyTrackingInterrupted()
         }
     }
@@ -115,14 +145,15 @@ final class ARSessionController: NSObject, ARSessionDelegate {
         print("MultiSetSDK >> AR session interruption ended")
         DispatchQueue.main.async {
             MultiSet.shared.notifyTrackingInterrupted()
-            self.startRelocalizationWatchdog()
+            self.reportTrackingOnceFresh()
         }
     }
 
-    /// ARKit is allowed to try: a short interruption that relocalizes keeps the world
-    /// frame, and with it every anchor already placed in it. `startRelocalizationWatchdog`
-    /// covers the case it cannot recover from.
+    /// No relocalization: after an interruption ARKit resets tracking and starts at
+    /// `.limited(.initializing)`, which the SDK treats as a new world frame. Allowed to
+    /// relocalize, ARKit could fit the old frame back on late, or onto the wrong place once the
+    /// device had been carried elsewhere, moving a fix made after the interruption off with it.
     func sessionShouldAttemptRelocalization(_ session: ARSession) -> Bool {
-        return true
+        return false
     }
 }

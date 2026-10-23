@@ -22,6 +22,12 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
     var gizmoAnchor: AnchorEntity?
     var gizmoVisual: Entity?
 
+    /// The gizmo shows once a fix has placed it, while the host allows it (`setGizmoVisible`),
+    /// and not while a tracking break has left that fix where the room no longer is.
+    private var isGizmoPlaced = false
+    private var isGizmoAllowed = true
+    private var isMapOutOfPlace = false
+
     var mapParent: Entity?
     var objectRoot: Entity?
 
@@ -45,7 +51,8 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
 
         gizmoAnchor.transform.translation = position
         gizmoAnchor.transform.rotation = rotation
-        gizmoVisual?.isEnabled = true
+        isGizmoPlaced = true
+        applyGizmoVisibility()
 
         print("MultiSetSDK >> Gizmo updated to Position: \(position), Rotation: \(rotation)")
     }
@@ -72,13 +79,29 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
         mapMeshRenderer.removeMesh()
     }
 
+    func setMapMeshVisible(_ visible: Bool) {
+        isMapOutOfPlace = !visible
+        mapMeshRenderer.setOutOfPlace(!visible)
+        applyGizmoVisibility()
+    }
+
+    func setGizmoAllowed(_ allowed: Bool) {
+        isGizmoAllowed = allowed
+        applyGizmoVisibility()
+    }
+
+    private func applyGizmoVisibility() {
+        gizmoVisual?.isEnabled = isGizmoPlaced && isGizmoAllowed && !isMapOutOfPlace
+    }
+
     /// Put the gizmo back where it sits before the first fix. A world frame that has been
     /// restarted no longer contains the pose the anchor was placed at, so leaving it lit
     /// at that transform points the user at a location that no longer means anything.
     func resetMapAnchor() {
         gizmoAnchor?.transform.translation = SIMD3<Float>(0, 0, 0)
         gizmoAnchor?.transform.rotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1, 0))
-        gizmoVisual?.isEnabled = false
+        isGizmoPlaced = false
+        applyGizmoVisibility()
     }
 
     func renderObjectMesh(_ mesh: ObjectMeshAsset) {
@@ -103,6 +126,14 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
         objectMeshRenderer.hasMesh()
     }
 
+    var isBuildingMapMesh: Bool {
+        mapMeshRenderer.isBuildingMesh
+    }
+
+    var isBuildingObjectMesh: Bool {
+        objectMeshRenderer.isBuildingMesh
+    }
+
     func setMeshesVisible(_ visible: Bool) {
         mapMeshRenderer.setMeshVisible(visible)
         objectMeshRenderer.setAllMeshesVisible(visible)
@@ -123,6 +154,10 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
     /// the SDK already — detaching after a handover would wipe the live view's scene.
     func detach() {
         removeAllMapMeshes()
+        // A renderer outlives the SDK session that hid its mesh; the next one starts in place.
+        mapMeshRenderer.setOutOfPlace(false)
+        isMapOutOfPlace = false
+        isGizmoPlaced = false
         removeAllObjectMeshes()
         gizmoAnchor = nil
         gizmoVisual = nil
