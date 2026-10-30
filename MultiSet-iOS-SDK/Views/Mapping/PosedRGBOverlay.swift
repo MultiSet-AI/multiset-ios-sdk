@@ -41,9 +41,7 @@ struct PosedRGBOverlay: View {
 
             VStack(spacing: MSSpacing.sm) {
                 if model.isInFinalMinute {
-                    ScanBanner(
-                        text: "1 minute left — the scan stops at \(ScanTimer.clock(MappingLimits.maximumScanDuration))",
-                        systemImage: "timer")
+                    ScanBanner(text: MappingLimits.finalMinuteWarning, systemImage: "timer")
                 }
                 if model.phase == .mapping, model.isCapturingSlowly {
                     ScanBanner(text: "Device is warm — capturing more slowly", systemImage: "thermometer.sun.fill")

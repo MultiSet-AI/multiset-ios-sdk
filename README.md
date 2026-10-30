@@ -223,9 +223,6 @@ changes, and if you do not create maps no code changes are needed. Two behaviour
   their object is tracked again. If you run your own `ARView`, see "Using Your Own ARView".
 - **`queryMode` applies to multi-frame localization too**, which now supports `.vps2`.
 
-Localization and object tracking queries now also carry an `X-Client-Source` header naming the
-client, `ios-sdk-2.1.0` unless you set `clientSource` — see "Naming Your App on Query Logs".
-
 New and optional: `onRecoveryPhaseChanged(_:needsRealignment:)`,
 `onLocalizationStageChanged(_:isBackground:)`, `onObjectTrackingStageChanged(_:isBackground:)`, the
 `localizationStage`, `objectTrackingStage`, `recoveryPhase`, `needsRealignment`, `isLoadingMapMesh`
@@ -339,7 +336,6 @@ config.poseConsistencyYawThreshold = 25     // Heading limit in degrees (5-60)
 
 // API Environment
 config.baseURL = MultiSetConfig.productionBaseURL  // Override to target another deployment
-config.clientSource = "acme-museum-ios"     // Default nil: queries are tagged ios-sdk-<version>
 
 // GPS
 config.passGeoPose = true                   // Include GPS in requests
@@ -794,6 +790,9 @@ Scan rules the SDK enforces:
   afterwards is in a different world frame. A scan past the minimum is packaged as it stood; a
   shorter one fails. `ARMappingSource` reports interruptions for you. `scan.autoStopReason` says
   why the SDK stopped a scan by itself.
+
+The demo app keeps its stop button disabled until the 10 s minimum, so a scan cannot be thrown
+away by an early tap, and shows an alert at 9:00: "One minute left — the scan stops itself at 10:00".
 
 A Posed RGB scan adds:
 

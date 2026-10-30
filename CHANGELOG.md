@@ -16,11 +16,10 @@ folder together. No breaking API changes; all new callbacks are optional.
 - **Mesh loading:** `MultiSet.shared.isMapMeshLoading` and `isObjectMeshLoading`.
 - **Recovery state:** `onRecoveryPhaseChanged(_:needsRealignment:)`. Hide content placed in the map
   frame while `needsRealignment` is true.
-- **`MultiSetConfig.clientSource`** names your app in MultiSet's query logs (default
-  `ios-sdk-2.1.0`).
 - **VPS-2 in multi-frame mode:** `queryMode` now applies to multi-frame localization too.
 - **Demo app:** map creation screens, plus the MultiSet app's capture overlays, run status card and
-  mesh loading bar.
+  mesh loading bar. Stop stays disabled until a scan reaches 10 s, and an alert warns one minute
+  before the 10-minute limit.
 
 ### Changed
 

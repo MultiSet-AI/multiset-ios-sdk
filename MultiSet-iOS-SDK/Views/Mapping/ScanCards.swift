@@ -8,6 +8,12 @@ Redistribution in source or binary forms must retain this notice.
 import SwiftUI
 import MultiSetSDK
 
+extension MappingLimits {
+    static let finalMinuteStart = maximumScanDuration - 60
+    static let finalMinuteWarning =
+        "One minute left — the scan stops itself at \(ScanTimer.clock(maximumScanDuration))"
+}
+
 /// The scan clock out of the maximum, amber until the minimum is reached.
 struct ScanTimer: View {
     let elapsed: TimeInterval

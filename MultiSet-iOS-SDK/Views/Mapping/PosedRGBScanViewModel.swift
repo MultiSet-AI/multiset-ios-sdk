@@ -27,6 +27,8 @@ final class PosedRGBScanViewModel: ObservableObject {
     @Published var toast: MSToast?
     /// Why the scan stopped on its own, for an alert; nil once read.
     @Published var notice: Notice?
+    /// Raised once as the scan enters its last minute; cleared when the scan stops.
+    @Published var showsFinalMinuteWarning = false
 
     private var observers: Set<AnyCancellable> = []
     private var mapping: MultiSetMapping { MultiSet.shared.mapping }
@@ -52,7 +54,7 @@ final class PosedRGBScanViewModel: ObservableObject {
     var canFinish: Bool { phase == .mapping && elapsed >= MappingLimits.minimumScanDuration }
 
     var isInFinalMinute: Bool {
-        phase == .mapping && elapsed >= MappingLimits.maximumScanDuration - 60
+        phase == .mapping && elapsed >= MappingLimits.finalMinuteStart
     }
 
     // MARK: - Screen lifecycle
@@ -99,6 +101,7 @@ final class PosedRGBScanViewModel: ObservableObject {
     private func update(_ new: MappingScanState) {
         let old = scan
         scan = new
+        showsFinalMinuteWarning = ScanViewModel.finalMinuteWarning(was: showsFinalMinuteWarning, old: old, new: new)
         if new.phase == .preparing, old.phase != .preparing {
             toast = nil
         }

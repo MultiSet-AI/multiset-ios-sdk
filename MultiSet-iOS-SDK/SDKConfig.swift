@@ -14,7 +14,6 @@ struct SDKConfig {
 
     // MARK: - API Environment
     static let baseURL = MultiSetConfig.productionBaseURL  // e.g. "https://api.multiset.ai"
-    static let clientSource: String? = nil  // e.g. "acme-museum-ios"; nil sends "ios-sdk-<version>"
 
     // MARK: - Authentication Credentials
     // Get your credentials at: https://developer.multiset.ai/credentials
@@ -72,8 +71,7 @@ struct SDKConfig {
             clientSecret: clientSecret,
             mapCode: mapCode,
             mapSetCode: mapSetCode,
-            baseURL: baseURL,
-            clientSource: clientSource
+            baseURL: baseURL
         )
 
         // ═══════════════════════════════════════════════════════════════

@@ -18,7 +18,6 @@ struct ScanView: View {
     @State private var showsFinishedDiscard = false
     @State private var showsRotateCard = true
     @State private var showsNameCard = false
-    @State private var showsTooShort = false
 
     var body: some View {
         ZStack {
@@ -27,7 +26,7 @@ struct ScanView: View {
             ScanOverlay(
                 model: model,
                 onStart: { Task { await model.start() } },
-                onStop: stop,
+                onStop: { Task { await model.stop() } },
                 onBack: back)
 
             if showsRotateCard {
@@ -57,10 +56,8 @@ struct ScanView: View {
         } message: {
             Text("This scan has not been saved. Discarding it cannot be undone.")
         }
-        .alert("Scan too short", isPresented: $showsTooShort) {
-            Button("Scan again") {}
-        } message: {
-            Text("A scan needs at least \(Int(MappingLimits.minimumScanDuration)) seconds to build a map. This one has been discarded — start again and keep going.")
+        .alert(MappingLimits.finalMinuteWarning, isPresented: $model.showsFinalMinuteWarning) {
+            Button("OK") {}
         }
         .alert(failureTitle, isPresented: failureBinding) {
             if failure?.reason == .cameraAccessDenied {
@@ -78,14 +75,6 @@ struct ScanView: View {
             Text(failureMessage)
         }
         .msARDialogTint()
-    }
-
-    private func stop() {
-        Task {
-            if await model.stop() == .discardedTooShort {
-                showsTooShort = true
-            }
-        }
     }
 
     private func back() {

@@ -6752,117 +6752,6 @@
           },
           {
             "kind": "Var",
-            "name": "clientSource",
-            "printedName": "clientSource",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "Swift.String?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:11MultiSetSDK0aB6ConfigV12clientSourceSSSgvp",
-            "mangledName": "$s11MultiSetSDK0aB6ConfigV12clientSourceSSSgvp",
-            "moduleName": "MultiSetSDK",
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "Swift.String?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:11MultiSetSDK0aB6ConfigV12clientSourceSSSgvg",
-                "mangledName": "$s11MultiSetSDK0aB6ConfigV12clientSourceSSSgvg",
-                "moduleName": "MultiSetSDK",
-                "implicit": true,
-                "accessorKind": "get"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Set",
-                "printedName": "Set()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "Swift.String?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:11MultiSetSDK0aB6ConfigV12clientSourceSSSgvs",
-                "mangledName": "$s11MultiSetSDK0aB6ConfigV12clientSourceSSSgvs",
-                "moduleName": "MultiSetSDK",
-                "implicit": true,
-                "accessorKind": "set"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Modify",
-                "printedName": "Modify()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:11MultiSetSDK0aB6ConfigV12clientSourceSSSgvM",
-                "mangledName": "$s11MultiSetSDK0aB6ConfigV12clientSourceSSSgvM",
-                "moduleName": "MultiSetSDK",
-                "implicit": true,
-                "accessorKind": "_modify"
-              }
-            ]
-          },
-          {
-            "kind": "Var",
             "name": "mapCode",
             "printedName": "mapCode",
             "children": [
@@ -10037,7 +9926,7 @@
           {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(clientId:clientSecret:mapCode:mapSetCode:localizationMode:queryMode:autoLocalize:backgroundLocalization:bgLocalizationDurationSeconds:relocalization:numberOfFrames:frameCaptureIntervalMs:confidenceCheck:confidenceThreshold:poseConsistencyCheck:poseConsistencyThreshold:poseConsistencyYawThreshold:poseConsistencyTuning:mapAliasingRisk:firstLocalizationUntilSuccess:showAlerts:meshVisualization:passGeoPose:geoCoordinatesInResponse:hintRadius:use2DFiltering:hintMapCodes:hintPosition:hintFloorHeight:imageQuality:objectCodes:autoObjectTracking:backgroundObjectTracking:bgObjectTrackingDurationSeconds:restartObjectTracking:objectTrackingCaptureDelay:firstObjectTrackingUntilSuccess:baseURL:clientSource:)",
+            "printedName": "init(clientId:clientSecret:mapCode:mapSetCode:localizationMode:queryMode:autoLocalize:backgroundLocalization:bgLocalizationDurationSeconds:relocalization:numberOfFrames:frameCaptureIntervalMs:confidenceCheck:confidenceThreshold:poseConsistencyCheck:poseConsistencyThreshold:poseConsistencyYawThreshold:poseConsistencyTuning:mapAliasingRisk:firstLocalizationUntilSuccess:showAlerts:meshVisualization:passGeoPose:geoCoordinatesInResponse:hintRadius:use2DFiltering:hintMapCodes:hintPosition:hintFloorHeight:imageQuality:objectCodes:autoObjectTracking:backgroundObjectTracking:bgObjectTrackingDurationSeconds:restartObjectTracking:objectTrackingCaptureDelay:firstObjectTrackingUntilSuccess:baseURL:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -10346,26 +10235,11 @@
                 "printedName": "Swift.String",
                 "hasDefaultArg": true,
                 "usr": "s:SS"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "Swift.String?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  }
-                ],
-                "hasDefaultArg": true,
-                "usr": "s:Sq"
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:11MultiSetSDK0aB6ConfigV8clientId0E6Secret7mapCode0hbI016localizationMode05queryK012autoLocalize22backgroundLocalization02bgP15DurationSeconds14relocalization14numberOfFrames22frameCaptureIntervalMs15confidenceCheck19confidenceThreshold20poseConsistencyCheck24poseConsistencyThreshold27poseConsistencyYawThreshold21poseConsistencyTuning0H12AliasingRisk05firstP12UntilSuccess10showAlerts17meshVisualization11passGeoPose24geoCoordinatesInResponse10hintRadius14use2DFiltering12hintMapCodes12hintPosition15hintFloorHeight12imageQuality11objectCodes0M14ObjectTracking0O14ObjectTracking0q14ObjectTrackingrS021restartObjectTracking014objectTrackingY5Delay31firstObjectTrackingUntilSuccess7baseURL0E6SourceACSS_S3SAA0pK0OAA05QueryK0OS2bSfSbS2iSbSfSbS2fAA10GateTuningVSgSDySSSfGS5bSiSbSaySSGS2SSiA23_S2bSfSbSfSbS2SSgtcfc",
-            "mangledName": "$s11MultiSetSDK0aB6ConfigV8clientId0E6Secret7mapCode0hbI016localizationMode05queryK012autoLocalize22backgroundLocalization02bgP15DurationSeconds14relocalization14numberOfFrames22frameCaptureIntervalMs15confidenceCheck19confidenceThreshold20poseConsistencyCheck24poseConsistencyThreshold27poseConsistencyYawThreshold21poseConsistencyTuning0H12AliasingRisk05firstP12UntilSuccess10showAlerts17meshVisualization11passGeoPose24geoCoordinatesInResponse10hintRadius14use2DFiltering12hintMapCodes12hintPosition15hintFloorHeight12imageQuality11objectCodes0M14ObjectTracking0O14ObjectTracking0q14ObjectTrackingrS021restartObjectTracking014objectTrackingY5Delay31firstObjectTrackingUntilSuccess7baseURL0E6SourceACSS_S3SAA0pK0OAA05QueryK0OS2bSfSbS2iSbSfSbS2fAA10GateTuningVSgSDySSSfGS5bSiSbSaySSGS2SSiA23_S2bSfSbSfSbS2SSgtcfc",
+            "usr": "s:11MultiSetSDK0aB6ConfigV8clientId0E6Secret7mapCode0hbI016localizationMode05queryK012autoLocalize22backgroundLocalization02bgP15DurationSeconds14relocalization14numberOfFrames22frameCaptureIntervalMs15confidenceCheck19confidenceThreshold20poseConsistencyCheck24poseConsistencyThreshold27poseConsistencyYawThreshold21poseConsistencyTuning0H12AliasingRisk05firstP12UntilSuccess10showAlerts17meshVisualization11passGeoPose24geoCoordinatesInResponse10hintRadius14use2DFiltering12hintMapCodes12hintPosition15hintFloorHeight12imageQuality11objectCodes0M14ObjectTracking0O14ObjectTracking0q14ObjectTrackingrS021restartObjectTracking014objectTrackingY5Delay31firstObjectTrackingUntilSuccess7baseURLACSS_S3SAA0pK0OAA05QueryK0OS2bSfSbS2iSbSfSbS2fAA10GateTuningVSgSDySSSfGS5bSiSbSaySSGS2SSiA22_S2bSfSbSfSbSStcfc",
+            "mangledName": "$s11MultiSetSDK0aB6ConfigV8clientId0E6Secret7mapCode0hbI016localizationMode05queryK012autoLocalize22backgroundLocalization02bgP15DurationSeconds14relocalization14numberOfFrames22frameCaptureIntervalMs15confidenceCheck19confidenceThreshold20poseConsistencyCheck24poseConsistencyThreshold27poseConsistencyYawThreshold21poseConsistencyTuning0H12AliasingRisk05firstP12UntilSuccess10showAlerts17meshVisualization11passGeoPose24geoCoordinatesInResponse10hintRadius14use2DFiltering12hintMapCodes12hintPosition15hintFloorHeight12imageQuality11objectCodes0M14ObjectTracking0O14ObjectTracking0q14ObjectTrackingrS021restartObjectTracking014objectTrackingY5Delay31firstObjectTrackingUntilSuccess7baseURLACSS_S3SAA0pK0OAA05QueryK0OS2bSfSbS2iSbSfSbS2fAA10GateTuningVSgSDySSSfGS5bSiSbSaySSGS2SSiA22_S2bSfSbSfSbSStcfc",
             "moduleName": "MultiSetSDK",
             "declAttributes": [
               "AccessControl",
@@ -27246,14 +27120,14 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Utils\/ClientSource.swift",
       "kind": "StringLiteral",
-      "offset": 778,
+      "offset": 786,
       "length": 17,
       "value": "\"X-Client-Source\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Utils\/ClientSource.swift",
       "kind": "StringLiteral",
-      "offset": 822,
+      "offset": 830,
       "length": 9,
       "value": "\"ios-sdk\""
     },
@@ -27316,7 +27190,7 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
       "kind": "StringLiteral",
-      "offset": 18590,
+      "offset": 18509,
       "length": 28,
       "value": "\"MultiSetWatermarkDidChange\""
     },
@@ -27358,224 +27232,224 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 4914,
+      "offset": 4185,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 10872,
+      "offset": 10143,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 10905,
+      "offset": 10176,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11034,
+      "offset": 10305,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11079,
+      "offset": 10350,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 11132,
+      "offset": 10403,
       "length": 4,
       "value": "30.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11169,
+      "offset": 10440,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 11205,
+      "offset": 10476,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 11246,
+      "offset": 10517,
       "length": 3,
       "value": "500"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11283,
+      "offset": 10554,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 11327,
+      "offset": 10598,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 11455,
+      "offset": 10726,
       "length": 3,
       "value": "4.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 11505,
+      "offset": 10776,
       "length": 4,
       "value": "25.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "Dictionary",
-      "offset": 11604,
+      "offset": 10875,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11655,
+      "offset": 10926,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11688,
+      "offset": 10959,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11728,
+      "offset": 10999,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11762,
+      "offset": 11033,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11810,
+      "offset": 11081,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 11843,
+      "offset": 11114,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11878,
+      "offset": 11149,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "Array",
-      "offset": 11918,
+      "offset": 11189,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 11953,
+      "offset": 11224,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 11991,
+      "offset": 11262,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 12023,
+      "offset": 11294,
       "length": 2,
       "value": "90"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "Array",
-      "offset": 12059,
+      "offset": 11330,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 12098,
+      "offset": 11369,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 12145,
+      "offset": 11416,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 12200,
+      "offset": 11471,
       "length": 4,
       "value": "15.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 12244,
+      "offset": 11515,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 12294,
+      "offset": 11565,
       "length": 3,
       "value": "1.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 12347,
+      "offset": 11618,
       "length": 4,
       "value": "true"
     },

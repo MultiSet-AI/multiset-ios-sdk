@@ -82,11 +82,15 @@ struct ScanOverlay: View {
             }
         case .mapping:
             HStack(alignment: .bottom) {
-                status(model.elapsed < MappingLimits.minimumScanDuration
-                       ? "Keep going — \(Int((MappingLimits.minimumScanDuration - model.elapsed).rounded(.up))) s more"
-                       : "Recording", systemImage: "record.circle.fill")
+                status(model.canFinish
+                       ? "Recording"
+                       : "Keep going — \(Int((MappingLimits.minimumScanDuration - model.elapsed).rounded(.up))) s more",
+                       systemImage: "record.circle.fill")
                 Spacer()
                 RecordButton(isRecording: true, action: onStop)
+                    .disabled(!model.canFinish)
+                    .opacity(model.canFinish ? 1 : 0.5)
+                    .accessibilityHint(model.canFinish ? "" : "Available after ten seconds")
             }
         case .exporting:
             status("Saving the mesh…", systemImage: "cube")

@@ -16,6 +16,8 @@ final class ScanViewModel: ObservableObject {
     let source = ARMappingSource(kind: .lidar)
 
     @Published private(set) var scan = MultiSet.shared.mapping.scan
+    /// Raised once as the scan enters its last minute; cleared when the scan stops.
+    @Published var showsFinalMinuteWarning = false
 
     @Published var meshDisplay: ScanMeshDisplay {
         didSet {
@@ -36,7 +38,7 @@ final class ScanViewModel: ObservableObject {
         source.meshRenderer?.display = meshDisplay
 
         NotificationCenter.default.publisher(for: .multiSetMappingScanDidChange)
-            .sink { [weak self] _ in self?.scan = MultiSet.shared.mapping.scan }
+            .sink { [weak self] _ in self?.update(MultiSet.shared.mapping.scan) }
             .store(in: &observers)
     }
 
@@ -48,6 +50,9 @@ final class ScanViewModel: ObservableObject {
     var blurredFrames: Int { scan.blurredFrames }
     var meshChunkCount: Int { scan.meshChunkCount }
 
+    /// Stop is refused before the minimum, where nothing can build a map.
+    var canFinish: Bool { phase == .mapping && elapsed >= MappingLimits.minimumScanDuration }
+
     var isBusy: Bool {
         scan.phase == .exporting || scan.phase == .zipping
     }
@@ -56,7 +61,7 @@ final class ScanViewModel: ObservableObject {
 
     func appear() {
         mapping.setSource(source)
-        scan = mapping.scan
+        update(mapping.scan)
         Task { await mapping.beginPreview() }
     }
 
@@ -72,7 +77,8 @@ final class ScanViewModel: ObservableObject {
         await mapping.startScan()
     }
 
-    func stop() async -> MappingStopOutcome {
+    func stop() async {
+        guard canFinish else { return }
         await mapping.stopScan()
     }
 
@@ -82,5 +88,17 @@ final class ScanViewModel: ObservableObject {
 
     func acknowledgeFailure() {
         mapping.acknowledgeFailure()
+    }
+
+    private func update(_ new: MappingScanState) {
+        let old = scan
+        scan = new
+        showsFinalMinuteWarning = Self.finalMinuteWarning(was: showsFinalMinuteWarning, old: old, new: new)
+    }
+
+    /// Up on crossing into the last minute, down once recording ends, so it never covers the save flow.
+    static func finalMinuteWarning(was shown: Bool, old: MappingScanState, new: MappingScanState) -> Bool {
+        guard new.phase == .mapping else { return false }
+        return shown || (old.elapsed < MappingLimits.finalMinuteStart && new.elapsed >= MappingLimits.finalMinuteStart)
     }
 }

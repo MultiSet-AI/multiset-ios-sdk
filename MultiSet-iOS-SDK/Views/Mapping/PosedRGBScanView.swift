@@ -71,6 +71,9 @@ struct PosedRGBScanView: View {
         } message: {
             Text("Packaging has stopped. Keep it to package the scan again, or discard everything captured.")
         }
+        .alert(MappingLimits.finalMinuteWarning, isPresented: $model.showsFinalMinuteWarning) {
+            Button("OK") {}
+        }
         .alert(item: $model.notice) { notice in
             Alert(title: Text(notice.title), message: Text(notice.message), dismissButton: .default(Text("OK")))
         }
