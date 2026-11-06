@@ -6528,6 +6528,51 @@
         "children": [
           {
             "kind": "Var",
+            "name": "credentials",
+            "printedName": "credentials",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetCredentials",
+                "printedName": "MultiSetSDK.MultiSetCredentials",
+                "usr": "s:11MultiSetSDK0aB11CredentialsO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK0aB6ConfigV11credentialsAA0aB11CredentialsOvp",
+            "mangledName": "$s11MultiSetSDK0aB6ConfigV11credentialsAA0aB11CredentialsOvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "SetterAccess",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MultiSetCredentials",
+                    "printedName": "MultiSetSDK.MultiSetCredentials",
+                    "usr": "s:11MultiSetSDK0aB11CredentialsO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK0aB6ConfigV11credentialsAA0aB11CredentialsOvg",
+                "mangledName": "$s11MultiSetSDK0aB6ConfigV11credentialsAA0aB11CredentialsOvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "clientId",
             "printedName": "clientId",
             "children": [
@@ -6543,12 +6588,9 @@
             "mangledName": "$s11MultiSetSDK0aB6ConfigV8clientIdSSvp",
             "moduleName": "MultiSetSDK",
             "declAttributes": [
-              "HasStorage",
               "AccessControl",
               "RawDocComment"
             ],
-            "isLet": true,
-            "hasStorage": true,
             "accessors": [
               {
                 "kind": "Accessor",
@@ -6566,7 +6608,6 @@
                 "usr": "s:11MultiSetSDK0aB6ConfigV8clientIdSSvg",
                 "mangledName": "$s11MultiSetSDK0aB6ConfigV8clientIdSSvg",
                 "moduleName": "MultiSetSDK",
-                "implicit": true,
                 "accessorKind": "get"
               }
             ]
@@ -6588,12 +6629,9 @@
             "mangledName": "$s11MultiSetSDK0aB6ConfigV12clientSecretSSvp",
             "moduleName": "MultiSetSDK",
             "declAttributes": [
-              "HasStorage",
               "AccessControl",
               "RawDocComment"
             ],
-            "isLet": true,
-            "hasStorage": true,
             "accessors": [
               {
                 "kind": "Accessor",
@@ -6611,7 +6649,6 @@
                 "usr": "s:11MultiSetSDK0aB6ConfigV12clientSecretSSvg",
                 "mangledName": "$s11MultiSetSDK0aB6ConfigV12clientSecretSSvg",
                 "moduleName": "MultiSetSDK",
-                "implicit": true,
                 "accessorKind": "get"
               }
             ]
@@ -10248,6 +10285,55 @@
             "init_kind": "Designated"
           },
           {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(credentials:mapCode:mapSetCode:baseURL:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetConfig",
+                "printedName": "MultiSetSDK.MultiSetConfig",
+                "usr": "s:11MultiSetSDK0aB6ConfigV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetCredentials",
+                "printedName": "MultiSetSDK.MultiSetCredentials",
+                "usr": "s:11MultiSetSDK0aB11CredentialsO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:11MultiSetSDK0aB6ConfigV11credentials7mapCode0fbG07baseURLAcA0aB11CredentialsO_S3Stcfc",
+            "mangledName": "$s11MultiSetSDK0aB6ConfigV11credentials7mapCode0fbG07baseURLAcA0aB11CredentialsO_S3Stcfc",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
             "kind": "Function",
             "name": "default",
             "printedName": "default(clientId:clientSecret:mapCode:)",
@@ -10972,6 +11058,656 @@
             "printedName": "Hashable",
             "usr": "s:SH",
             "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MultiSetCredentials",
+        "printedName": "MultiSetCredentials",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "clientCredentials",
+            "printedName": "clientCredentials",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.MultiSetCredentials.Type) -> (Swift.String, Swift.String) -> MultiSetSDK.MultiSetCredentials",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Swift.String, Swift.String) -> MultiSetSDK.MultiSetCredentials",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetCredentials",
+                        "printedName": "MultiSetSDK.MultiSetCredentials",
+                        "usr": "s:11MultiSetSDK0aB11CredentialsO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Tuple",
+                        "printedName": "(clientId: Swift.String, clientSecret: Swift.String)",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.MultiSetCredentials.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetCredentials",
+                        "printedName": "MultiSetSDK.MultiSetCredentials",
+                        "usr": "s:11MultiSetSDK0aB11CredentialsO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK0aB11CredentialsO06clientD0yACSS_SStcACmF",
+            "mangledName": "$s11MultiSetSDK0aB11CredentialsO06clientD0yACSS_SStcACmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "tokenProvider",
+            "printedName": "tokenProvider",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.MultiSetCredentials.Type) -> (any MultiSetSDK.MultiSetTokenProvider) -> MultiSetSDK.MultiSetCredentials",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(any MultiSetSDK.MultiSetTokenProvider) -> MultiSetSDK.MultiSetCredentials",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetCredentials",
+                        "printedName": "MultiSetSDK.MultiSetCredentials",
+                        "usr": "s:11MultiSetSDK0aB11CredentialsO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetTokenProvider",
+                        "printedName": "any MultiSetSDK.MultiSetTokenProvider",
+                        "usr": "s:11MultiSetSDK0aB13TokenProviderP"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.MultiSetCredentials.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetCredentials",
+                        "printedName": "MultiSetSDK.MultiSetCredentials",
+                        "usr": "s:11MultiSetSDK0aB11CredentialsO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK0aB11CredentialsO13tokenProvideryAcA0ab5TokenF0_pcACmF",
+            "mangledName": "$s11MultiSetSDK0aB11CredentialsO13tokenProvideryAcA0ab5TokenF0_pcACmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:11MultiSetSDK0aB11CredentialsO",
+        "mangledName": "$s11MultiSetSDK0aB11CredentialsO",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MultiSetTokenRequestReason",
+        "printedName": "MultiSetTokenRequestReason",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "initial",
+            "printedName": "initial",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.MultiSetTokenRequestReason.Type) -> MultiSetSDK.MultiSetTokenRequestReason",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MultiSetTokenRequestReason",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                    "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetTokenRequestReason",
+                        "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                        "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO7initialyA2CmF",
+            "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO7initialyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "expiring",
+            "printedName": "expiring",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.MultiSetTokenRequestReason.Type) -> MultiSetSDK.MultiSetTokenRequestReason",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MultiSetTokenRequestReason",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                    "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetTokenRequestReason",
+                        "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                        "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO8expiringyA2CmF",
+            "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO8expiringyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "rejected",
+            "printedName": "rejected",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.MultiSetTokenRequestReason.Type) -> MultiSetSDK.MultiSetTokenRequestReason",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MultiSetTokenRequestReason",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                    "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MultiSetTokenRequestReason",
+                        "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                        "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO8rejectedyA2CmF",
+            "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO8rejectedyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetTokenRequestReason",
+                "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetTokenRequestReason",
+                "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Var",
+            "name": "hashValue",
+            "printedName": "hashValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO9hashValueSivp",
+            "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO9hashValueSivp",
+            "moduleName": "MultiSetSDK",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO9hashValueSivg",
+                "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO9hashValueSivg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "hash",
+            "printedName": "hash(into:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Hasher",
+                "printedName": "Swift.Hasher",
+                "paramValueOwnership": "InOut",
+                "usr": "s:s6HasherV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO4hash4intoys6HasherVz_tF",
+            "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO4hash4intoys6HasherVz_tF",
+            "moduleName": "MultiSetSDK",
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO",
+        "mangledName": "$s11MultiSetSDK0aB18TokenRequestReasonO",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MultiSetTokenProvider",
+        "printedName": "MultiSetTokenProvider",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "token",
+            "printedName": "token(for:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetTokenRequestReason",
+                "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB13TokenProviderP5token3forSSAA0abD13RequestReasonO_tYaKF",
+            "mangledName": "$s11MultiSetSDK0aB13TokenProviderP5token3forSSAA0abD13RequestReasonO_tYaKF",
+            "moduleName": "MultiSetSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetTokenProvider>",
+            "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetTokenProvider>",
+            "protocolReq": true,
+            "declAttributes": [
+              "Custom",
+              "RawDocComment"
+            ],
+            "throwing": true,
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:11MultiSetSDK0aB13TokenProviderP",
+        "mangledName": "$s11MultiSetSDK0aB13TokenProviderP",
+        "moduleName": "MultiSetSDK",
+        "genericSig": "<τ_0_0 : Swift.Sendable>",
+        "sugared_genericSig": "<Self : Swift.Sendable>",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ClosureTokenProvider",
+        "printedName": "ClosureTokenProvider",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ClosureTokenProvider",
+                "printedName": "MultiSetSDK.ClosureTokenProvider",
+                "usr": "s:11MultiSetSDK20ClosureTokenProviderV"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.MultiSetTokenRequestReason) async throws -> Swift.String",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MultiSetTokenRequestReason",
+                    "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                    "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:11MultiSetSDK20ClosureTokenProviderVyACSSAA0abE13RequestReasonOYaYbKScMYcccfc",
+            "mangledName": "$s11MultiSetSDK20ClosureTokenProviderVyACSSAA0abE13RequestReasonOYaYbKScMYcccfc",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "token",
+            "printedName": "token(for:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MultiSetTokenRequestReason",
+                "printedName": "MultiSetSDK.MultiSetTokenRequestReason",
+                "usr": "s:11MultiSetSDK0aB18TokenRequestReasonO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK20ClosureTokenProviderV5token3forSSAA0abE13RequestReasonO_tYaKF",
+            "mangledName": "$s11MultiSetSDK20ClosureTokenProviderV5token3forSSAA0abE13RequestReasonO_tYaKF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "Custom"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK20ClosureTokenProviderV",
+        "mangledName": "$s11MultiSetSDK20ClosureTokenProviderV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "MultiSetTokenProvider",
+            "printedName": "MultiSetTokenProvider",
+            "usr": "s:11MultiSetSDK0aB13TokenProviderP",
+            "mangledName": "$s11MultiSetSDK0aB13TokenProviderP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
           },
           {
             "kind": "Conformance",
@@ -27078,42 +27814,42 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/TokenProvider.swift",
       "kind": "FloatLiteral",
-      "offset": 2276,
+      "offset": 2571,
       "length": 3,
       "value": "0.2"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/TokenProvider.swift",
       "kind": "IntegerLiteral",
-      "offset": 2330,
+      "offset": 2625,
       "length": 2,
       "value": "15"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/TokenProvider.swift",
       "kind": "IntegerLiteral",
-      "offset": 2383,
+      "offset": 2678,
       "length": 3,
       "value": "300"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/TokenProvider.swift",
       "kind": "IntegerLiteral",
-      "offset": 2672,
+      "offset": 2967,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/TokenProvider.swift",
       "kind": "IntegerLiteral",
-      "offset": 2676,
+      "offset": 2971,
       "length": 2,
       "value": "60"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/TokenProvider.swift",
       "kind": "IntegerLiteral",
-      "offset": 2915,
+      "offset": 3210,
       "length": 2,
       "value": "10"
     },
@@ -27171,7 +27907,7 @@
       "kind": "StringLiteral",
       "offset": 885,
       "length": 7,
-      "value": "\"2.1.0\""
+      "value": "\"2.2.0\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
@@ -27225,233 +27961,247 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 862,
+      "offset": 1343,
       "length": 25,
       "value": "\"https:\/\/api.multiset.ai\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 4185,
+      "offset": 4666,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 10143,
+      "offset": 10624,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 10176,
+      "offset": 10657,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10305,
+      "offset": 10786,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10350,
+      "offset": 10831,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 10403,
+      "offset": 10884,
       "length": 4,
       "value": "30.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10440,
+      "offset": 10921,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 10476,
+      "offset": 10957,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 10517,
+      "offset": 10998,
       "length": 3,
       "value": "500"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10554,
+      "offset": 11035,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 10598,
+      "offset": 11079,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 10726,
+      "offset": 11207,
       "length": 3,
       "value": "4.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 10776,
+      "offset": 11257,
       "length": 4,
       "value": "25.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "Dictionary",
-      "offset": 10875,
+      "offset": 11356,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10926,
+      "offset": 11407,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10959,
+      "offset": 11440,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 10999,
+      "offset": 11480,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11033,
+      "offset": 11514,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11081,
+      "offset": 11562,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 11114,
+      "offset": 11595,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11149,
+      "offset": 11630,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "Array",
-      "offset": 11189,
+      "offset": 11670,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 11224,
+      "offset": 11705,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "StringLiteral",
-      "offset": 11262,
+      "offset": 11743,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "IntegerLiteral",
-      "offset": 11294,
+      "offset": 11775,
       "length": 2,
       "value": "90"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "Array",
-      "offset": 11330,
+      "offset": 11811,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11369,
+      "offset": 11850,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11416,
+      "offset": 11897,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 11471,
+      "offset": 11952,
       "length": 4,
       "value": "15.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11515,
+      "offset": 11996,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "FloatLiteral",
-      "offset": 11565,
+      "offset": 12046,
       "length": 3,
       "value": "1.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
       "kind": "BooleanLiteral",
-      "offset": 11618,
+      "offset": 12099,
       "length": 4,
       "value": "true"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 14694,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 14727,
+      "length": 2,
+      "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/TrackingState.swift",

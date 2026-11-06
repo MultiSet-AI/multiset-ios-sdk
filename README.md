@@ -50,7 +50,9 @@ into a new map.
    | `mapSetCode`   | Map set identifier       | For localization, one of these |
    | `objectCodes`  | Objects to track         | For object tracking      |
 
-   Map creation needs only the credentials.
+   Map creation needs only the credentials. To fetch tokens from your own server instead, set
+   `tokenServerURL` and leave the credentials as they are; see
+   [SERVER_AUTH_GUIDE.md](SERVER_AUTH_GUIDE.md).
 
    To obtain credentials, visit [https://developer.multiset.ai/credentials](https://developer.multiset.ai/credentials).
 3. Select your development team under **Signing & Capabilities**, then run on a device.
@@ -162,6 +164,9 @@ let config = MultiSetConfig.default(
 MultiSet.shared.initialize(config: config, callback: myDelegate)
 ```
 
+A secret in your app can be read by anyone who unpacks it. To keep it on your own server, see
+[Keeping the Client Secret on Your Server](#keeping-the-client-secret-on-your-server).
+
 A config with credentials and no map or object codes is valid, for an app that only creates maps.
 `localize()` then reports `Missing mapCode or mapSetCode` through `onLocalizationFailure`, and
 `startObjectTracking()` reports `Missing objectCodes` through `onObjectTrackingFailure`.
@@ -201,6 +206,17 @@ MultiSet.shared.localize()
 // Stop localization
 MultiSet.shared.stopLocalization()
 ```
+
+## Upgrading from 2.1
+
+Replace `MultiSetSDK.xcframework`. The `MultiSetAR` folder is unchanged from 2.1.0, and no code
+changes are needed.
+
+- **New and optional: a token provider.** `MultiSetConfig(credentials: .tokenProvider(_:), ...)`
+  gets access tokens from your own server, so the client secret stays off the device. See
+  "Keeping the Client Secret on Your Server".
+- **`onAuthenticationFailure(error:)` receives the actual reason**, such as
+  `Authentication failed: HTTP 401 ...`. In 2.1 it always received `Ready to authenticate`.
 
 ## Upgrading from 2.0
 
@@ -588,6 +604,53 @@ consequences worth knowing:
   through the operation that was in flight — `onLocalizationFailure` or `onObjectTrackingFailure`
   — with the authentication error in its message. `MultiSet.shared.isAuthenticated` remains
   `true`.
+
+## Keeping the Client Secret on Your Server
+
+Instead of `clientId` and `clientSecret`, give the SDK a token provider. Your server keeps the
+secret, gets MultiSet access tokens, and hands them to the app; the SDK sends that token on every
+API call and asks for a new one when it needs to. [SERVER_AUTH_GUIDE.md](SERVER_AUTH_GUIDE.md)
+walks through both sides, with a server example.
+
+```swift
+let provider = ClosureTokenProvider { reason in
+    try await MyBackend.multiSetToken(skipCache: reason == .rejected)
+}
+
+var config = MultiSetConfig(credentials: .tokenProvider(provider), mapCode: "YOUR_MAP_CODE")
+config.localizationMode = .multiFrame   // every other setting starts at its default
+
+MultiSet.shared.initialize(config: config, callback: myDelegate)
+```
+
+Your server gets each token the way the SDK otherwise would, from the environment `baseURL`
+points at:
+
+```bash
+curl -X POST https://api.multiset.ai/v1/m2m/token -u "$CLIENT_ID:$CLIENT_SECRET"
+# {"token": "<JWT>", "expiresOn": "..."}
+```
+
+Notes:
+
+- The provider is asked with a reason: `.initial` from `initialize(...)`, `.expiring` before the
+  current token runs out, and `.rejected` after the API refused it with a 401. On `.rejected`,
+  return a newly issued token, not a cached copy.
+- Return only the token string: the SDK reads the expiry from the token's own `exp`, so your
+  server's `expiresOn` is not needed. A 30-minute token is renewed 5 minutes before it expires.
+- Your server may cache a token across devices, but should hand out a new one once the cached copy
+  has under 5 minutes left. The SDK still renews a part-used token in time, just more often.
+- A request refused with a 401 is retried once with the replacement. If that is refused too, the
+  request fails with the 401.
+- A provider that throws or returns an empty string fails `initialize(...)` through
+  `onAuthenticationFailure` ("Token provider failed: ..."); later on, it fails only the request
+  that needed the token.
+- The provider is called on the main actor, one call at a time: await your network request
+  rather than blocking. It must return or throw; `release()` cancels a call in flight.
+- This keeps the secret off the device, but a token still carries your account's rights until it
+  expires. Put your token endpoint behind your own sign-in.
+- In the demo app, set `SDKConfig.tokenServerURL` to try it: `TokenServerProvider` expects your
+  endpoint to answer `{"token": "<JWT>"}` and passes the reason as `?reason=`.
 
 ## Pointing at a Different API Environment
 

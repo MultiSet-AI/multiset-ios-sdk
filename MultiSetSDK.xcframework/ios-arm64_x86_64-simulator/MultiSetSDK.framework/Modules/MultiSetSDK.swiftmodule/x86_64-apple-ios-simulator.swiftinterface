@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-compiler-version: Apple Swift version 6.4.2 effective-5.10 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
 // swift-module-flags: -target x86_64-apple-ios16.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name MultiSetSDK
-// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4.2
 import Combine
 import CoreGraphics
 import CoreImage
@@ -229,8 +229,15 @@ public struct LocalizationResult : Swift.Sendable {
   public init(mapCode: Swift.String, mapCodes: [Swift.String], position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf, confidence: Swift.Float? = nil, geoCoordinates: MultiSetSDK.GeoCoordinates? = nil, geoPose: MultiSetSDK.GeoPose? = nil, estimatedPosition: Swift.SIMD3<Swift.Float>? = nil, estimatedRotation: simd.simd_quatf? = nil, queryCameraPosition: Swift.SIMD3<Swift.Float>? = nil, queryCameraRotation: simd.simd_quatf? = nil, timestamp: Foundation.Date = Date(), mode: MultiSetSDK.LocalizationMode)
 }
 public struct MultiSetConfig : Swift.Sendable {
-  public let clientId: Swift.String
-  public let clientSecret: Swift.String
+  public var credentials: MultiSetSDK.MultiSetCredentials {
+    get
+  }
+  public var clientId: Swift.String {
+    get
+  }
+  public var clientSecret: Swift.String {
+    get
+  }
   public static let productionBaseURL: Swift.String
   public var baseURL: Swift.String
   public var mapCode: Swift.String
@@ -270,6 +277,7 @@ public struct MultiSetConfig : Swift.Sendable {
   public var firstObjectTrackingUntilSuccess: Swift.Bool
   public var imageQuality: Swift.Int
   public init(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String = "", mapSetCode: Swift.String = "", localizationMode: MultiSetSDK.LocalizationMode = .multiFrame, queryMode: MultiSetSDK.QueryMode = .vps1, autoLocalize: Swift.Bool = true, backgroundLocalization: Swift.Bool = true, bgLocalizationDurationSeconds: Swift.Float = 30.0, relocalization: Swift.Bool = true, numberOfFrames: Swift.Int = 4, frameCaptureIntervalMs: Swift.Int = 500, confidenceCheck: Swift.Bool = false, confidenceThreshold: Swift.Float = 0.3, poseConsistencyCheck: Swift.Bool = MultiSetConfig.defaultPoseConsistencyCheck, poseConsistencyThreshold: Swift.Float = 4.0, poseConsistencyYawThreshold: Swift.Float = 25.0, poseConsistencyTuning: MultiSetSDK.GateTuning? = nil, mapAliasingRisk: [Swift.String : Swift.Float] = [:], firstLocalizationUntilSuccess: Swift.Bool = true, showAlerts: Swift.Bool = true, meshVisualization: Swift.Bool = true, passGeoPose: Swift.Bool = false, geoCoordinatesInResponse: Swift.Bool = false, hintRadius: Swift.Int = 25, use2DFiltering: Swift.Bool = false, hintMapCodes: [Swift.String] = [], hintPosition: Swift.String = "", hintFloorHeight: Swift.String = "", imageQuality: Swift.Int = 90, objectCodes: [Swift.String] = [], autoObjectTracking: Swift.Bool = true, backgroundObjectTracking: Swift.Bool = true, bgObjectTrackingDurationSeconds: Swift.Float = 15.0, restartObjectTracking: Swift.Bool = true, objectTrackingCaptureDelay: Swift.Float = 1.0, firstObjectTrackingUntilSuccess: Swift.Bool = true, baseURL: Swift.String = MultiSetConfig.productionBaseURL)
+  public init(credentials: MultiSetSDK.MultiSetCredentials, mapCode: Swift.String = "", mapSetCode: Swift.String = "", baseURL: Swift.String = MultiSetConfig.productionBaseURL)
   public static func `default`(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func singleFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
   public static func multiFrame(clientId: Swift.String, clientSecret: Swift.String, mapCode: Swift.String) -> MultiSetSDK.MultiSetConfig
@@ -305,6 +313,27 @@ public enum MapType : Swift.Sendable {
   public var hashValue: Swift.Int {
     get
   }
+}
+public enum MultiSetCredentials : Swift.Sendable {
+  case clientCredentials(clientId: Swift.String, clientSecret: Swift.String)
+  case tokenProvider(any MultiSetSDK.MultiSetTokenProvider)
+}
+public enum MultiSetTokenRequestReason : Swift.Sendable {
+  case initial
+  case expiring
+  case rejected
+  public static func == (a: MultiSetSDK.MultiSetTokenRequestReason, b: MultiSetSDK.MultiSetTokenRequestReason) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol MultiSetTokenProvider : Swift.Sendable {
+  @_Concurrency.MainActor func token(for reason: MultiSetSDK.MultiSetTokenRequestReason) async throws -> Swift.String
+}
+public struct ClosureTokenProvider : MultiSetSDK.MultiSetTokenProvider {
+  public init(_ fetch: @escaping @_Concurrency.MainActor @Sendable (MultiSetSDK.MultiSetTokenRequestReason) async throws -> Swift.String)
+  @_Concurrency.MainActor public func token(for reason: MultiSetSDK.MultiSetTokenRequestReason) async throws -> Swift.String
 }
 public enum LocalizationStage : Swift.Equatable, Swift.Sendable {
   case idle
@@ -799,6 +828,8 @@ extension MultiSetSDK.QueryMode : Swift.Hashable {}
 extension MultiSetSDK.QueryMode : Swift.RawRepresentable {}
 extension MultiSetSDK.MapType : Swift.Equatable {}
 extension MultiSetSDK.MapType : Swift.Hashable {}
+extension MultiSetSDK.MultiSetTokenRequestReason : Swift.Equatable {}
+extension MultiSetSDK.MultiSetTokenRequestReason : Swift.Hashable {}
 extension MultiSetSDK.RecoveryPhase : Swift.Hashable {}
 extension MultiSetSDK.TrackingState : Swift.Equatable {}
 extension MultiSetSDK.TrackingState : Swift.Hashable {}

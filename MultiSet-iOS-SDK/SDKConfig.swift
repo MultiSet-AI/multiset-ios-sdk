@@ -21,6 +21,11 @@ struct SDKConfig {
     static let clientId = "YOUR_CLIENT_ID"
     static let clientSecret = "YOUR_CLIENT_SECRET"
 
+    // MARK: - Token Server (optional)
+    // Your server's endpoint answering {"token": "<MultiSet JWT>"}; leave empty to use the secret.
+
+    static let tokenServerURL = ""
+
     // MARK: - Map Configuration
     // Use either mapCode OR mapSetCode (not both)
 
@@ -35,6 +40,7 @@ struct SDKConfig {
     // MARK: - Helper Methods
 
     static func hasCredentials() -> Bool {
+        if !tokenServerURL.isEmpty { return true }
         return !clientId.isEmpty && clientId != "YOUR_CLIENT_ID" &&
                !clientSecret.isEmpty && clientSecret != "YOUR_CLIENT_SECRET"
     }
@@ -66,13 +72,23 @@ struct SDKConfig {
         // will override them on the next run.
         let store = ConfigStore.shared
 
-        var config = MultiSetConfig(
-            clientId: clientId,
-            clientSecret: clientSecret,
-            mapCode: mapCode,
-            mapSetCode: mapSetCode,
-            baseURL: baseURL
-        )
+        var config: MultiSetConfig
+        if !tokenServerURL.isEmpty, let tokenServer = URL(string: tokenServerURL) {
+            config = MultiSetConfig(
+                credentials: .tokenProvider(TokenServerProvider(url: tokenServer)),
+                mapCode: mapCode,
+                mapSetCode: mapSetCode,
+                baseURL: baseURL
+            )
+        } else {
+            config = MultiSetConfig(
+                clientId: clientId,
+                clientSecret: clientSecret,
+                mapCode: mapCode,
+                mapSetCode: mapSetCode,
+                baseURL: baseURL
+            )
+        }
 
         // ═══════════════════════════════════════════════════════════════
         // LOCALIZATION MODE

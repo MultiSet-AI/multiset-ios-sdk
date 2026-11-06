@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.2.0
+
+Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework`; the `MultiSetAR/`
+folder is unchanged from 2.1.0. No breaking API changes.
+
+### New
+
+- **Token provider:** `MultiSetConfig(credentials: .tokenProvider(_:), ...)` takes access tokens
+  from your own server, so the client secret never ships in the app. Implement
+  `MultiSetTokenProvider` or wrap a closure in `ClosureTokenProvider`; the SDK asks with a reason
+  (`.initial`, `.expiring`, `.rejected`). See "Keeping the Client Secret on Your Server" in the
+  README and [SERVER_AUTH_GUIDE.md](SERVER_AUTH_GUIDE.md).
+- `MultiSetCredentials` and `MultiSetConfig.credentials`. The existing `clientId:clientSecret:`
+  initializers and factories are unchanged.
+- **Demo app:** `SDKConfig.tokenServerURL` and `TokenServerProvider` try the flow against your own
+  endpoint.
+
+### Fixed
+
+- `onAuthenticationFailure(error:)` always received "Ready to authenticate". It now receives the
+  actual reason, such as `Authentication failed: HTTP 401 ...`.
+- A request refused with a 401 within 10 s of a new token was resent with that same token, a
+  certain second 401 that re-uploaded every frame of a multi-frame query. It is no longer resent
+  with a token the API has already refused.
+
 ## 2.1.0
 
 Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework` and the `MultiSetAR/`
