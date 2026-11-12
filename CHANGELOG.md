@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.3.0
+
+Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework`; the `MultiSetAR/`
+folder is unchanged from 2.2.0. No breaking API changes; the new callback is optional.
+
+### New
+
+- **Attempt failures:** `onLocalizationAttemptFailed(_:)` reports every localization attempt that
+  ends without a fix, including the silent first-fix retries of `firstLocalizationUntilSuccess`,
+  background refreshes and recovery runs. `LocalizationAttemptFailure` carries the `reason`
+  (`.noFrames`, `.poseNotFound`, `.timeout`, `.serverBusy(statusCode:)` and more), the consecutive
+  `attempt` count, and whether and when the SDK will try again (`willRetry`, `retryIn`), so an app
+  can tell a run that is retrying from one that is stuck.
+- **Demo app: GeoPose Map View.** A new landing card opens the AR view under an map that
+  plots each fix's GeoPose position and camera heading beside the device's GPS track. It needs a
+  geo-referenced map or MapSet.
+- **README:** "Reading the GeoPose" explains the `geoPose` frame and how to get a compass heading
+  from it.
+
+
 ## 2.2.0
 
 Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework`; the `MultiSetAR/`

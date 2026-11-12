@@ -31,6 +31,7 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
 
     var onLocalizationSuccess: ((LocalizationResult) -> Void)?
     var onLocalizationFailure: ((String) -> Void)?
+    var onLocalizationAttemptFailed: ((LocalizationAttemptFailure) -> Void)?
     var onLocalizationFalsePositive: ((FalsePositiveInfo) -> Void)?
     var onLocalizationCorrected: ((AnchorPose, AnchorPose, AnchorTrust) -> Void)?
     var onAnchorTrustChanged: ((AnchorTrust) -> Void)?
@@ -75,6 +76,12 @@ class MultiSetSDKDelegate: ObservableObject, MultiSetCallback {
         self.lastError = error
         self.onLocalizationFailure?(error)
         print("MultiSetSDKDelegate >> Localization Failed: \(error)")
+    }
+
+    func onLocalizationAttemptFailed(_ failure: LocalizationAttemptFailure) {
+        self.onLocalizationAttemptFailed?(failure)
+        let next = failure.retryIn.map { String(format: "retrying in %.1f s", $0) } ?? "not retrying"
+        print("MultiSetSDKDelegate >> Attempt \(failure.attempt) failed (\(failure.reason)): \(failure.message), \(next)")
     }
 
     /// The server answered with a pose, but the SDK threw it away because it

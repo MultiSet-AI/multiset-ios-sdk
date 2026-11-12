@@ -280,7 +280,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is used to determine your position and to scan spaces into maps";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location access is used to improve localization accuracy and to record where a map was scanned";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location access is used to improve localization accuracy, to show your position on the map, and to record where a map was scanned";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -293,7 +293,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.multiset.sdk.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -317,7 +317,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is used to determine your position and to scan spaces into maps";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location access is used to improve localization accuracy and to record where a map was scanned";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location access is used to improve localization accuracy, to show your position on the map, and to record where a map was scanned";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -330,7 +330,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.multiset.sdk.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

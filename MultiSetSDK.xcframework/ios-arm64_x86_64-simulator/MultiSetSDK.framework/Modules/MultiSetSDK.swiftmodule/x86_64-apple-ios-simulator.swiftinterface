@@ -386,12 +386,36 @@ public struct FalsePositiveInfo : Swift.Sendable {
     get
   }
 }
+public struct LocalizationAttemptFailure : Swift.Sendable {
+  public enum Reason : Swift.Equatable, Swift.Sendable {
+    case noFrames
+    case poseNotFound
+    case lowConfidence
+    case timeout
+    case serverBusy(statusCode: Swift.Int)
+    case httpError(statusCode: Swift.Int)
+    case network
+    case authentication
+    case invalidResponse
+    case reestablishing
+    case other
+    public static func == (a: MultiSetSDK.LocalizationAttemptFailure.Reason, b: MultiSetSDK.LocalizationAttemptFailure.Reason) -> Swift.Bool
+  }
+  public let reason: MultiSetSDK.LocalizationAttemptFailure.Reason
+  public let message: Swift.String
+  public let attempt: Swift.Int
+  public let willRetry: Swift.Bool
+  public let retryIn: Foundation.TimeInterval?
+  public let isBackground: Swift.Bool
+  public init(reason: MultiSetSDK.LocalizationAttemptFailure.Reason, message: Swift.String, attempt: Swift.Int, willRetry: Swift.Bool, retryIn: Foundation.TimeInterval?, isBackground: Swift.Bool)
+}
 @_Concurrency.MainActor public protocol MultiSetCallback : AnyObject {
   @_Concurrency.MainActor func onSDKReady()
   @_Concurrency.MainActor func onAuthenticationSuccess()
   @_Concurrency.MainActor func onAuthenticationFailure(error: Swift.String)
   @_Concurrency.MainActor func onLocalizationSuccess(result: MultiSetSDK.LocalizationResult)
   @_Concurrency.MainActor func onLocalizationFailure(error: Swift.String)
+  @_Concurrency.MainActor func onLocalizationAttemptFailed(_ failure: MultiSetSDK.LocalizationAttemptFailure)
   @_Concurrency.MainActor func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
   @_Concurrency.MainActor func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
@@ -406,6 +430,7 @@ public struct FalsePositiveInfo : Swift.Sendable {
   @_Concurrency.MainActor func onObjectMeshLoaded(objectCode: Swift.String)
 }
 extension MultiSetSDK.MultiSetCallback {
+  @_Concurrency.MainActor public func onLocalizationAttemptFailed(_ failure: MultiSetSDK.LocalizationAttemptFailure)
   @_Concurrency.MainActor public func onLocalizationFalsePositive(info: MultiSetSDK.FalsePositiveInfo)
   @_Concurrency.MainActor public func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor public func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)

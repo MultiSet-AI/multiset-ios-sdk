@@ -13,6 +13,7 @@ struct LandingView: View {
     @StateObject private var sdkDelegate = MultiSetSDKDelegate()
     @State private var navigateToAR = false
     @State private var navigateToObjectTracking = false
+    @State private var navigateToMap = false
     @State private var showMapMissingAlert = false
     @State private var showObjectCodeMissingAlert = false
     @State private var showToast = false
@@ -281,6 +282,68 @@ struct LandingView: View {
                             MappingFlowView(kind: captureKind) { showMapping = false }
                         }
 
+                        VStack(spacing: 16) {
+                            Text("GeoPose Map View")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(Color(hex: "#1E88E5"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Text("See each localization on a map: the GeoPose position and the way the camera faced, beside your device's GPS as you walk.")
+                                .font(.system(size: 13))
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            HStack(alignment: .top, spacing: 6) {
+                                Image(systemName: "globe")
+                                    .font(.system(size: 11))
+                                    .foregroundColor(Color(hex: "#1E88E5").opacity(0.8))
+                                Text("Works only with a geo-referenced map or MapSet. Other maps localize, but return no GeoPose to plot.")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.secondary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer(minLength: 0)
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color(hex: "#1E88E5").opacity(0.08))
+                            .cornerRadius(8)
+
+                            // Same `selectedMode` as the Localization card, so changing it here changes it there too.
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("Mode")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(.secondary)
+
+                                Picker("Mode", selection: $selectedMode) {
+                                    ForEach(LocalizationMode.allCases) { mode in
+                                        Text(mode.rawValue).tag(mode)
+                                    }
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                            }
+
+                            Button(action: openMapView) {
+                                Text("Start GeoPose Map View")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .background(sdkDelegate.isAuthenticated ? Color(hex: "#1E88E5") : Color.gray.opacity(0.4))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(24)
+                            }
+                            .disabled(!sdkDelegate.isAuthenticated)
+                        }
+                        .padding(20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color(UIColor.secondarySystemBackground))
+                                )
+                        )
+                        .padding(.horizontal, 20)
+
                         Spacer(minLength: 20)
 
                         // ── Footer ──
@@ -307,6 +370,12 @@ struct LandingView: View {
             }
             .navigationDestination(isPresented: $navigateToObjectTracking) {
                 ARObjectTrackingView(
+                    sdkDelegate: sdkDelegate
+                )
+                .navigationBarBackButtonHidden(true)
+            }
+            .navigationDestination(isPresented: $navigateToMap) {
+                LocalizationMapView(
                     sdkDelegate: sdkDelegate
                 )
                 .navigationBarBackButtonHidden(true)
@@ -397,6 +466,16 @@ struct LandingView: View {
 
         MultiSet.shared.setLocalizationMode(selectedMode)
         navigateToAR = true
+    }
+
+    private func openMapView() {
+        guard SDKConfig.hasMapConfiguration() else {
+            showMapMissingAlert = true
+            return
+        }
+
+        MultiSet.shared.setLocalizationMode(selectedMode)
+        navigateToMap = true
     }
 
     private func openObjectTracking() {

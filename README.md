@@ -13,7 +13,7 @@ into a new map.
 |---|---|
 | `MultiSetSDK.xcframework` | The SDK as a binary framework. It does not link ARKit or RealityKit |
 | `MultiSet-iOS-SDK/MultiSetAR/` | The ARKit + RealityKit adapter, as source: `MultiSetARView`, mesh rendering, the three `.metal` shaders, GPS hints, and `Mapping/` for map creation. Add it to your app target |
-| `MultiSet-iOS-SDK/`, `MultiSet-iOS-SDK.xcodeproj` | Demo app showing localization, object tracking, map creation and every setting. It builds against the framework and the adapter above |
+| `MultiSet-iOS-SDK/`, `MultiSet-iOS-SDK.xcodeproj` | Demo app showing localization, object tracking, map creation, a GeoPose map view and every setting. It builds against the framework and the adapter above |
 
 ## Requirements
 
@@ -65,6 +65,12 @@ not been uploaded yet. The demo's screens call the Posed RGB scan (`.posedRGB`) 
 On the AR screens, the small card at the top left shows each run's steps — capturing, uploading,
 waiting on the server, then a tick or a red mark — and a bar at the bottom left shows a map or
 object mesh while it loads. See "Showing a Run's Progress".
+
+The **GeoPose Map View** card opens the AR view under a map that plots each localization's GeoPose
+— the position and the way the camera faced — beside the device's GPS track. It works only with a
+geo-referenced map or MapSet: other maps localize, but their responses carry no GeoPose to plot.
+The map is Apple MapKit, so it needs no key, and it asks for location access to draw the GPS
+track. See "Reading the GeoPose".
 
 ## Add the SDK to Your App
 
@@ -149,6 +155,12 @@ final class MySDKDelegate: MultiSetCallback {
     func onLocalizationStageChanged(_ stage: LocalizationStage, isBackground: Bool) {
         print("Stage: \(stage)")
     }
+
+    // An attempt ended without a fix, including a silent retry. See "Each attempt" under
+    // "Retries, Refreshes and Tracking Recovery".
+    func onLocalizationAttemptFailed(_ failure: LocalizationAttemptFailure) {
+        print("Attempt \(failure.attempt) failed: \(failure.reason), retrying: \(failure.willRetry)")
+    }
 }
 ```
 
@@ -206,6 +218,16 @@ MultiSet.shared.localize()
 // Stop localization
 MultiSet.shared.stopLocalization()
 ```
+
+## Upgrading from 2.2
+
+Replace `MultiSetSDK.xcframework`. The `MultiSetAR` folder is unchanged from 2.2.0, and no code
+changes are needed.
+
+- **New and optional: `onLocalizationAttemptFailed(_:)`.** Reports every localization attempt that
+  ends without a fix, including the silent first-fix retries, so you can tell a run that is
+  retrying from one that is stuck. See "Each attempt" under "Retries, Refreshes and Tracking
+  Recovery".
 
 ## Upgrading from 2.1
 
@@ -394,6 +416,26 @@ let config = MultiSetConfig(
 )
 ```
 
+### Reading the GeoPose
+
+With `geoCoordinatesInResponse = true`, a fix on a geo-referenced map or MapSet carries
+`result.geoCoordinates` (WGS 84 latitude, longitude and ellipsoidal height) and `result.geoPose`,
+which adds the camera's orientation. On a map that is not geo-referenced both are nil.
+
+`geoPose.quaternion` is the camera's orientation in the frame named by `geoPose.frameName`. In
+`Y-Up-ENU`, the default, X is east, Y is up and Z is north, and the camera looks along +Z, so its
+compass heading, clockwise from true north, is:
+
+```swift
+if let geo = result.geoPose, let q = geo.quaternion, geo.frameName == "Y-Up-ENU" {
+    let f = simd_quatf(ix: q.x, iy: q.y, iz: q.z, r: q.w).act(SIMD3<Float>(0, 0, 1))
+    let heading = atan2(f.x, f.z) * 180 / .pi
+}
+```
+
+The demo app's GeoPose Map View (`MultiSet-iOS-SDK/Views/Map/`) plots each fix this way;
+`GeoPoseMath.compassYaw` there also reads the `ENU` frame.
+
 ## Retries, Refreshes and Tracking Recovery
 
 **First fix.** With `firstLocalizationUntilSuccess` (default on), a failed first localization is
@@ -403,6 +445,38 @@ asked twice at once. `isLocalizing` and `isShowingOverlay` stay true through eac
 `localize()` is refused meanwhile. The rule covers the first fix of each session: after
 `initialize`, after `resetSession()`, and each time a new AR view attaches.
 `firstObjectTrackingUntilSuccess` follows the same rule for the first tracked object.
+
+**Each attempt.** `onLocalizationAttemptFailed(_:)` (optional) reports every localization attempt
+that ends without a fix, including silent retries, background refreshes and recovery runs. It
+carries the `reason`, the consecutive `attempt` count, and whether the SDK has already scheduled
+the next attempt (`willRetry`) and how soon (`retryIn`). A run that is retrying keeps reporting.
+One that stays quiet well past `retryIn` plus a few seconds for the attempt itself is stuck;
+`stopLocalization()` followed by `localize()` starts it again. When a failure is also reported
+through `onLocalizationFailure`, this callback follows it. A pose that the consistency check
+discards arrives in `onLocalizationFalsePositive` instead.
+
+| `reason` | Meaning |
+|---|---|
+| `.noFrames` | The frame source gave no frame, usually because AR tracking was limited |
+| `.poseNotFound` | The server found no match |
+| `.lowConfidence` | A pose came back below `confidenceThreshold` |
+| `.timeout`, `.network` | The query timed out, or there was no connection |
+| `.serverBusy(statusCode:)` | A 5xx; the next retry backs off to 4–12 s |
+| `.httpError(statusCode:)` | Another HTTP refusal, such as 400 |
+| `.authentication` | No access token: the token exchange or your `MultiSetTokenProvider` failed |
+| `.invalidResponse` | The server's answer could not be read |
+| `.reestablishing` | After a tracking break, the consistency check wants a second agreeing fix |
+| `.other` | Anything else; `message` has the detail |
+
+```swift
+func onLocalizationAttemptFailed(_ failure: LocalizationAttemptFailure) {
+    guard failure.willRetry, let delay = failure.retryIn else { return }
+    statusLabel.text = "Attempt \(failure.attempt) missed, retrying in \(Int(delay.rounded(.up))) s"
+}
+```
+
+`LocalizationAttemptFailure.Reason` may gain cases in a later release, so a `switch` over it needs
+`@unknown default`.
 
 **Background refresh.** With `backgroundLocalization` on, the next refresh is armed after every
 run, `bgLocalizationDurationSeconds` later. Switching it through `updateConfig(_:)` takes effect

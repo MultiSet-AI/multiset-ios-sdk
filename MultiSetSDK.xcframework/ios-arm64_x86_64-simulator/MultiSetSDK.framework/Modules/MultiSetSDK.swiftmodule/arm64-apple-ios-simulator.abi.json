@@ -13583,6 +13583,965 @@
       },
       {
         "kind": "TypeDecl",
+        "name": "LocalizationAttemptFailure",
+        "printedName": "LocalizationAttemptFailure",
+        "children": [
+          {
+            "kind": "TypeDecl",
+            "name": "Reason",
+            "printedName": "Reason",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "noFrames",
+                "printedName": "noFrames",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO8noFramesyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO8noFramesyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "poseNotFound",
+                "printedName": "poseNotFound",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO12poseNotFoundyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO12poseNotFoundyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "lowConfidence",
+                "printedName": "lowConfidence",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO13lowConfidenceyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO13lowConfidenceyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "timeout",
+                "printedName": "timeout",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO7timeoutyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO7timeoutyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "serverBusy",
+                "printedName": "serverBusy",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> (Swift.Int) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(Swift.Int) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Tuple",
+                            "printedName": "(statusCode: Swift.Int)",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Int",
+                                "printedName": "Swift.Int",
+                                "usr": "s:Si"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO10serverBusyyAESi_tcAEmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO10serverBusyyAESi_tcAEmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "httpError",
+                "printedName": "httpError",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> (Swift.Int) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(Swift.Int) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Tuple",
+                            "printedName": "(statusCode: Swift.Int)",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Int",
+                                "printedName": "Swift.Int",
+                                "usr": "s:Si"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO9httpErroryAESi_tcAEmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO9httpErroryAESi_tcAEmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "network",
+                "printedName": "network",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO7networkyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO7networkyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "authentication",
+                "printedName": "authentication",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO14authenticationyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO14authenticationyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "invalidResponse",
+                "printedName": "invalidResponse",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO15invalidResponseyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO15invalidResponseyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "reestablishing",
+                "printedName": "reestablishing",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO14reestablishingyA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO14reestablishingyA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "other",
+                "printedName": "other",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(MultiSetSDK.LocalizationAttemptFailure.Reason.Type) -> MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Reason",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Reason",
+                            "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO5otheryA2EmF",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO5otheryA2EmF",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "RawDocComment"
+                ]
+              },
+              {
+                "kind": "Function",
+                "name": "==",
+                "printedName": "==(_:_:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Reason",
+                    "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Reason",
+                    "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO2eeoiySbAE_AEtFZ",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO2eeoiySbAE_AEtFZ",
+                "moduleName": "MultiSetSDK",
+                "static": true,
+                "implicit": true,
+                "funcSelfKind": "NonMutating"
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6ReasonO",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "reason",
+            "printedName": "reason",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Reason",
+                "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6reasonAC6ReasonOvp",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6reasonAC6ReasonOvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Reason",
+                    "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                    "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6reasonAC6ReasonOvg",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6reasonAC6ReasonOvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "message",
+            "printedName": "message",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV7messageSSvp",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV7messageSSvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV7messageSSvg",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV7messageSSvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "attempt",
+            "printedName": "attempt",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV7attemptSivp",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV7attemptSivp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV7attemptSivg",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV7attemptSivg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "willRetry",
+            "printedName": "willRetry",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV9willRetrySbvp",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV9willRetrySbvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV9willRetrySbvg",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV9willRetrySbvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "retryIn",
+            "printedName": "retryIn",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Double?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV7retryInSdSgvp",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV7retryInSdSgvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Double?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Double",
+                        "printedName": "Swift.Double",
+                        "usr": "s:Sd"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV7retryInSdSgvg",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV7retryInSdSgvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "isBackground",
+            "printedName": "isBackground",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV12isBackgroundSbvp",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV12isBackgroundSbvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV12isBackgroundSbvg",
+                "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV12isBackgroundSbvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(reason:message:attempt:willRetry:retryIn:isBackground:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "LocalizationAttemptFailure",
+                "printedName": "MultiSetSDK.LocalizationAttemptFailure",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Reason",
+                "printedName": "MultiSetSDK.LocalizationAttemptFailure.Reason",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6ReasonO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Double?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV6reason7message7attempt9willRetry7retryIn12isBackgroundA2C6ReasonO_SSSiSbSdSgSbtcfc",
+            "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV6reason7message7attempt9willRetry7retryIn12isBackgroundA2C6ReasonO_SSSiSbSdSgSbtcfc",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV",
+        "mangledName": "$s11MultiSetSDK26LocalizationAttemptFailureV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
         "name": "MultiSetCallback",
         "printedName": "MultiSetCallback",
         "children": [
@@ -13718,6 +14677,37 @@
             "declKind": "Func",
             "usr": "s:11MultiSetSDK0aB8CallbackP21onLocalizationFailure5errorySS_tF",
             "mangledName": "$s11MultiSetSDK0aB8CallbackP21onLocalizationFailure5errorySS_tF",
+            "moduleName": "MultiSetSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
+            "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
+            "protocolReq": true,
+            "declAttributes": [
+              "Custom",
+              "RawDocComment"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onLocalizationAttemptFailed",
+            "printedName": "onLocalizationAttemptFailed(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "LocalizationAttemptFailure",
+                "printedName": "MultiSetSDK.LocalizationAttemptFailure",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB8CallbackP27onLocalizationAttemptFailedyyAA0fG7FailureVF",
+            "mangledName": "$s11MultiSetSDK0aB8CallbackP27onLocalizationAttemptFailedyyAA0fG7FailureVF",
             "moduleName": "MultiSetSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
             "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
@@ -14135,6 +15125,35 @@
               "RawDocComment"
             ],
             "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onLocalizationAttemptFailed",
+            "printedName": "onLocalizationAttemptFailed(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "LocalizationAttemptFailure",
+                "printedName": "MultiSetSDK.LocalizationAttemptFailure",
+                "usr": "s:11MultiSetSDK26LocalizationAttemptFailureV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB8CallbackPAAE27onLocalizationAttemptFailedyyAA0fG7FailureVF",
+            "mangledName": "$s11MultiSetSDK0aB8CallbackPAAE27onLocalizationAttemptFailedyyAA0fG7FailureVF",
+            "moduleName": "MultiSetSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
+            "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
+            "declAttributes": [
+              "Custom"
+            ],
+            "isFromExtension": true,
             "funcSelfKind": "NonMutating"
           },
           {
@@ -27387,105 +28406,105 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 4208,
+      "offset": 4010,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4254,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 4387,
+      "offset": 4433,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "FloatLiteral",
-      "offset": 4514,
+      "offset": 4560,
       "length": 3,
       "value": "1.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 4565,
+      "offset": 4611,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "FloatLiteral",
-      "offset": 4622,
+      "offset": 4668,
       "length": 3,
       "value": "0.5"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 4956,
+      "offset": 5053,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 5036,
+      "offset": 5133,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 5199,
+      "offset": 5296,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 5381,
+      "offset": 5478,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 5640,
+      "offset": 5737,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 5685,
+      "offset": 5782,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "Array",
-      "offset": 5952,
+      "offset": 6049,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "Array",
-      "offset": 6003,
+      "offset": 6100,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 51115,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
-      "kind": "BooleanLiteral",
-      "offset": 51141,
+      "offset": 51780,
       "length": 5,
       "value": "false"
     },
@@ -27856,14 +28875,14 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Utils\/ClientSource.swift",
       "kind": "StringLiteral",
-      "offset": 786,
+      "offset": 806,
       "length": 17,
       "value": "\"X-Client-Source\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Utils\/ClientSource.swift",
       "kind": "StringLiteral",
-      "offset": 830,
+      "offset": 850,
       "length": 9,
       "value": "\"ios-sdk\""
     },
@@ -27907,7 +28926,7 @@
       "kind": "StringLiteral",
       "offset": 885,
       "length": 7,
-      "value": "\"2.2.0\""
+      "value": "\"2.3.0\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
@@ -28458,77 +29477,77 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 21057,
+      "offset": 21064,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 25111,
+      "offset": 25118,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 25151,
+      "offset": 25158,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "FloatLiteral",
-      "offset": 25199,
+      "offset": 25206,
       "length": 4,
       "value": "15.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 25236,
+      "offset": 25243,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 25273,
+      "offset": 25280,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "FloatLiteral",
-      "offset": 25315,
+      "offset": 25322,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "FloatLiteral",
-      "offset": 25356,
+      "offset": 25363,
       "length": 3,
       "value": "1.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 25402,
+      "offset": 25409,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 25441,
+      "offset": 25448,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/ObjectTrackingManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 25474,
+      "offset": 25481,
       "length": 2,
       "value": "90"
     },
