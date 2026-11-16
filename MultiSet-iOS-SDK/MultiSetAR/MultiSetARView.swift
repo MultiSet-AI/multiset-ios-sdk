@@ -105,6 +105,7 @@ public struct MultiSetARView: UIViewRepresentable {
         scene.renderer.gizmoVisual = gizmoVisual
         scene.renderer.mapParent = gizmoAnchor
         scene.renderer.objectRoot = objectTrackingAnchor
+        scene.renderer.attachSceneUpdates(arView.scene)
 
         MultiSet.shared.setARSession(arView.session)
         MultiSet.shared.setPoseSink(scene.renderer)

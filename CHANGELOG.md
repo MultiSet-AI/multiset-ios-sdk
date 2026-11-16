@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.4.0
+
+Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework` and the `MultiSetAR/`
+folder together. No breaking API changes; the new callback is optional.
+
+### New
+
+- **Alignment and geo conversions:** the SDK keeps the alignment from the last accepted fix, so an
+  app can ask at any time where the map is and where the AR session is on Earth, without doing the
+  maths itself. Modelled on the pull API of Niantic VPS2.
+  - `MultiSet.shared.mapAlignment` (`MapAlignment`) converts points and poses between the AR
+    session and the map, and gives the camera's pose in the map.
+    `MapAlignment.fromLeftHanded(_:)` converts poses authored in Unity.
+  - `MultiSet.shared.geoAlignment` (`GeoAlignment`) converts between the AR session, the map and
+    WGS 84 latitude, longitude and ellipsoidal altitude, places a pose facing a compass bearing,
+    and gives the session origin's position and heading for an external scene camera.
+  - `mapAlignmentAvailability` and `geoAlignmentAvailability` (`AlignmentAvailability`) say why an
+    alignment is missing: not localized, needs realignment, geo not requested, map not
+    geo-referenced, or a server that does not send the map heading.
+  - `onAlignmentChanged(map:geo:)` reports each change once, after the scene's anchor has moved,
+    and with nil when the alignment is cleared.
+  - `GeoAccuracy` gives a 1-sigma horizontal, vertical and heading estimate on every
+    `Geolocation`, and anywhere through `GeoAlignment.accuracy(atSessionPoint:)`.
+- **`MultiSetAR`:** `MultiSet.shared.deviceGeolocation(headingMode:)` gives the device's latitude,
+  longitude, altitude and compass heading right now; `.deviceTop` reports the top edge, for a
+  phone held flat over a 2D map. `deviceMapPose()` gives the device's pose in the map ("you are
+  here"). `setAlignmentSmoothing(.interpolate(seconds:))` glides the map anchor to each new fix
+  instead of jumping; it is off by default.
+- Geo conversions use the map heading the server sends with each fix (`mapHeadingDeg`), never the
+  GeoPose quaternion, so they work with the camera pointing at the floor. At the spot where the
+  device localized, the answer matches the server's GeoPose exactly.
+- `AnchorPose` and `GeoCoordinates` are `Equatable`, and `AnchorPose` is `Sendable`.
+- `LocalizationResult.position` and `rotation` are documented as the map origin in the AR session
+  frame. Their values are unchanged.
+
 ## 2.3.0
 
 Requires iOS 16.0+ and Xcode 26 or later. Replace `MultiSetSDK.xcframework`; the `MultiSetAR/`

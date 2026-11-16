@@ -10,6 +10,17 @@ import ARKit
 import RealityKit
 import MultiSetSDK
 
+/// How the map anchor `MultiSetARView` owns moves to each new fix.
+public enum AlignmentSmoothing: Equatable {
+
+    /// Jump straight to each fix, as in 2.3.0.
+    case off
+
+    /// Glide to each fix over this many seconds: linear in position, spherical in rotation.
+    /// The first placement, and the first fix after the scene was out of place, still jump.
+    case interpolate(seconds: Double)
+}
+
 /// The 1.x ARKit-typed API, kept source-compatible on top of the platform boundary
 extension MultiSet {
 
@@ -73,5 +84,45 @@ extension MultiSet {
     /// The object counterpart of `isMapMeshLoading`.
     public var isObjectMeshLoading: Bool {
         isLoadingObjectMesh || MultiSetARScene.shared.renderer.isBuildingObjectMesh
+    }
+
+    /// Smooth how the map anchor `MultiSetARView` owns moves between fixes. Off by default.
+    ///
+    /// `mapAlignment` and `geoAlignment` report the accepted fix; `deviceGeolocation` and
+    /// `deviceMapPose` use the anchor as shown. A parent entity the host moves itself through
+    /// `setGizmoUpdateHandler` is not smoothed.
+    public func setAlignmentSmoothing(_ smoothing: AlignmentSmoothing) {
+        MultiSetARScene.shared.renderer.setSmoothing(smoothing)
+    }
+
+    /// Where the device is on Earth right now, and which way it faces; nil without a camera
+    /// frame or a `geoAlignment`.
+    ///
+    /// Reads the current ARKit frame and interface orientation, and uses the map anchor as the
+    /// scene shows it, so the answer matches the screen while smoothing is on.
+    /// - Parameter headingMode: `.cameraForward` for the direction the camera looks, or
+    ///   `.deviceTop` for the device's top edge, as for a phone held flat over a 2D map.
+    public func deviceGeolocation(headingMode: HeadingMode = .cameraForward) -> Geolocation? {
+        guard var alignment = geoAlignment,
+              let camera = MultiSetARScene.shared.renderer.session?.currentFrame?.camera else { return nil }
+        if let rendered = MultiSetARScene.shared.renderer.renderedMapAnchor {
+            alignment = alignment.replacingAnchor(rendered)
+        }
+        return alignment.geolocation(ofCamera: camera.transform, orientation: ARSessionFrameSource.interfaceOrientation,
+                                     headingMode: headingMode)
+    }
+
+    /// The device's pose in the map right now, the "you are here" of a floor plan; nil without a
+    /// camera frame or a `mapAlignment`.
+    ///
+    /// The rotation follows `LocalizationResult.estimatedRotation`: in portrait it carries the
+    /// same 90° correction about the camera's Z axis as a query.
+    public func deviceMapPose() -> AnchorPose? {
+        guard var alignment = mapAlignment,
+              let camera = MultiSetARScene.shared.renderer.session?.currentFrame?.camera else { return nil }
+        if let rendered = MultiSetARScene.shared.renderer.renderedMapAnchor {
+            alignment = alignment.replacingAnchor(rendered)
+        }
+        return alignment.mapPose(ofCamera: camera.transform, orientation: ARSessionFrameSource.interfaceOrientation)
     }
 }

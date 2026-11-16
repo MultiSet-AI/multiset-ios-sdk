@@ -7,6 +7,8 @@ Redistribution in source or binary forms must retain this notice.
 
 import Foundation
 import ARKit
+import Combine
+import QuartzCore
 import RealityKit
 import MultiSetSDK
 
@@ -27,6 +29,10 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
     private var isGizmoPlaced = false
     private var isGizmoAllowed = true
     private var isMapOutOfPlace = false
+
+    private var smoothing: AlignmentSmoothing = .off
+    private var smoother = AnchorSmoother(duration: 0)
+    private var sceneUpdates: Cancellable?
 
     var mapParent: Entity?
     var objectRoot: Entity?
@@ -49,12 +55,62 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
             return
         }
 
-        gizmoAnchor.transform.translation = position
-        gizmoAnchor.transform.rotation = rotation
+        switch smoothing {
+        case .off:
+            gizmoAnchor.transform.translation = position
+            gizmoAnchor.transform.rotation = rotation
+        case .interpolate:
+            // The core records a fix after this call, so a nil alignment means it was cleared: snap.
+            let alignmentCleared = MainActor.assumeIsolated { MultiSet.shared.mapAlignment == nil }
+            let snap = !isGizmoPlaced || alignmentCleared
+            let now = CACurrentMediaTime()
+            smoother.setTarget(position: position, rotation: rotation, at: now, snap: snap)
+            applySmoothedAnchor(at: now)
+        }
         isGizmoPlaced = true
         applyGizmoVisibility()
 
         print("MultiSetSDK >> Gizmo updated to Position: \(position), Rotation: \(rotation)")
+    }
+
+    // Nil unless this renderer owns the anchor and a fix has placed it.
+    var renderedMapAnchor: AnchorPose? {
+        guard let gizmoAnchor, isGizmoPlaced else { return nil }
+        return AnchorPose(position: gizmoAnchor.transform.translation, rotation: gizmoAnchor.transform.rotation)
+    }
+
+    func setSmoothing(_ smoothing: AlignmentSmoothing) {
+        self.smoothing = smoothing
+        switch smoothing {
+        case .off:
+            if let gizmoAnchor, let target = smoother.target {
+                gizmoAnchor.transform.translation = target.position
+                gizmoAnchor.transform.rotation = target.rotation
+            }
+            smoother.clear()
+        case .interpolate(let seconds):
+            smoother.duration = max(seconds, 0)
+            if smoother.target == nil, let placed = renderedMapAnchor {
+                smoother.setTarget(position: placed.position, rotation: placed.rotation, at: CACurrentMediaTime(), snap: true)
+            }
+        }
+    }
+
+    // A newer view's anchor starts unplaced.
+    func attachSceneUpdates(_ scene: RealityKit.Scene) {
+        sceneUpdates?.cancel()
+        smoother.clear()
+        isGizmoPlaced = false
+        applyGizmoVisibility()
+        sceneUpdates = scene.subscribe(to: SceneEvents.Update.self) { [weak self] _ in
+            self?.applySmoothedAnchor(at: CACurrentMediaTime())
+        }
+    }
+
+    private func applySmoothedAnchor(at time: TimeInterval) {
+        guard smoothing != .off, let gizmoAnchor, let pose = smoother.pose(at: time) else { return }
+        gizmoAnchor.transform.translation = pose.position
+        gizmoAnchor.transform.rotation = pose.rotation
     }
 
     func objectPoseDidUpdate(objectCode: String, pose: AnchorPose) {
@@ -100,6 +156,7 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
     func resetMapAnchor() {
         gizmoAnchor?.transform.translation = SIMD3<Float>(0, 0, 0)
         gizmoAnchor?.transform.rotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1, 0))
+        smoother.clear()
         isGizmoPlaced = false
         applyGizmoVisibility()
     }
@@ -158,6 +215,9 @@ final class RealityKitSceneRenderer: MultiSetPoseSink, MultiSetMeshRenderer {
         mapMeshRenderer.setOutOfPlace(false)
         isMapOutOfPlace = false
         isGizmoPlaced = false
+        sceneUpdates?.cancel()
+        sceneUpdates = nil
+        smoother.clear()
         removeAllObjectMeshes()
         gizmoAnchor = nil
         gizmoVisual = nil

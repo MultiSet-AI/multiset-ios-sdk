@@ -219,6 +219,19 @@ MultiSet.shared.localize()
 MultiSet.shared.stopLocalization()
 ```
 
+## Upgrading from 2.3
+
+Replace `MultiSetSDK.xcframework` and the `MultiSetAR` folder together: four adapter files changed
+and `AnchorSmoother.swift` is new, and the 2.4.0 adapter does not build against a 2.3.0 framework.
+No code changes are needed.
+
+- **New and optional: alignment and geo conversions.** `MultiSet.shared.mapAlignment` and
+  `geoAlignment` can be read at any time, and convert between AR session, map and Earth
+  coordinates. The `MultiSetAR` folder adds `deviceGeolocation(headingMode:)`, `deviceMapPose()`
+  and `setAlignmentSmoothing(_:)`. See "Alignment and Geo Conversions".
+- **`AnchorPose` and `GeoCoordinates` are now `Equatable`**, and `AnchorPose` is `Sendable`. If your
+  app declared either conformance itself, remove it.
+
 ## Upgrading from 2.2
 
 Replace `MultiSetSDK.xcframework`. The `MultiSetAR` folder is unchanged from 2.2.0, and no code
@@ -435,6 +448,174 @@ if let geo = result.geoPose, let q = geo.quaternion, geo.frameName == "Y-Up-ENU"
 
 The demo app's GeoPose Map View (`MultiSet-iOS-SDK/Views/Map/`) plots each fix this way;
 `GeoPoseMath.compassYaw` there also reads the `ENU` frame.
+
+The GeoPose describes the camera at the moment of the fix only. For the device's position and
+heading at any later moment, or to convert any other point, use the alignment API in the next
+section.
+
+## Alignment and Geo Conversions
+
+The SDK keeps the alignment from the last accepted fix, so you can ask at any time where the map is
+in the AR session and where the session is on Earth, and convert between the three spaces without
+writing the maths yourself:
+
+| Space | Units |
+|---|---|
+| AR session | metres, right-handed, +Y up, gravity-aligned (ARKit) |
+| Map | metres, right-handed, +Y up (the map or MapSet) |
+| Earth | WGS84 latitude and longitude, metres above the WGS84 ellipsoid, degrees clockwise from true north |
+
+```swift
+MultiSet.shared.mapAlignment: MapAlignment?               // map ↔ session
+MultiSet.shared.geoAlignment: GeoAlignment?               // Earth ↔ session
+MultiSet.shared.mapAlignmentAvailability: AlignmentAvailability
+MultiSet.shared.geoAlignmentAvailability: AlignmentAvailability
+```
+
+Each getter returns a snapshot that never changes after you read it. Reading is synchronous, makes
+no network call and is cheap enough to do every frame. Snapshots are `Sendable`, so you can hand one
+to another thread. A host that does not render every frame, such as a 2D map, can implement
+`MultiSetCallback.onAlignmentChanged(map:geo:)` instead of polling. The SDK calls it once per
+change, with nil when the alignment is cleared.
+
+### Map content
+
+Content parented under `MultiSetARView.parentEntity` follows the map automatically. For anything
+else, convert through `MapAlignment`:
+
+```swift
+guard let map = MultiSet.shared.mapAlignment else { return }
+let sessionPoint = map.sessionPosition(ofMapPoint: [2.5, 0, -4])
+let savedPose = map.mapPose(ofSessionPose: AnchorPose(position: entity.position(relativeTo: nil),
+                                                       rotation: entity.orientation(relativeTo: nil)))
+```
+
+To keep content across sessions, save its map pose together with the map code
+(`map.mapCodes`), and place it again with `sessionPose(ofMapPose:)` after the next fix. Poses
+authored in a left-handed tool such as Unity go through `MapAlignment.fromLeftHanded(_:)` first.
+Without it the content is mirrored.
+
+`MultiSet.shared.deviceMapPose()`, from the `MultiSetAR` folder, gives the device's pose in the map
+right now: the "you are here" of a floor plan. Its rotation follows
+`LocalizationResult.estimatedRotation`, so in portrait it carries the same 90° correction about the
+camera's Z axis as a query.
+
+### Geo content
+
+Geo conversions need `MultiSetConfig.geoCoordinatesInResponse = true` and a geo-referenced map or
+MapSet. The SDK places the map on Earth from the GeoPose position and the map heading
+(`mapHeadingDeg`) the server sends with each fix.
+
+```swift
+guard let geo = MultiSet.shared.geoAlignment else { return }
+
+// A marker at a surveyed point, facing east
+let place = GeoCoordinates(latitude: 12.952603, longitude: 77.616157, altitude: 913.4)
+let pose = geo.sessionPose(of: place, facingDegrees: 90)
+marker.transform = Transform(scale: .one, rotation: pose.rotation, translation: pose.position)
+
+// Where the device is, and which way it faces
+if let here = MultiSet.shared.deviceGeolocation() {
+    print(here.coordinates, here.headingDegrees ?? .nan, here.accuracy?.horizontalMeters ?? .nan)
+}
+```
+
+- **Altitude** is metres above the WGS84 ellipsoid everywhere. CoreLocation's `altitude` is above
+  mean sea level; use `ellipsoidalAltitude`. A `GeoCoordinates` with no altitude is placed at the
+  altitude of the map origin.
+- **Pitch and roll come from the session's gravity.** Geo conversions use the map anchor's yaw
+  only, levelled about the camera position of the last fix. At that spot the answer matches the
+  server's GeoPose exactly. Elsewhere, geo and map placement of one point differ by the anchor's
+  tilt times the distance from that spot, mostly in altitude.
+- **Heading** is nil when the axis asked about is within 15° of vertical. `deviceGeolocation(headingMode: .deviceTop)`
+  reports the direction of the device's top edge instead of the camera's, which is what a phone held
+  flat over a 2D map needs.
+- **Map point to Earth** and back: `coordinates(ofMapPoint:)` and `mapPosition(of:)`.
+
+**Content placed in session space does not follow later fixes.** A marker placed with
+`sessionPose(of:facingDegrees:)` stays where that alignment put it, so after a refresh, and more so
+after a tracking break, it can sit off its true position. Set its transform relative to the world
+(not under `parentEntity`), and place it again in `onAlignmentChanged(map:geo:)` when `geo` is
+non-nil. Alternatively, convert it once with `geo.mapPosition(of:)` and parent it under
+`parentEntity` at that map position: it then moves with every fix, with the anchor's small tilt
+applied.
+
+### Driving an external scene camera
+
+A geospatial scene that draws its own camera (for example an ArcGIS scene view) needs where the AR
+session origin is on Earth and which way the session faces:
+
+```swift
+guard let geo = MultiSet.shared.geoAlignment else { return }
+let origin = geo.sessionOrigin                 // GeoCoordinates of the session origin
+let heading = geo.sessionHeadingDegrees        // compass bearing of the session's -Z axis
+```
+
+Place the external camera at `origin`, turned to `heading`, and move it by the AR camera's session
+transform each frame.
+
+### Availability
+
+When a getter returns nil, its availability says why:
+
+| Case | Meaning |
+|---|---|
+| `available` | Conversions work |
+| `notLocalized` | No accepted fix in this session yet |
+| `needsRealignment` | A tracking break put the scene out of place; localize again |
+| `geoNotRequested` | `geoCoordinatesInResponse` is off (geo only) |
+| `mapNotGeoreferenced` | The fix had no usable GeoPose position (geo only) |
+| `serverUnsupported` | The server sent no map heading (geo only) |
+
+The enum is not frozen, so switch over it with `@unknown default`:
+
+```swift
+switch MultiSet.shared.geoAlignmentAvailability {
+case .available: break
+case .notLocalized, .needsRealignment: showHint("Point the camera at the space")
+case .geoNotRequested, .mapNotGeoreferenced, .serverUnsupported: hideGeoContent()
+@unknown default: hideGeoContent()
+}
+```
+
+The alignment is cleared when the scene is marked out of place (even with `relocalization` off), on
+`resetSession()`, when a different AR session is attached, on `release()`, and when `updateConfig`
+changes the map or MapSet. It is kept through `stopLocalization()`,
+`resetPoseConsistencyReference()`, a brief tracking wobble, a failed attempt and a fix the
+pose consistency check refused. It becomes available again on the next accepted fix.
+
+### Accuracy
+
+`Geolocation.accuracy` and `GeoAlignment.accuracy(atSessionPoint:)` give 1-sigma horizontal,
+vertical and heading estimates. They come from the spread of recent fixes, the anchor's trust, AR
+drift over the distance from the last fix, and the heading error's lever arm, so they grow as you
+move away from where you localized. They exclude the error of the map's own georeference, which the
+SDK cannot know. A small rotation error in that georeference also grows with distance from the map
+origin: 1° is about 1.7 m at 100 m.
+
+### Smoothing
+
+By default the map anchor jumps to each new fix. To glide instead:
+
+```swift
+MultiSet.shared.setAlignmentSmoothing(.interpolate(seconds: 0.3))
+```
+
+Only the anchor `MultiSetARView` owns is smoothed, and the first placement and the first fix after
+the scene was out of place still jump. `mapAlignment` and `geoAlignment` report the accepted fix.
+`deviceGeolocation()` and `deviceMapPose()` use the anchor as shown, so their answers match the
+screen.
+
+### Requirements and quirks
+
+- The AR session must be gravity-aligned (`worldAlignment = .gravity`, which `MultiSetARView` sets).
+  With `.gravityAndHeading` ARKit can turn the session as the compass settles, which invalidates the
+  alignment between fixes.
+- `LocalizationResult.geoPose?.position.altitude` reads 0 when the server sends no height. The
+  alignment does not use that 0: such a fix reports `mapNotGeoreferenced`.
+- On a custom runtime without the `MultiSetAR` folder, pass the raw camera transform and the
+  interface orientation to `MapAlignment.mapPose(ofCamera:orientation:)` and
+  `GeoAlignment.geolocation(ofCamera:orientation:headingMode:)`.
 
 ## Retries, Refreshes and Tracking Recovery
 

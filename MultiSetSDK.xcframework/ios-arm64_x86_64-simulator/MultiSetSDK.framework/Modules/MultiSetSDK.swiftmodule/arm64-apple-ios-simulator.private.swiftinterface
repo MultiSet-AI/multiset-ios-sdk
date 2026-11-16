@@ -75,10 +75,11 @@ public enum FalsePositiveCause : Swift.Sendable {
     get
   }
 }
-public struct AnchorPose {
+public struct AnchorPose : Swift.Sendable, Swift.Equatable {
   public let position: Swift.SIMD3<Swift.Float>
   public let rotation: simd.simd_quatf
   public init(position: Swift.SIMD3<Swift.Float>, rotation: simd.simd_quatf)
+  public static func == (lhs: MultiSetSDK.AnchorPose, rhs: MultiSetSDK.AnchorPose) -> Swift.Bool
 }
 @_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class MultiSet {
   nonisolated public static let shared: MultiSetSDK.MultiSet
@@ -420,6 +421,7 @@ public struct LocalizationAttemptFailure : Swift.Sendable {
   @_Concurrency.MainActor func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor func onRecoveryPhaseChanged(_ phase: MultiSetSDK.RecoveryPhase, needsRealignment: Swift.Bool)
+  @_Concurrency.MainActor func onAlignmentChanged(map: MultiSetSDK.MapAlignment?, geo: MultiSetSDK.GeoAlignment?)
   @_Concurrency.MainActor func onLocalizationStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
   @_Concurrency.MainActor func onObjectTrackingStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
   @_Concurrency.MainActor func onTrackingStateChanged(state: MultiSetSDK.TrackingState)
@@ -435,6 +437,7 @@ extension MultiSetSDK.MultiSetCallback {
   @_Concurrency.MainActor public func onLocalizationCorrected(from: MultiSetSDK.AnchorPose, to: MultiSetSDK.AnchorPose, trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor public func onAnchorTrustChanged(_ trust: MultiSetSDK.AnchorTrust)
   @_Concurrency.MainActor public func onRecoveryPhaseChanged(_ phase: MultiSetSDK.RecoveryPhase, needsRealignment: Swift.Bool)
+  @_Concurrency.MainActor public func onAlignmentChanged(map: MultiSetSDK.MapAlignment?, geo: MultiSetSDK.GeoAlignment?)
   @_Concurrency.MainActor public func onLocalizationStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
   @_Concurrency.MainActor public func onObjectTrackingStageChanged(_ stage: MultiSetSDK.LocalizationStage, isBackground: Swift.Bool)
   @_Concurrency.MainActor public func onMeshLoaded(mapCode: Swift.String)
@@ -443,13 +446,14 @@ extension MultiSetSDK.MultiSetCallback {
   @_Concurrency.MainActor public func onObjectTrackingFailure(error: Swift.String)
   @_Concurrency.MainActor public func onObjectMeshLoaded(objectCode: Swift.String)
 }
-public struct GeoCoordinates : Swift.Sendable {
+public struct GeoCoordinates : Swift.Sendable, Swift.Equatable {
   public var latitude: Swift.Double
   public var longitude: Swift.Double
   public var altitude: Swift.Double?
   public init(latitude: Swift.Double = 0.0, longitude: Swift.Double = 0.0, altitude: Swift.Double? = nil)
   public func isValid() -> Swift.Bool
   public func toGeoHintString() -> Swift.String
+  public static func == (a: MultiSetSDK.GeoCoordinates, b: MultiSetSDK.GeoCoordinates) -> Swift.Bool
 }
 public struct GeoPose : Swift.Sendable {
   public struct Position : Swift.Sendable {
@@ -836,6 +840,96 @@ extension MultiSetSDK.MultiSetMappingSource {
   }
   public func acquireRGBFrame() -> MultiSetSDK.MappingRGBFrame?
 }
+public struct MapAlignment : Swift.Sendable, Swift.Equatable {
+  public let anchor: MultiSetSDK.AnchorPose
+  public let trust: MultiSetSDK.AnchorTrust
+  public let mapCodes: [Swift.String]
+  public let timestamp: Foundation.Date
+  public var mapToSession: simd.simd_float4x4 {
+    get
+  }
+  public func sessionPosition(ofMapPoint point: Swift.SIMD3<Swift.Float>) -> Swift.SIMD3<Swift.Float>
+  public func mapPosition(ofSessionPoint point: Swift.SIMD3<Swift.Float>) -> Swift.SIMD3<Swift.Float>
+  public func sessionPose(ofMapPose pose: MultiSetSDK.AnchorPose) -> MultiSetSDK.AnchorPose
+  public func mapPose(ofSessionPose pose: MultiSetSDK.AnchorPose) -> MultiSetSDK.AnchorPose
+  public func mapPose(ofCamera camera: simd.simd_float4x4, orientation: MultiSetSDK.DeviceOrientation) -> MultiSetSDK.AnchorPose
+  public func replacingAnchor(_ anchor: MultiSetSDK.AnchorPose) -> MultiSetSDK.MapAlignment
+  public static func fromLeftHanded(_ pose: MultiSetSDK.AnchorPose) -> MultiSetSDK.AnchorPose
+  public static func == (a: MultiSetSDK.MapAlignment, b: MultiSetSDK.MapAlignment) -> Swift.Bool
+}
+public enum AlignmentAvailability : Swift.Sendable, Swift.Equatable {
+  case available
+  case notLocalized
+  case needsRealignment
+  case geoNotRequested
+  case mapNotGeoreferenced
+  case serverUnsupported
+  public static func == (a: MultiSetSDK.AlignmentAvailability, b: MultiSetSDK.AlignmentAvailability) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct MapGeoreference : Swift.Sendable, Swift.Equatable {
+  public let origin: MultiSetSDK.GeoCoordinates
+  public let mapHeadingDegrees: Swift.Double
+  public static func == (a: MultiSetSDK.MapGeoreference, b: MultiSetSDK.MapGeoreference) -> Swift.Bool
+}
+public enum HeadingMode : Swift.Sendable {
+  case cameraForward
+  case deviceTop
+  public static func == (a: MultiSetSDK.HeadingMode, b: MultiSetSDK.HeadingMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct Geolocation : Swift.Sendable {
+  public let coordinates: MultiSetSDK.GeoCoordinates
+  public let headingDegrees: Swift.Double?
+  public let accuracy: MultiSetSDK.GeoAccuracy?
+  public let timestamp: Foundation.Date
+}
+public struct GeoAccuracy : Swift.Sendable, Swift.Equatable {
+  public let horizontalMeters: Swift.Double
+  public let verticalMeters: Swift.Double
+  public let headingDegrees: Swift.Double
+  public static func == (a: MultiSetSDK.GeoAccuracy, b: MultiSetSDK.GeoAccuracy) -> Swift.Bool
+}
+public struct GeoAlignment : Swift.Sendable, Swift.Equatable {
+  public let map: MultiSetSDK.MapAlignment
+  public let georeference: MultiSetSDK.MapGeoreference
+  public var sessionOrigin: MultiSetSDK.GeoCoordinates {
+    get
+  }
+  public var sessionHeadingDegrees: Swift.Double {
+    get
+  }
+  public func sessionPosition(of coordinates: MultiSetSDK.GeoCoordinates) -> Swift.SIMD3<Swift.Float>
+  public func coordinates(ofSessionPoint point: Swift.SIMD3<Swift.Float>) -> MultiSetSDK.GeoCoordinates
+  public func sessionPose(of coordinates: MultiSetSDK.GeoCoordinates, facingDegrees: Swift.Double) -> MultiSetSDK.AnchorPose
+  public func geolocation(ofSessionPose pose: MultiSetSDK.AnchorPose) -> MultiSetSDK.Geolocation
+  public func geolocation(ofCamera camera: simd.simd_float4x4, orientation: MultiSetSDK.DeviceOrientation, headingMode: MultiSetSDK.HeadingMode) -> MultiSetSDK.Geolocation
+  public func coordinates(ofMapPoint point: Swift.SIMD3<Swift.Float>) -> MultiSetSDK.GeoCoordinates
+  public func mapPosition(of coordinates: MultiSetSDK.GeoCoordinates) -> Swift.SIMD3<Swift.Float>
+  public func accuracy(atSessionPoint point: Swift.SIMD3<Swift.Float>) -> MultiSetSDK.GeoAccuracy
+  public func replacingAnchor(_ anchor: MultiSetSDK.AnchorPose) -> MultiSetSDK.GeoAlignment
+  public static func == (a: MultiSetSDK.GeoAlignment, b: MultiSetSDK.GeoAlignment) -> Swift.Bool
+}
+extension MultiSetSDK.MultiSet {
+  @_Concurrency.MainActor final public var mapAlignment: MultiSetSDK.MapAlignment? {
+    get
+  }
+  @_Concurrency.MainActor final public var geoAlignment: MultiSetSDK.GeoAlignment? {
+    get
+  }
+  @_Concurrency.MainActor final public var mapAlignmentAvailability: MultiSetSDK.AlignmentAvailability {
+    get
+  }
+  @_Concurrency.MainActor final public var geoAlignmentAvailability: MultiSetSDK.AlignmentAvailability {
+    get
+  }
+}
 extension MultiSetSDK.AnchorTrust : Swift.Hashable {}
 extension MultiSetSDK.AnchorTrust : Swift.RawRepresentable {}
 extension MultiSetSDK.GateRejection : Swift.Equatable {}
@@ -871,3 +965,6 @@ extension MultiSetSDK.MappingStopOutcome : Swift.Equatable {}
 extension MultiSetSDK.MappingStopOutcome : Swift.Hashable {}
 extension MultiSetSDK.MappingError : Swift.Hashable {}
 extension MultiSetSDK.MultiSetMapping : Swift.Sendable {}
+extension MultiSetSDK.AlignmentAvailability : Swift.Hashable {}
+extension MultiSetSDK.HeadingMode : Swift.Equatable {}
+extension MultiSetSDK.HeadingMode : Swift.Hashable {}

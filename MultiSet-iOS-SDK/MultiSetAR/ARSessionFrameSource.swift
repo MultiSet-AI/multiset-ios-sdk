@@ -43,20 +43,24 @@ final class ARSessionFrameSource: MultiSetFrameSource {
             return nil
         }
 
-        let interfaceOrientation = UIApplication
+        return CameraFrame(
+            pixelBuffer: frame.capturedImage,
+            cameraTransform: frame.camera.transform,
+            intrinsics: frame.camera.intrinsics,
+            orientation: Self.interfaceOrientation,
+            timestamp: frame.timestamp
+        )
+    }
+
+    @MainActor
+    static var interfaceOrientation: DeviceOrientation {
+        let orientation = UIApplication
             .shared
             .connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .first?
             .interfaceOrientation ?? .portrait
-
-        return CameraFrame(
-            pixelBuffer: frame.capturedImage,
-            cameraTransform: frame.camera.transform,
-            intrinsics: frame.camera.intrinsics,
-            orientation: interfaceOrientation.isLandscape ? .landscape : .portrait,
-            timestamp: frame.timestamp
-        )
+        return orientation.isLandscape ? .landscape : .portrait
     }
 
     var isHostActive: Bool {

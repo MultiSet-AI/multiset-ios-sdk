@@ -2634,6 +2634,40 @@
               "AccessControl"
             ],
             "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK10AnchorPoseV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK10AnchorPoseV2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
           }
         ],
         "declKind": "Struct",
@@ -2658,6 +2692,27 @@
             "printedName": "Escapable",
             "usr": "s:s9EscapableP",
             "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
           }
         ]
       },
@@ -4591,6 +4646,230 @@
                 "declAttributes": [
                   "Final"
                 ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mapAlignment",
+            "printedName": "mapAlignment",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.MapAlignment?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MapAlignment",
+                    "printedName": "MultiSetSDK.MapAlignment",
+                    "usr": "s:11MultiSetSDK12MapAlignmentV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK0aB0C12mapAlignmentAA03MapE0VSgvp",
+            "mangledName": "$s11MultiSetSDK0aB0C12mapAlignmentAA03MapE0VSgvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "MultiSetSDK.MapAlignment?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "MapAlignment",
+                        "printedName": "MultiSetSDK.MapAlignment",
+                        "usr": "s:11MultiSetSDK12MapAlignmentV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK0aB0C12mapAlignmentAA03MapE0VSgvg",
+                "mangledName": "$s11MultiSetSDK0aB0C12mapAlignmentAA03MapE0VSgvg",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "Final"
+                ],
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "geoAlignment",
+            "printedName": "geoAlignment",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.GeoAlignment?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoAlignment",
+                    "printedName": "MultiSetSDK.GeoAlignment",
+                    "usr": "s:11MultiSetSDK12GeoAlignmentV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK0aB0C12geoAlignmentAA03GeoE0VSgvp",
+            "mangledName": "$s11MultiSetSDK0aB0C12geoAlignmentAA03GeoE0VSgvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "MultiSetSDK.GeoAlignment?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "GeoAlignment",
+                        "printedName": "MultiSetSDK.GeoAlignment",
+                        "usr": "s:11MultiSetSDK12GeoAlignmentV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK0aB0C12geoAlignmentAA03GeoE0VSgvg",
+                "mangledName": "$s11MultiSetSDK0aB0C12geoAlignmentAA03GeoE0VSgvg",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "Final"
+                ],
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mapAlignmentAvailability",
+            "printedName": "mapAlignmentAvailability",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AlignmentAvailability",
+                "printedName": "MultiSetSDK.AlignmentAvailability",
+                "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK0aB0C24mapAlignmentAvailabilityAA0eF0Ovp",
+            "mangledName": "$s11MultiSetSDK0aB0C24mapAlignmentAvailabilityAA0eF0Ovp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK0aB0C24mapAlignmentAvailabilityAA0eF0Ovg",
+                "mangledName": "$s11MultiSetSDK0aB0C24mapAlignmentAvailabilityAA0eF0Ovg",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "Final"
+                ],
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "geoAlignmentAvailability",
+            "printedName": "geoAlignmentAvailability",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AlignmentAvailability",
+                "printedName": "MultiSetSDK.AlignmentAvailability",
+                "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK0aB0C24geoAlignmentAvailabilityAA0eF0Ovp",
+            "mangledName": "$s11MultiSetSDK0aB0C24geoAlignmentAvailabilityAA0eF0Ovp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK0aB0C24geoAlignmentAvailabilityAA0eF0Ovg",
+                "mangledName": "$s11MultiSetSDK0aB0C24geoAlignmentAvailabilityAA0eF0Ovg",
+                "moduleName": "MultiSetSDK",
+                "declAttributes": [
+                  "Final"
+                ],
+                "isFromExtension": true,
                 "accessorKind": "get"
               }
             ]
@@ -14863,6 +15142,59 @@
           },
           {
             "kind": "Function",
+            "name": "onAlignmentChanged",
+            "printedName": "onAlignmentChanged(map:geo:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.MapAlignment?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MapAlignment",
+                    "printedName": "MultiSetSDK.MapAlignment",
+                    "usr": "s:11MultiSetSDK12MapAlignmentV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.GeoAlignment?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoAlignment",
+                    "printedName": "MultiSetSDK.GeoAlignment",
+                    "usr": "s:11MultiSetSDK12GeoAlignmentV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB8CallbackP18onAlignmentChanged3map3geoyAA03MapF0VSg_AA03GeoF0VSgtF",
+            "mangledName": "$s11MultiSetSDK0aB8CallbackP18onAlignmentChanged3map3geoyAA03MapF0VSg_AA03GeoF0VSgtF",
+            "moduleName": "MultiSetSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
+            "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
+            "protocolReq": true,
+            "declAttributes": [
+              "Custom",
+              "RawDocComment"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
             "name": "onLocalizationStageChanged",
             "printedName": "onLocalizationStageChanged(_:isBackground:)",
             "children": [
@@ -15281,6 +15613,57 @@
             "declKind": "Func",
             "usr": "s:11MultiSetSDK0aB8CallbackPAAE22onRecoveryPhaseChanged_16needsRealignmentyAA0fG0O_SbtF",
             "mangledName": "$s11MultiSetSDK0aB8CallbackPAAE22onRecoveryPhaseChanged_16needsRealignmentyAA0fG0O_SbtF",
+            "moduleName": "MultiSetSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
+            "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
+            "declAttributes": [
+              "Custom"
+            ],
+            "isFromExtension": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onAlignmentChanged",
+            "printedName": "onAlignmentChanged(map:geo:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.MapAlignment?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MapAlignment",
+                    "printedName": "MultiSetSDK.MapAlignment",
+                    "usr": "s:11MultiSetSDK12MapAlignmentV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.GeoAlignment?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoAlignment",
+                    "printedName": "MultiSetSDK.GeoAlignment",
+                    "usr": "s:11MultiSetSDK12GeoAlignmentV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK0aB8CallbackPAAE18onAlignmentChanged3map3geoyAA03MapF0VSg_AA03GeoF0VSgtF",
+            "mangledName": "$s11MultiSetSDK0aB8CallbackPAAE18onAlignmentChanged3map3geoyAA03MapF0VSg_AA03GeoF0VSgtF",
             "moduleName": "MultiSetSDK",
             "genericSig": "<τ_0_0 where τ_0_0 : MultiSetSDK.MultiSetCallback>",
             "sugared_genericSig": "<Self where Self : MultiSetSDK.MultiSetCallback>",
@@ -15929,6 +16312,38 @@
               "RawDocComment"
             ],
             "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK14GeoCoordinatesV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK14GeoCoordinatesV2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
           }
         ],
         "declKind": "Struct",
@@ -15960,6 +16375,13 @@
             "printedName": "Sendable",
             "usr": "s:s8SendableP",
             "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -27809,6 +28231,2540 @@
         ]
       },
       {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MapAlignment",
+        "printedName": "MapAlignment",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "anchor",
+            "printedName": "anchor",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12MapAlignmentV6anchorAA10AnchorPoseVvp",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV6anchorAA10AnchorPoseVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AnchorPose",
+                    "printedName": "MultiSetSDK.AnchorPose",
+                    "usr": "s:11MultiSetSDK10AnchorPoseV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12MapAlignmentV6anchorAA10AnchorPoseVvg",
+                "mangledName": "$s11MultiSetSDK12MapAlignmentV6anchorAA10AnchorPoseVvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "trust",
+            "printedName": "trust",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorTrust",
+                "printedName": "MultiSetSDK.AnchorTrust",
+                "usr": "s:11MultiSetSDK11AnchorTrustO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12MapAlignmentV5trustAA11AnchorTrustOvp",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV5trustAA11AnchorTrustOvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AnchorTrust",
+                    "printedName": "MultiSetSDK.AnchorTrust",
+                    "usr": "s:11MultiSetSDK11AnchorTrustO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12MapAlignmentV5trustAA11AnchorTrustOvg",
+                "mangledName": "$s11MultiSetSDK12MapAlignmentV5trustAA11AnchorTrustOvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mapCodes",
+            "printedName": "mapCodes",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12MapAlignmentV8mapCodesSaySSGvp",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV8mapCodesSaySSGvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12MapAlignmentV8mapCodesSaySSGvg",
+                "mangledName": "$s11MultiSetSDK12MapAlignmentV8mapCodesSaySSGvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "timestamp",
+            "printedName": "timestamp",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Date",
+                "printedName": "Foundation.Date",
+                "usr": "s:10Foundation4DateV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12MapAlignmentV9timestamp10Foundation4DateVvp",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV9timestamp10Foundation4DateVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Date",
+                    "printedName": "Foundation.Date",
+                    "usr": "s:10Foundation4DateV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12MapAlignmentV9timestamp10Foundation4DateVvg",
+                "mangledName": "$s11MultiSetSDK12MapAlignmentV9timestamp10Foundation4DateVvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mapToSession",
+            "printedName": "mapToSession",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "simd_float4x4",
+                "printedName": "simd.simd_float4x4",
+                "usr": "c:@SA@simd_float4x4"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12MapAlignmentV12mapToSessionSo13simd_float4x4avp",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV12mapToSessionSo13simd_float4x4avp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "simd_float4x4",
+                    "printedName": "simd.simd_float4x4",
+                    "usr": "c:@SA@simd_float4x4"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12MapAlignmentV12mapToSessionSo13simd_float4x4avg",
+                "mangledName": "$s11MultiSetSDK12MapAlignmentV12mapToSessionSo13simd_float4x4avg",
+                "moduleName": "MultiSetSDK",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "sessionPosition",
+            "printedName": "sessionPosition(ofMapPoint:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV15sessionPosition02ofD5Points5SIMD3VySfGAH_tF",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV15sessionPosition02ofD5Points5SIMD3VySfGAH_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "mapPosition",
+            "printedName": "mapPosition(ofSessionPoint:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV11mapPosition14ofSessionPoints5SIMD3VySfGAH_tF",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV11mapPosition14ofSessionPoints5SIMD3VySfGAH_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "sessionPose",
+            "printedName": "sessionPose(ofMapPose:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV11sessionPose02ofdG0AA06AnchorG0VAG_tF",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV11sessionPose02ofdG0AA06AnchorG0VAG_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "mapPose",
+            "printedName": "mapPose(ofSessionPose:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV7mapPose09ofSessionG0AA06AnchorG0VAG_tF",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV7mapPose09ofSessionG0AA06AnchorG0VAG_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "mapPose",
+            "printedName": "mapPose(ofCamera:orientation:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "simd_float4x4",
+                "printedName": "simd.simd_float4x4",
+                "usr": "c:@SA@simd_float4x4"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "DeviceOrientation",
+                "printedName": "MultiSetSDK.DeviceOrientation",
+                "usr": "s:11MultiSetSDK17DeviceOrientationO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV7mapPose8ofCamera11orientationAA06AnchorG0VSo13simd_float4x4a_AA17DeviceOrientationOtF",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV7mapPose8ofCamera11orientationAA06AnchorG0VSo13simd_float4x4a_AA17DeviceOrientationOtF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "replacingAnchor",
+            "printedName": "replacingAnchor(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MapAlignment",
+                "printedName": "MultiSetSDK.MapAlignment",
+                "usr": "s:11MultiSetSDK12MapAlignmentV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV15replacingAnchoryAcA0G4PoseVF",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV15replacingAnchoryAcA0G4PoseVF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fromLeftHanded",
+            "printedName": "fromLeftHanded(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV14fromLeftHandedyAA10AnchorPoseVAFFZ",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV14fromLeftHandedyAA10AnchorPoseVAFFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MapAlignment",
+                "printedName": "MultiSetSDK.MapAlignment",
+                "usr": "s:11MultiSetSDK12MapAlignmentV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MapAlignment",
+                "printedName": "MultiSetSDK.MapAlignment",
+                "usr": "s:11MultiSetSDK12MapAlignmentV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12MapAlignmentV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK12MapAlignmentV2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK12MapAlignmentV",
+        "mangledName": "$s11MultiSetSDK12MapAlignmentV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "AlignmentAvailability",
+        "printedName": "AlignmentAvailability",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "available",
+            "printedName": "available",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.AlignmentAvailability.Type) -> MultiSetSDK.AlignmentAvailability",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.AlignmentAvailability.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AlignmentAvailability",
+                        "printedName": "MultiSetSDK.AlignmentAvailability",
+                        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO9availableyA2CmF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO9availableyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "notLocalized",
+            "printedName": "notLocalized",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.AlignmentAvailability.Type) -> MultiSetSDK.AlignmentAvailability",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.AlignmentAvailability.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AlignmentAvailability",
+                        "printedName": "MultiSetSDK.AlignmentAvailability",
+                        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO12notLocalizedyA2CmF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO12notLocalizedyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "needsRealignment",
+            "printedName": "needsRealignment",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.AlignmentAvailability.Type) -> MultiSetSDK.AlignmentAvailability",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.AlignmentAvailability.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AlignmentAvailability",
+                        "printedName": "MultiSetSDK.AlignmentAvailability",
+                        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO16needsRealignmentyA2CmF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO16needsRealignmentyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "geoNotRequested",
+            "printedName": "geoNotRequested",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.AlignmentAvailability.Type) -> MultiSetSDK.AlignmentAvailability",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.AlignmentAvailability.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AlignmentAvailability",
+                        "printedName": "MultiSetSDK.AlignmentAvailability",
+                        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO15geoNotRequestedyA2CmF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO15geoNotRequestedyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mapNotGeoreferenced",
+            "printedName": "mapNotGeoreferenced",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.AlignmentAvailability.Type) -> MultiSetSDK.AlignmentAvailability",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.AlignmentAvailability.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AlignmentAvailability",
+                        "printedName": "MultiSetSDK.AlignmentAvailability",
+                        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO19mapNotGeoreferencedyA2CmF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO19mapNotGeoreferencedyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "serverUnsupported",
+            "printedName": "serverUnsupported",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.AlignmentAvailability.Type) -> MultiSetSDK.AlignmentAvailability",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlignmentAvailability",
+                    "printedName": "MultiSetSDK.AlignmentAvailability",
+                    "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.AlignmentAvailability.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AlignmentAvailability",
+                        "printedName": "MultiSetSDK.AlignmentAvailability",
+                        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO17serverUnsupportedyA2CmF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO17serverUnsupportedyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "hashValue",
+            "printedName": "hashValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO9hashValueSivp",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO9hashValueSivp",
+            "moduleName": "MultiSetSDK",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK21AlignmentAvailabilityO9hashValueSivg",
+                "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO9hashValueSivg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "hash",
+            "printedName": "hash(into:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Hasher",
+                "printedName": "Swift.Hasher",
+                "paramValueOwnership": "InOut",
+                "usr": "s:s6HasherV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO4hash4intoys6HasherVz_tF",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO4hash4intoys6HasherVz_tF",
+            "moduleName": "MultiSetSDK",
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AlignmentAvailability",
+                "printedName": "MultiSetSDK.AlignmentAvailability",
+                "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AlignmentAvailability",
+                "printedName": "MultiSetSDK.AlignmentAvailability",
+                "usr": "s:11MultiSetSDK21AlignmentAvailabilityO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK21AlignmentAvailabilityO2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:11MultiSetSDK21AlignmentAvailabilityO",
+        "mangledName": "$s11MultiSetSDK21AlignmentAvailabilityO",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MapGeoreference",
+        "printedName": "MapGeoreference",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "origin",
+            "printedName": "origin",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK15MapGeoreferenceV6originAA14GeoCoordinatesVvp",
+            "mangledName": "$s11MultiSetSDK15MapGeoreferenceV6originAA14GeoCoordinatesVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoCoordinates",
+                    "printedName": "MultiSetSDK.GeoCoordinates",
+                    "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK15MapGeoreferenceV6originAA14GeoCoordinatesVvg",
+                "mangledName": "$s11MultiSetSDK15MapGeoreferenceV6originAA14GeoCoordinatesVvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mapHeadingDegrees",
+            "printedName": "mapHeadingDegrees",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK15MapGeoreferenceV17mapHeadingDegreesSdvp",
+            "mangledName": "$s11MultiSetSDK15MapGeoreferenceV17mapHeadingDegreesSdvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK15MapGeoreferenceV17mapHeadingDegreesSdvg",
+                "mangledName": "$s11MultiSetSDK15MapGeoreferenceV17mapHeadingDegreesSdvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MapGeoreference",
+                "printedName": "MultiSetSDK.MapGeoreference",
+                "usr": "s:11MultiSetSDK15MapGeoreferenceV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "MapGeoreference",
+                "printedName": "MultiSetSDK.MapGeoreference",
+                "usr": "s:11MultiSetSDK15MapGeoreferenceV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK15MapGeoreferenceV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK15MapGeoreferenceV2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK15MapGeoreferenceV",
+        "mangledName": "$s11MultiSetSDK15MapGeoreferenceV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "HeadingMode",
+        "printedName": "HeadingMode",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "cameraForward",
+            "printedName": "cameraForward",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.HeadingMode.Type) -> MultiSetSDK.HeadingMode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "HeadingMode",
+                    "printedName": "MultiSetSDK.HeadingMode",
+                    "usr": "s:11MultiSetSDK11HeadingModeO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.HeadingMode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "HeadingMode",
+                        "printedName": "MultiSetSDK.HeadingMode",
+                        "usr": "s:11MultiSetSDK11HeadingModeO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK11HeadingModeO13cameraForwardyA2CmF",
+            "mangledName": "$s11MultiSetSDK11HeadingModeO13cameraForwardyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "deviceTop",
+            "printedName": "deviceTop",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MultiSetSDK.HeadingMode.Type) -> MultiSetSDK.HeadingMode",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "HeadingMode",
+                    "printedName": "MultiSetSDK.HeadingMode",
+                    "usr": "s:11MultiSetSDK11HeadingModeO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "MultiSetSDK.HeadingMode.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "HeadingMode",
+                        "printedName": "MultiSetSDK.HeadingMode",
+                        "usr": "s:11MultiSetSDK11HeadingModeO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:11MultiSetSDK11HeadingModeO9deviceTopyA2CmF",
+            "mangledName": "$s11MultiSetSDK11HeadingModeO9deviceTopyA2CmF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "RawDocComment"
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "HeadingMode",
+                "printedName": "MultiSetSDK.HeadingMode",
+                "usr": "s:11MultiSetSDK11HeadingModeO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "HeadingMode",
+                "printedName": "MultiSetSDK.HeadingMode",
+                "usr": "s:11MultiSetSDK11HeadingModeO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK11HeadingModeO2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK11HeadingModeO2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Var",
+            "name": "hashValue",
+            "printedName": "hashValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11HeadingModeO9hashValueSivp",
+            "mangledName": "$s11MultiSetSDK11HeadingModeO9hashValueSivp",
+            "moduleName": "MultiSetSDK",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11HeadingModeO9hashValueSivg",
+                "mangledName": "$s11MultiSetSDK11HeadingModeO9hashValueSivg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "hash",
+            "printedName": "hash(into:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Hasher",
+                "printedName": "Swift.Hasher",
+                "paramValueOwnership": "InOut",
+                "usr": "s:s6HasherV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK11HeadingModeO4hash4intoys6HasherVz_tF",
+            "mangledName": "$s11MultiSetSDK11HeadingModeO4hash4intoys6HasherVz_tF",
+            "moduleName": "MultiSetSDK",
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:11MultiSetSDK11HeadingModeO",
+        "mangledName": "$s11MultiSetSDK11HeadingModeO",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Geolocation",
+        "printedName": "Geolocation",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "coordinates",
+            "printedName": "coordinates",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeolocationV11coordinatesAA14GeoCoordinatesVvp",
+            "mangledName": "$s11MultiSetSDK11GeolocationV11coordinatesAA14GeoCoordinatesVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoCoordinates",
+                    "printedName": "MultiSetSDK.GeoCoordinates",
+                    "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeolocationV11coordinatesAA14GeoCoordinatesVvg",
+                "mangledName": "$s11MultiSetSDK11GeolocationV11coordinatesAA14GeoCoordinatesVvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "headingDegrees",
+            "printedName": "headingDegrees",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.Double?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeolocationV14headingDegreesSdSgvp",
+            "mangledName": "$s11MultiSetSDK11GeolocationV14headingDegreesSdSgvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.Double?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Double",
+                        "printedName": "Swift.Double",
+                        "usr": "s:Sd"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeolocationV14headingDegreesSdSgvg",
+                "mangledName": "$s11MultiSetSDK11GeolocationV14headingDegreesSdSgvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "accuracy",
+            "printedName": "accuracy",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "MultiSetSDK.GeoAccuracy?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoAccuracy",
+                    "printedName": "MultiSetSDK.GeoAccuracy",
+                    "usr": "s:11MultiSetSDK11GeoAccuracyV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeolocationV8accuracyAA11GeoAccuracyVSgvp",
+            "mangledName": "$s11MultiSetSDK11GeolocationV8accuracyAA11GeoAccuracyVSgvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "MultiSetSDK.GeoAccuracy?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "GeoAccuracy",
+                        "printedName": "MultiSetSDK.GeoAccuracy",
+                        "usr": "s:11MultiSetSDK11GeoAccuracyV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeolocationV8accuracyAA11GeoAccuracyVSgvg",
+                "mangledName": "$s11MultiSetSDK11GeolocationV8accuracyAA11GeoAccuracyVSgvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "timestamp",
+            "printedName": "timestamp",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Date",
+                "printedName": "Foundation.Date",
+                "usr": "s:10Foundation4DateV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeolocationV9timestamp10Foundation4DateVvp",
+            "mangledName": "$s11MultiSetSDK11GeolocationV9timestamp10Foundation4DateVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Date",
+                    "printedName": "Foundation.Date",
+                    "usr": "s:10Foundation4DateV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeolocationV9timestamp10Foundation4DateVvg",
+                "mangledName": "$s11MultiSetSDK11GeolocationV9timestamp10Foundation4DateVvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK11GeolocationV",
+        "mangledName": "$s11MultiSetSDK11GeolocationV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "GeoAccuracy",
+        "printedName": "GeoAccuracy",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "horizontalMeters",
+            "printedName": "horizontalMeters",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeoAccuracyV16horizontalMetersSdvp",
+            "mangledName": "$s11MultiSetSDK11GeoAccuracyV16horizontalMetersSdvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeoAccuracyV16horizontalMetersSdvg",
+                "mangledName": "$s11MultiSetSDK11GeoAccuracyV16horizontalMetersSdvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "verticalMeters",
+            "printedName": "verticalMeters",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeoAccuracyV14verticalMetersSdvp",
+            "mangledName": "$s11MultiSetSDK11GeoAccuracyV14verticalMetersSdvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeoAccuracyV14verticalMetersSdvg",
+                "mangledName": "$s11MultiSetSDK11GeoAccuracyV14verticalMetersSdvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "headingDegrees",
+            "printedName": "headingDegrees",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK11GeoAccuracyV14headingDegreesSdvp",
+            "mangledName": "$s11MultiSetSDK11GeoAccuracyV14headingDegreesSdvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK11GeoAccuracyV14headingDegreesSdvg",
+                "mangledName": "$s11MultiSetSDK11GeoAccuracyV14headingDegreesSdvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoAccuracy",
+                "printedName": "MultiSetSDK.GeoAccuracy",
+                "usr": "s:11MultiSetSDK11GeoAccuracyV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoAccuracy",
+                "printedName": "MultiSetSDK.GeoAccuracy",
+                "usr": "s:11MultiSetSDK11GeoAccuracyV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK11GeoAccuracyV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK11GeoAccuracyV2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK11GeoAccuracyV",
+        "mangledName": "$s11MultiSetSDK11GeoAccuracyV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "GeoAlignment",
+        "printedName": "GeoAlignment",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "map",
+            "printedName": "map",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MapAlignment",
+                "printedName": "MultiSetSDK.MapAlignment",
+                "usr": "s:11MultiSetSDK12MapAlignmentV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV3mapAA03MapE0Vvp",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV3mapAA03MapE0Vvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MapAlignment",
+                    "printedName": "MultiSetSDK.MapAlignment",
+                    "usr": "s:11MultiSetSDK12MapAlignmentV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV3mapAA03MapE0Vvg",
+                "mangledName": "$s11MultiSetSDK12GeoAlignmentV3mapAA03MapE0Vvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "georeference",
+            "printedName": "georeference",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "MapGeoreference",
+                "printedName": "MultiSetSDK.MapGeoreference",
+                "usr": "s:11MultiSetSDK15MapGeoreferenceV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV12georeferenceAA15MapGeoreferenceVvp",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV12georeferenceAA15MapGeoreferenceVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MapGeoreference",
+                    "printedName": "MultiSetSDK.MapGeoreference",
+                    "usr": "s:11MultiSetSDK15MapGeoreferenceV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV12georeferenceAA15MapGeoreferenceVvg",
+                "mangledName": "$s11MultiSetSDK12GeoAlignmentV12georeferenceAA15MapGeoreferenceVvg",
+                "moduleName": "MultiSetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "sessionOrigin",
+            "printedName": "sessionOrigin",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV13sessionOriginAA0D11CoordinatesVvp",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV13sessionOriginAA0D11CoordinatesVvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GeoCoordinates",
+                    "printedName": "MultiSetSDK.GeoCoordinates",
+                    "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV13sessionOriginAA0D11CoordinatesVvg",
+                "mangledName": "$s11MultiSetSDK12GeoAlignmentV13sessionOriginAA0D11CoordinatesVvg",
+                "moduleName": "MultiSetSDK",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "sessionHeadingDegrees",
+            "printedName": "sessionHeadingDegrees",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV21sessionHeadingDegreesSdvp",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV21sessionHeadingDegreesSdvp",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Double",
+                    "printedName": "Swift.Double",
+                    "usr": "s:Sd"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV21sessionHeadingDegreesSdvg",
+                "mangledName": "$s11MultiSetSDK12GeoAlignmentV21sessionHeadingDegreesSdvg",
+                "moduleName": "MultiSetSDK",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "sessionPosition",
+            "printedName": "sessionPosition(of:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV15sessionPosition2ofs5SIMD3VySfGAA0D11CoordinatesV_tF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV15sessionPosition2ofs5SIMD3VySfGAA0D11CoordinatesV_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "coordinates",
+            "printedName": "coordinates(ofSessionPoint:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV11coordinates14ofSessionPointAA0D11CoordinatesVs5SIMD3VySfG_tF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV11coordinates14ofSessionPointAA0D11CoordinatesVs5SIMD3VySfG_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "sessionPose",
+            "printedName": "sessionPose(of:facingDegrees:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV11sessionPose2of13facingDegreesAA06AnchorG0VAA0D11CoordinatesV_SdtF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV11sessionPose2of13facingDegreesAA06AnchorG0VAA0D11CoordinatesV_SdtF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "geolocation",
+            "printedName": "geolocation(ofSessionPose:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Geolocation",
+                "printedName": "MultiSetSDK.Geolocation",
+                "usr": "s:11MultiSetSDK11GeolocationV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV11geolocation13ofSessionPoseAA11GeolocationVAA06AnchorI0V_tF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV11geolocation13ofSessionPoseAA11GeolocationVAA06AnchorI0V_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "geolocation",
+            "printedName": "geolocation(ofCamera:orientation:headingMode:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Geolocation",
+                "printedName": "MultiSetSDK.Geolocation",
+                "usr": "s:11MultiSetSDK11GeolocationV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "simd_float4x4",
+                "printedName": "simd.simd_float4x4",
+                "usr": "c:@SA@simd_float4x4"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "DeviceOrientation",
+                "printedName": "MultiSetSDK.DeviceOrientation",
+                "usr": "s:11MultiSetSDK17DeviceOrientationO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "HeadingMode",
+                "printedName": "MultiSetSDK.HeadingMode",
+                "usr": "s:11MultiSetSDK11HeadingModeO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV11geolocation8ofCamera11orientation11headingModeAA11GeolocationVSo13simd_float4x4a_AA17DeviceOrientationOAA07HeadingK0OtF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV11geolocation8ofCamera11orientation11headingModeAA11GeolocationVSo13simd_float4x4a_AA17DeviceOrientationOAA07HeadingK0OtF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "coordinates",
+            "printedName": "coordinates(ofMapPoint:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV11coordinates10ofMapPointAA0D11CoordinatesVs5SIMD3VySfG_tF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV11coordinates10ofMapPointAA0D11CoordinatesVs5SIMD3VySfG_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "mapPosition",
+            "printedName": "mapPosition(of:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoCoordinates",
+                "printedName": "MultiSetSDK.GeoCoordinates",
+                "usr": "s:11MultiSetSDK14GeoCoordinatesV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV11mapPosition2ofs5SIMD3VySfGAA0D11CoordinatesV_tF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV11mapPosition2ofs5SIMD3VySfGAA0D11CoordinatesV_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "accuracy",
+            "printedName": "accuracy(atSessionPoint:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoAccuracy",
+                "printedName": "MultiSetSDK.GeoAccuracy",
+                "usr": "s:11MultiSetSDK11GeoAccuracyV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SIMD3",
+                "printedName": "Swift.SIMD3<Swift.Float>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Float",
+                    "printedName": "Swift.Float",
+                    "usr": "s:Sf"
+                  }
+                ],
+                "usr": "s:s5SIMD3V"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV8accuracy14atSessionPointAA0D8AccuracyVs5SIMD3VySfG_tF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV8accuracy14atSessionPointAA0D8AccuracyVs5SIMD3VySfG_tF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "replacingAnchor",
+            "printedName": "replacingAnchor(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GeoAlignment",
+                "printedName": "MultiSetSDK.GeoAlignment",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "AnchorPose",
+                "printedName": "MultiSetSDK.AnchorPose",
+                "usr": "s:11MultiSetSDK10AnchorPoseV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV15replacingAnchoryAcA0G4PoseVF",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV15replacingAnchoryAcA0G4PoseVF",
+            "moduleName": "MultiSetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoAlignment",
+                "printedName": "MultiSetSDK.GeoAlignment",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GeoAlignment",
+                "printedName": "MultiSetSDK.GeoAlignment",
+                "usr": "s:11MultiSetSDK12GeoAlignmentV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:11MultiSetSDK12GeoAlignmentV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s11MultiSetSDK12GeoAlignmentV2eeoiySbAC_ACtFZ",
+            "moduleName": "MultiSetSDK",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:11MultiSetSDK12GeoAlignmentV",
+        "mangledName": "$s11MultiSetSDK12GeoAlignmentV",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "simd",
+        "printedName": "simd",
+        "declKind": "Import",
+        "moduleName": "MultiSetSDK"
+      },
+      {
         "kind": "TypeDecl",
         "name": "Name",
         "printedName": "Name",
@@ -28503,8 +31459,15 @@
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6452,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Managers\/LocalizationManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 51780,
+      "offset": 55331,
       "length": 5,
       "value": "false"
     },
@@ -28679,154 +31642,154 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 6693,
+      "offset": 6897,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 6737,
+      "offset": 6941,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 6789,
+      "offset": 6993,
       "length": 4,
       "value": "30.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 6825,
+      "offset": 7029,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 6860,
+      "offset": 7064,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 6900,
+      "offset": 7104,
       "length": 3,
       "value": "500"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 6936,
+      "offset": 7140,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 6979,
+      "offset": 7183,
       "length": 3,
       "value": "0.3"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 7105,
+      "offset": 7309,
       "length": 3,
       "value": "4.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "FloatLiteral",
-      "offset": 7154,
+      "offset": 7358,
       "length": 4,
       "value": "25.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "Dictionary",
-      "offset": 7245,
+      "offset": 7449,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 7295,
+      "offset": 7499,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 7327,
+      "offset": 7531,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 7366,
+      "offset": 7570,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 7399,
+      "offset": 7603,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 7446,
+      "offset": 7650,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 7478,
+      "offset": 7682,
       "length": 2,
       "value": "25"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "BooleanLiteral",
-      "offset": 7512,
+      "offset": 7716,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "Array",
-      "offset": 7551,
+      "offset": 7755,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "StringLiteral",
-      "offset": 7585,
+      "offset": 7789,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "StringLiteral",
-      "offset": 7622,
+      "offset": 7826,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Network\/NetworkModels.swift",
       "kind": "IntegerLiteral",
-      "offset": 7653,
+      "offset": 7857,
       "length": 2,
       "value": "90"
     },
@@ -28926,7 +31889,7 @@
       "kind": "StringLiteral",
       "offset": 885,
       "length": 7,
-      "value": "\"2.3.0\""
+      "value": "\"2.4.0\""
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/MultiSetSDK.swift",
@@ -29253,14 +32216,14 @@
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/GeoCoordinates.swift",
       "kind": "FloatLiteral",
-      "offset": 949,
+      "offset": 960,
       "length": 3,
       "value": "0.0"
     },
     {
       "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Public\/GeoCoordinates.swift",
       "kind": "FloatLiteral",
-      "offset": 974,
+      "offset": 985,
       "length": 3,
       "value": "0.0"
     },
@@ -30369,6 +33332,83 @@
       "offset": 1028,
       "length": 1,
       "value": "0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/WGS84.swift",
+      "kind": "FloatLiteral",
+      "offset": 587,
+      "length": 9,
+      "value": "6378137.0"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/WGS84.swift",
+      "kind": "IntegerLiteral",
+      "offset": 625,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/WGS84.swift",
+      "kind": "FloatLiteral",
+      "offset": 629,
+      "length": 13,
+      "value": "298.257223563"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/WGS84.swift",
+      "kind": "IntegerLiteral",
+      "offset": 694,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/WGS84.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4940,
+      "length": 3,
+      "value": "180"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/WGS84.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5019,
+      "length": 3,
+      "value": "180"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/Bearing.swift",
+      "kind": "IntegerLiteral",
+      "offset": 438,
+      "length": 2,
+      "value": "15"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/AlignmentState.swift",
+      "kind": "IntegerLiteral",
+      "offset": 943,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/AlignmentState.swift",
+      "kind": "Array",
+      "offset": 1246,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/AccuracyModel.swift",
+      "kind": "FloatLiteral",
+      "offset": 1072,
+      "length": 4,
+      "value": "0.02"
+    },
+    {
+      "filePath": "\/Users\/shyam\/Developer\/iOS-Xcode\/MULTISET\/iOS-SDK-Internal\/MultiSetSDK\/Internal\/Alignment\/AccuracyModel.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1203,
+      "length": 1,
+      "value": "3"
     }
   ]
 }
