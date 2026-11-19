@@ -1,6 +1,0 @@
-framework module MultiSetSDK {
-  umbrella header "MultiSetSDK.h"
-  export *
-
-  module * { export * }
-}

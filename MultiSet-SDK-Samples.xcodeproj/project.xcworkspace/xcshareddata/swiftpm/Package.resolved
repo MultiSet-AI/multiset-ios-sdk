@@ -1,0 +1,15 @@
+{
+  "originHash" : "d4f2541b0e4c93653f9a82fecb1e33edbb13f791a2b3dfe0a58a76b2b6bfaa2e",
+  "pins" : [
+    {
+      "identity" : "multiset-swift-package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MultiSet-AI/multiset-swift-package",
+      "state" : {
+        "revision" : "d221b5738d5fd471cf5ca3bff0641ffcb982717c",
+        "version" : "2.5.0"
+      }
+    }
+  ],
+  "version" : 3
+}
